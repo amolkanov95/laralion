@@ -11,13 +11,13 @@
     <!-- Open Graph для социальных сетей -->
     <meta property="og:title" content="Lara Lion — Эстетика постельного совершенства">
     <meta property="og:description" content="Премиальное постельное белье из натуральных материалов. Французский светлый минимализм для вашего дома.">
-    <meta property="og:image" content="./Изображение/фото спальни для первого экрана.jpg">
+    <meta property="og:image" content="./images/hero-desktop.jpg">
     <meta property="og:url" content="https://laralion.ru">
     <meta property="og:type" content="website">
 
     <!-- Preload критических ресурсов (адаптивно по ширине экрана) -->
-    <link rel="preload" as="image" href="./Изображение/фото спальни для первого экрана.jpg" media="(min-width: 769px)">
-    <link rel="preload" as="image" href="./Изображение/мобильный.jpg" media="(max-width: 768px)">
+    <link rel="preload" as="image" href="./images/hero-desktop.jpg" media="(min-width: 769px)">
+    <link rel="preload" as="image" href="./images/hero-mobile.jpg" media="(max-width: 768px)">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" as="style">
 
     <!-- Подключение шрифтов Google Fonts -->
@@ -47,7 +47,7 @@
     ============================================ -->
     <header>
         <!-- Логотип слева -->
-        <img src="./Изображение/Герб-логотип Lara Lion.png" alt="Lara Lion" class="header-logo">
+        <img src="./images/logo.png" alt="Lara Lion" class="header-logo">
 
         <!-- Навигационное меню по центру -->
         <nav>
@@ -89,8 +89,8 @@
     <section id="hero">
         <!-- Фоновое изображение (адаптивная подмена: десктоп / мобайл) -->
         <picture class="hero-bg">
-            <source media="(max-width: 768px)" srcset="./Изображение/мобильный.jpg">
-            <img src="./Изображение/фото спальни для первого экрана.jpg" alt="Спальня Lara Lion" loading="eager">
+            <source media="(max-width: 768px)" srcset="./images/hero-mobile.jpg">
+            <img src="./images/hero-desktop.jpg" alt="Спальня Lara Lion" loading="eager">
         </picture>
 
         <!-- Полупрозрачный оверлей -->
@@ -133,25 +133,25 @@
             <div class="quality-grid">
                 <!-- Карточка 1: Качественные хлопки -->
                 <div class="quality-card">
-                    <img src="./Изображение/Иконки/IMG_20260531_125525.png" alt="Качественные хлопки" class="quality-icon">
+                    <img src="./images/icons/IMG_20260531_125525.png" alt="Качественные хлопки" class="quality-icon">
                     <div class="quality-content">
                         <h3 class="quality-title">100% Качественные хлопки</h3>
                         <p class="quality-description">Наше постельное белье изготовлено из натурального хлопка премиум-качества</p>
                     </div>
                 </div>
 
-                <!-- Карточка 2: Натуральные ткани -->
+                <!-- Карточка 2: Ручная работа -->
                 <div class="quality-card">
-                    <img src="./Изображение/Иконки/IMG_20260531_125554_edit_70412008510336.png" alt="Натуральные ткани" class="quality-icon">
+                    <img src="./images/icons/1.png" alt="Ручная работа" class="quality-icon">
                     <div class="quality-content">
-                        <h3 class="quality-title">Натуральные ткани</h3>
-                        <p class="quality-description">Для производства мы используем ткани из премиального хлопка</p>
+                        <h3 class="quality-title">Ручная работа</h3>
+                        <p class="quality-description">Аккуратные рюши, прочные завязки и ровные швы, детально проработанные вручную для безупречной эстетики вашего дома</p>
                     </div>
                 </div>
 
                 <!-- Карточка 3: Гипоаллергенные материалы -->
                 <div class="quality-card">
-                    <img src="./Изображение/Иконки/IMG_20260531_125644.png" alt="Гипоаллергенные материалы" class="quality-icon">
+                    <img src="./images/icons/IMG_20260531_125644.png" alt="Гипоаллергенные материалы" class="quality-icon">
                     <div class="quality-content">
                         <h3 class="quality-title">Гипоаллергенные материалы</h3>
                         <p class="quality-description">Безопасные материалы для чувствительной кожи</p>
@@ -160,7 +160,7 @@
 
                 <!-- Карточка 4: Красивая упаковка -->
                 <div class="quality-card">
-                    <img src="./Изображение/Иконки/IMG_20260531_125721.png" alt="Красивая упаковка" class="quality-icon">
+                    <img src="./images/icons/IMG_20260531_125721.png" alt="Красивая упаковка" class="quality-icon">
                     <div class="quality-content">
                         <h3 class="quality-title">Красивая упаковка</h3>
                         <p class="quality-description">Подарочная упаковка для особых случаев</p>
@@ -193,7 +193,7 @@
                 <!-- ТОВАР 1: Классика -->
                 <div class="collection-card" data-product="klassika" data-category="bedding">
                     <div class="collection-image-wrapper">
-                        <img src="./Классика/1.jpg" alt="Постельное белье Классика — коричневый хлопок премиум качества" class="collection-image" data-color="brown" loading="lazy">
+                        <img src="./collections/klassika/1.jpg" alt="Постельное белье Классика — коричневый хлопок премиум качества" class="collection-image" data-color="brown" loading="lazy">
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">Классика</h3>
@@ -201,7 +201,7 @@
 
                         <!-- Кружки выбора цвета -->
                         <div class="color-swatches">
-                            <div class="color-swatch color-brown active" data-color="brown" data-image="./Классика/1.jpg" title="Коричневый"></div>
+                            <div class="color-swatch color-brown active" data-color="brown" data-image="./collections/klassika/1.jpg" title="Коричневый"></div>
                         </div>
 
                         <p class="collection-price">от 7 400 ₽</p>
@@ -215,7 +215,7 @@
                 <!-- ТОВАР 2: Прованс -->
                 <div class="collection-card" data-product="provans" data-category="bedding">
                     <div class="collection-image-wrapper">
-                        <img src="./Прованс/1.jpg" alt="Постельное белье Прованс — голубой и белый хлопок в романтичном стиле" class="collection-image" data-color="blue" loading="lazy">
+                        <img src="./collections/provans/1.jpg" alt="Постельное белье Прованс — голубой и белый хлопок в романтичном стиле" class="collection-image" data-color="blue" loading="lazy">
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">Прованс</h3>
@@ -223,8 +223,8 @@
 
                         <!-- Кружки выбора цвета -->
                         <div class="color-swatches">
-                            <div class="color-swatch color-blue active" data-color="blue" data-image="./Прованс/1.jpg" title="Голубой"></div>
-                            <div class="color-swatch color-brown" data-color="brown" data-image="./Прованс/2.jpg" title="Коричневый"></div>
+                            <div class="color-swatch color-blue active" data-color="blue" data-image="./collections/provans/1.jpg" title="Голубой"></div>
+                            <div class="color-swatch color-brown" data-color="brown" data-image="./collections/provans/2.jpg" title="Коричневый"></div>
                         </div>
 
                         <p class="collection-price">от 15 000 ₽</p>
@@ -238,7 +238,7 @@
                 <!-- ТОВАР 3: Шарм -->
                 <div class="collection-card" data-product="sharm" data-category="bedding">
                     <div class="collection-image-wrapper">
-                        <img src="./Шарм/1.jpg" alt="Постельное белье Шарм — зеленый шалфей, дизайнерский комплект" class="collection-image" data-color="green" loading="lazy">
+                        <img src="./collections/sharm/1.jpg" alt="Постельное белье Шарм — зеленый шалфей, дизайнерский комплект" class="collection-image" data-color="green" loading="lazy">
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">Шарм</h3>
@@ -246,7 +246,7 @@
 
                         <!-- Кружки выбора цвета -->
                         <div class="color-swatches">
-                            <div class="color-swatch color-green active" data-color="green" data-image="./Шарм/1.jpg" title="Зеленый"></div>
+                            <div class="color-swatch color-green active" data-color="green" data-image="./collections/sharm/1.jpg" title="Зеленый"></div>
                         </div>
 
                         <p class="collection-price">от 14 600 ₽</p>
@@ -274,7 +274,7 @@
             <div class="about-content">
                 <!-- Левая колонка: Фото -->
                 <div class="about-image-wrapper">
-                    <img src="./Изображение/О нас.jpg" alt="О нас — Lara Lion, уютная спальня с постельным бельем премиум качества" class="about-image" loading="lazy">
+                    <img src="./images/about.jpg" alt="О нас — Lara Lion, уютная спальня с постельным бельем премиум качества" class="about-image" loading="lazy">
                 </div>
 
                 <!-- Правая колонка: Текст -->
@@ -290,15 +290,15 @@
                     <!-- 3 пункта с иконками -->
                     <div class="about-features">
                         <div class="about-feature">
-                            <img src="./Изображение/Иконки/IMG_20260531_125755.png" alt="Натуральные ткани" class="about-feature-icon">
+                            <img src="./images/icons/IMG_20260531_125755.png" alt="Натуральные ткани" class="about-feature-icon">
                             <p>Натуральные премиальные ткани</p>
                         </div>
                         <div class="about-feature">
-                            <img src="./Изображение/Иконки/IMG_20260531_125817.png" alt="Продуманный крой" class="about-feature-icon">
+                            <img src="./images/icons/IMG_20260531_125817.png" alt="Продуманный крой" class="about-feature-icon">
                             <p>Продуманный крой</p>
                         </div>
                         <div class="about-feature">
-                            <img src="./Изображение/Иконки/IMG_20260531_125721.png" alt="Уют и атмосфера" class="about-feature-icon">
+                            <img src="./images/icons/IMG_20260531_125721.png" alt="Уют и атмосфера" class="about-feature-icon">
                             <p>Для уюта и атмосферы</p>
                         </div>
                     </div>
@@ -337,8 +337,8 @@
 
                 <!-- Правая колонка: Коллаж фото -->
                 <div class="gifting-collage">
-                    <img src="./Изображение/упаковка/Коробка.png" alt="Подарочная крафт-коробка с изумрудной лентой" class="gifting-image gifting-image-1" loading="lazy">
-                    <img src="./Изображение/упаковка/Шоппер.png" alt="Фирменный холщовый шопер Lara Lion" class="gifting-image gifting-image-2" loading="lazy">
+                    <img src="./images/packaging/box.png" alt="Подарочная крафт-коробка с изумрудной лентой" class="gifting-image gifting-image-1" loading="lazy">
+                    <img src="./images/packaging/shopper.png" alt="Фирменный холщовый шопер Lara Lion" class="gifting-image gifting-image-2" loading="lazy">
                 </div>
             </div>
         </div>
