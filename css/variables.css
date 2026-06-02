@@ -22,6 +22,21 @@
     --spacing-md: 2rem;        /* 32px */
     --spacing-lg: 4rem;        /* 64px */
     --spacing-xl: 6rem;        /* 96px */
+
+    /* Переходы */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Тени */
+    --shadow-sm: 0 2px 8px rgba(43, 31, 23, 0.08);
+    --shadow-md: 0 4px 16px rgba(43, 31, 23, 0.12);
+    --shadow-lg: 0 8px 32px rgba(43, 31, 23, 0.16);
+
+    /* Радиусы скругления */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
 }
 
 /* Адаптивные отступы для мобильных устройств */
@@ -39,20 +54,4 @@
         --spacing-lg: 2.5rem;  /* 40px */
         --spacing-xl: 3rem;    /* 48px */
     }
-}
-
-    /* Переходы */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
-
-    /* Тени */
-    --shadow-sm: 0 2px 8px rgba(43, 31, 23, 0.08);
-    --shadow-md: 0 4px 16px rgba(43, 31, 23, 0.12);
-    --shadow-lg: 0 8px 32px rgba(43, 31, 23, 0.16);
-
-    /* Радиусы скругления */
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 16px;
 }

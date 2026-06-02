@@ -14,11 +14,103 @@
     padding: 0 var(--spacing-md);
 }
 
+/* Линейка вкладок-фильтров */
+.catalog-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+.catalog-filter {
+    position: relative;
+    padding: 0.5rem 0.25rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-color);
+    opacity: 0.65;
+    white-space: nowrap;
+    transition: color var(--transition-normal), opacity var(--transition-normal);
+}
+
+/* Матово-золотая линия снизу (приём из шапки) */
+.catalog-filter::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background-color: var(--accent-gold);
+    transition: width var(--transition-normal);
+}
+
+.catalog-filter:hover {
+    color: var(--accent-gold);
+    opacity: 1;
+}
+
+.catalog-filter.is-active {
+    color: var(--text-color);
+    opacity: 1;
+    font-weight: 600;
+}
+
+.catalog-filter.is-active::after {
+    width: 100%;
+}
+
 .collections-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-lg);
     margin-top: var(--spacing-lg);
+}
+
+/* Состояние карточки, скрытой фильтром */
+.collection-card.is-hidden {
+    display: none;
+}
+
+/* Анимация появления/исчезновения при фильтрации */
+.collection-card.is-filtering {
+    transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+.collection-card.is-fading {
+    opacity: 0;
+    transform: scale(0.92);
+}
+
+/* Заглушка для пустых категорий */
+.catalog-empty {
+    margin-top: var(--spacing-lg);
+    text-align: center;
+}
+
+.catalog-empty-text {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--text-color);
+    opacity: 0.55;
+    letter-spacing: 1px;
+}
+
+/* Уважение к настройке "уменьшить движение" */
+@media (prefers-reduced-motion: reduce) {
+    .collection-card.is-filtering,
+    .catalog-filter,
+    .catalog-filter::after {
+        transition: none;
+    }
 }
 
 /* Карточка товара */
@@ -189,6 +281,21 @@
 
     .collections-container {
         padding: 0 var(--spacing-sm);
+    }
+
+    /* Вкладки в одну строку с горизонтальным скроллом */
+    .catalog-filters {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: var(--spacing-sm);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 0.25rem;
+    }
+
+    .catalog-filters::-webkit-scrollbar {
+        display: none;
     }
 
     .collections-grid {

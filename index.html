@@ -53,9 +53,6 @@
         <nav>
             <ul class="header-nav">
                 <li><a href="#collections">Каталог</a></li>
-                <li><a href="#collections">Постельное белье</a></li>
-                <li><a href="#collections">Кухонный текстиль</a></li>
-                <li><a href="#collections">Ткани</a></li>
                 <li><a href="#about">О нас</a></li>
                 <li><a href="#contacts">Контакты</a></li>
             </ul>
@@ -81,9 +78,6 @@
         <button class="mobile-menu-close" type="button" aria-label="Закрыть меню"></button>
         <nav class="mobile-menu-nav">
             <a href="#collections">Каталог</a>
-            <a href="#collections">Постельное белье</a>
-            <a href="#collections">Кухонный текстиль</a>
-            <a href="#collections">Ткани</a>
             <a href="#about">О нас</a>
             <a href="#contacts">Контакты</a>
         </nav>
@@ -185,11 +179,19 @@
             <h2 class="section-title">Наши коллекции</h2>
             <div class="gold-divider"></div>
 
+            <!-- Линейка вкладок-фильтров по категориям -->
+            <div class="catalog-filters" role="tablist" aria-label="Фильтр каталога по категориям">
+                <button type="button" class="catalog-filter is-active" data-filter="all" aria-selected="true">Все</button>
+                <button type="button" class="catalog-filter" data-filter="bedding" aria-selected="false">Постельное белье</button>
+                <button type="button" class="catalog-filter" data-filter="kitchen" aria-selected="false">Кухонный текстиль</button>
+                <button type="button" class="catalog-filter" data-filter="fabrics" aria-selected="false">Ткани</button>
+            </div>
+
             <!-- Сетка карточек товаров -->
             <div class="collections-grid">
 
                 <!-- ТОВАР 1: Классика -->
-                <div class="collection-card" data-product="klassika">
+                <div class="collection-card" data-product="klassika" data-category="bedding">
                     <div class="collection-image-wrapper">
                         <img src="./Классика/1.jpg" alt="Постельное белье Классика — коричневый хлопок премиум качества" class="collection-image" data-color="brown" loading="lazy">
                     </div>
@@ -211,7 +213,7 @@
                 </div>
 
                 <!-- ТОВАР 2: Прованс -->
-                <div class="collection-card" data-product="provans">
+                <div class="collection-card" data-product="provans" data-category="bedding">
                     <div class="collection-image-wrapper">
                         <img src="./Прованс/1.jpg" alt="Постельное белье Прованс — голубой и белый хлопок в романтичном стиле" class="collection-image" data-color="blue" loading="lazy">
                     </div>
@@ -234,7 +236,7 @@
                 </div>
 
                 <!-- ТОВАР 3: Шарм -->
-                <div class="collection-card" data-product="sharm">
+                <div class="collection-card" data-product="sharm" data-category="bedding">
                     <div class="collection-image-wrapper">
                         <img src="./Шарм/1.jpg" alt="Постельное белье Шарм — зеленый шалфей, дизайнерский комплект" class="collection-image" data-color="green" loading="lazy">
                     </div>
@@ -255,6 +257,11 @@
                     </div>
                 </div>
 
+            </div>
+
+            <!-- Заглушка для пустых категорий -->
+            <div class="catalog-empty" hidden>
+                <p class="catalog-empty-text">Скоро появится</p>
             </div>
         </div>
     </section>
@@ -426,6 +433,7 @@
     <script src="./js/color-swatches.js"></script>
     <script src="./js/scroll-animations.js"></script>
     <script src="./js/smooth-scroll.js"></script>
+    <script src="./js/catalog-filter.js"></script>
     <script src="./js/main.js"></script>
 
 </body>
