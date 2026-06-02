@@ -1,0 +1,223 @@
+/* ============================================
+   АНИМАЦИИ И МИКРОИНТЕРАКЦИИ
+   Fade-in, Blur Reveal, Breeze Effect
+============================================ */
+
+/* Колыхание декоративных цветов (Breeze Effect) */
+@keyframes breeze {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(0.5deg);
+    }
+}
+
+.floral-decor {
+    animation: breeze 7s ease-in-out infinite;
+}
+
+/* Fade-in + Blur Reveal для блоков */
+.fade-in-section {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in-section.visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
+
+/* Плавное появление элементов с задержкой */
+.fade-in-delay-1 {
+    transition-delay: 0.1s;
+}
+
+.fade-in-delay-2 {
+    transition-delay: 0.2s;
+}
+
+.fade-in-delay-3 {
+    transition-delay: 0.3s;
+}
+
+.fade-in-delay-4 {
+    transition-delay: 0.4s;
+}
+
+/* Плавная смена изображений */
+.collection-image {
+    transition: opacity 0.3s ease;
+}
+
+/* Hover-эффекты для кнопок */
+.btn,
+.collection-btn,
+.marketplace-btn,
+.header-cta {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before,
+.collection-btn::before,
+.marketplace-btn::before,
+.header-cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background-color: var(--accent-gold);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+    z-index: -1;
+}
+
+.btn:hover::before,
+.collection-btn:hover::before,
+.marketplace-btn:hover::before,
+.header-cta:hover::before {
+    width: 300%;
+    height: 300%;
+}
+
+/* Плавное появление модального окна */
+.modal-overlay {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-container {
+    animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Плавное увеличение карточек товаров */
+.collection-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.collection-card:hover {
+    transform: translateY(-8px);
+}
+
+/* Плавное увеличение изображений в карточках */
+.collection-image {
+    transition: transform 0.5s ease;
+}
+
+.collection-card:hover .collection-image {
+    transform: scale(1.02);
+}
+
+/* Золотая линия под ссылками меню */
+.header-nav a::after {
+    transition: width 0.3s ease;
+}
+
+/* Плавное вращение кнопки закрытия модального окна */
+.modal-close {
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    transform: rotate(90deg);
+}
+
+/* Плавное увеличение иконок преимуществ */
+.quality-icon,
+.about-feature-icon {
+    transition: transform 0.3s ease;
+}
+
+.quality-card:hover .quality-icon {
+    transform: scale(1.1);
+}
+
+/* Плавное увеличение фото упаковки */
+.gifting-image {
+    transition: transform 0.3s ease;
+}
+
+.gifting-image:hover {
+    transform: scale(1.05);
+}
+
+/* Плавное смещение ссылок маркетплейсов */
+.marketplace-link {
+    transition: all 0.3s ease;
+}
+
+.marketplace-link:hover {
+    transform: translateX(5px);
+}
+
+/* Пульсация кнопки CTA на hero */
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(209, 182, 144, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(209, 182, 144, 0);
+    }
+}
+
+.hero-cta {
+    animation: pulse 2s infinite;
+}
+
+/* Плавное появление слайдов */
+.slider-image {
+    transition: opacity 0.5s ease;
+}
+
+/* Плавное изменение размера точек слайдера */
+.slider-dot {
+    transition: all 0.2s ease;
+}
+
+.slider-dot:hover {
+    transform: scale(1.2);
+}
+
+/* Плавное появление стрелок слайдера */
+.slider-arrow {
+    transition: all 0.2s ease;
+}
+
+.slider-arrow:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Плавное изменение цвета кружков выбора цвета */
+.color-swatch {
+    transition: all 0.2s ease;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}

@@ -1,0 +1,58 @@
+/* ============================================
+   ДИЗАЙН-СИСТЕМА: CSS-ПЕРЕМЕННЫЕ
+   Lara Lion — Французский светлый минимализм
+============================================ */
+
+:root {
+    /* Основные цвета */
+    --bg-color: #fcfbf9;       /* Молочно-кремовый (основа сайта) */
+    --text-color: #2b1f17;     /* Кофейно-угольный (для читаемости текста) */
+    --accent-gold: #d1b690;    /* Благородный золотой (напрямую из герба) */
+    --card-bg: #ffffff;        /* Белый для карточек */
+    --light-linen: #f5f4f0;    /* Цвет некрашеного льна для плашек */
+
+    /* Типографика */
+    --font-brand: 'Great Vibes', cursive;           /* Каллиграфия для бренда */
+    --font-heading: 'EB Garamond', serif;           /* Заголовки */
+    --font-body: 'Montserrat', sans-serif;          /* Основной текст */
+
+    /* Отступы и размеры */
+    --spacing-xs: 0.5rem;      /* 8px */
+    --spacing-sm: 1rem;        /* 16px */
+    --spacing-md: 2rem;        /* 32px */
+    --spacing-lg: 4rem;        /* 64px */
+    --spacing-xl: 6rem;        /* 96px */
+}
+
+/* Адаптивные отступы для мобильных устройств */
+@media (max-width: 768px) {
+    :root {
+        --spacing-md: 1.5rem;  /* 24px */
+        --spacing-lg: 3rem;    /* 48px */
+        --spacing-xl: 4rem;    /* 64px */
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --spacing-md: 1.25rem; /* 20px */
+        --spacing-lg: 2.5rem;  /* 40px */
+        --spacing-xl: 3rem;    /* 48px */
+    }
+}
+
+    /* Переходы */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Тени */
+    --shadow-sm: 0 2px 8px rgba(43, 31, 23, 0.08);
+    --shadow-md: 0 4px 16px rgba(43, 31, 23, 0.12);
+    --shadow-lg: 0 8px 32px rgba(43, 31, 23, 0.16);
+
+    /* Радиусы скругления */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+}

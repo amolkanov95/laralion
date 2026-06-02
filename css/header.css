@@ -1,0 +1,264 @@
+/* ============================================
+   ШАПКА САЙТА (HEADER)
+   Прозрачный header с гербом, меню и кнопкой Telegram
+============================================ */
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent;
+    z-index: 1000;
+    padding: 0 2rem 0 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Логотип слева */
+.header-logo {
+    height: 160px;
+    width: auto;
+    transition: transform var(--transition-normal);
+    margin-right: 1rem;
+    margin-top: -10px;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Навигация смещена ближе к логотипу (на заблюренную часть hero) */
+header nav {
+    margin-right: auto;
+}
+
+/* Навигационное меню по центру */
+.header-nav {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin-left: 2rem;
+    margin-top: -30px;
+}
+
+.header-nav a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color var(--transition-normal);
+    position: relative;
+}
+
+/* Золотая линия при наведении */
+.header-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background-color: var(--accent-gold);
+    transition: width var(--transition-normal);
+}
+
+.header-nav a:hover {
+    color: var(--accent-gold);
+}
+
+.header-nav a:hover::after {
+    width: 100%;
+}
+
+/* Кнопка Telegram справа */
+.header-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    background-color: transparent;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 2px solid var(--accent-gold);
+    border-radius: 0;
+    transition: all var(--transition-normal);
+    margin-top: -30px;
+}
+
+.header-cta:hover {
+    background-color: var(--accent-gold);
+    color: var(--text-color);
+}
+
+/* Кнопка-гамбургер (по умолчанию скрыта, видна только на мобильных) */
+.header-burger {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 60px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.header-burger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background-color: var(--text-color);
+    border-radius: 2px;
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+/* ============================================
+   ПОЛНОЭКРАННОЕ МОБИЛЬНОЕ МЕНЮ
+============================================ */
+.mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-100%);
+    transition: transform var(--transition-slow), opacity var(--transition-slow), visibility var(--transition-slow);
+}
+
+.mobile-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mobile-menu-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.mobile-menu-nav a {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color var(--transition-normal);
+}
+
+.mobile-menu-nav a:hover {
+    color: var(--accent-gold);
+}
+
+/* Кнопка закрытия (крестик) */
+.mobile-menu-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.mobile-menu-close::before,
+.mobile-menu-close::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 26px;
+    height: 2px;
+    background-color: var(--text-color);
+}
+
+.mobile-menu-close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.mobile-menu-close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Блокировка прокрутки страницы при открытом меню */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .header-nav {
+        gap: 1.5rem;
+        margin-left: 1rem;
+    }
+
+    .header-nav a {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        position: absolute;
+        height: 60px;
+        padding: 0 1rem 0 0.5rem;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0;
+        background-color: transparent;
+        backdrop-filter: none;
+        box-shadow: none;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    /* Флаг-герб вплотную к верхней кромке экрана */
+    .header-logo {
+        height: 90px;
+        margin: 0;
+        margin-top: -12px;
+    }
+
+    /* Десктопные элементы навигации скрыты полностью */
+    header nav,
+    .header-cta {
+        display: none;
+    }
+
+    /* Кнопка-гамбургер видна */
+    .header-burger {
+        display: flex;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 0 0.75rem 0 0.5rem;
+    }
+
+    .header-logo {
+        height: 80px;
+    }
+
+    .mobile-menu-nav a {
+        font-size: 1.5rem;
+    }
+}

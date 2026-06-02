@@ -1,0 +1,243 @@
+/* ============================================
+   БЛОК КОЛЛЕКЦИЙ (COLLECTIONS)
+   Сетка из 3 карточек товаров с hover-эффектами
+============================================ */
+
+#collections {
+    background-color: var(--light-linen);
+    padding: var(--spacing-xl) 0;
+}
+
+.collections-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.collections-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+/* Карточка товара */
+.collection-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+}
+
+.collection-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Контейнер изображения */
+.collection-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background-color: var(--light-linen);
+    border-radius: 8px;
+}
+
+.collection-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+    border-radius: 8px;
+}
+
+.collection-card:hover .collection-image {
+    transform: scale(1.02);
+}
+
+/* Контент карточки */
+.collection-content {
+    padding: var(--spacing-md);
+}
+
+.collection-name {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.collection-description {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.6;
+}
+
+/* Кружки выбора цвета */
+.color-swatches {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-gold);
+}
+
+.color-swatch.active {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 4px var(--accent-gold);
+}
+
+/* Цвета для товаров */
+.color-brown {
+    background-color: #8B4513;
+}
+
+.color-blue {
+    background-color: #87CEEB;
+}
+
+.color-green {
+    background-color: #8FBC8F;
+}
+
+/* Цена */
+.collection-price {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Кнопка "Смотреть" */
+.collection-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.8rem;
+    background-color: transparent;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 2px solid var(--accent-gold);
+    border-radius: 0;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.collection-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-gold);
+    transition: width var(--transition-normal);
+}
+
+.collection-btn:hover {
+    background-color: var(--accent-gold);
+    color: var(--text-color);
+}
+
+.collection-btn:hover::after {
+    width: 80%;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .collections-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .collection-image-wrapper {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    #collections {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .collections-container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .collections-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-md);
+    }
+
+    .collection-image-wrapper {
+        height: 350px;
+    }
+
+    .collection-content {
+        padding: var(--spacing-sm);
+    }
+
+    .collection-name {
+        font-size: 1.6rem;
+    }
+
+    .collection-price {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .collection-image-wrapper {
+        height: 280px;
+    }
+
+    .collection-content {
+        padding: var(--spacing-sm);
+    }
+
+    .collection-name {
+        font-size: 1.4rem;
+    }
+
+    .collection-description {
+        font-size: 0.88rem;
+    }
+
+    .collection-price {
+        font-size: 1.2rem;
+    }
+
+    .collection-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+    }
+}

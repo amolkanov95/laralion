@@ -1,0 +1,125 @@
+/* ============================================
+   ДОПОЛНИТЕЛЬНЫЕ ИСПРАВЛЕНИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
+   Предотвращение наложений и горизонтального скролла
+============================================ */
+
+/* Глобальные правила для мобильных */
+@media (max-width: 768px) {
+    /* Предотвращение горизонтального скролла */
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Все секции должны иметь правильные отступы */
+    section {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Все изображения должны быть адаптивными */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Контейнеры не должны выходить за границы */
+    .container,
+    .quality-container,
+    .collections-container,
+    .about-container,
+    .gifting-container,
+    .contacts-container {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+}
+
+/* Дополнительные исправления для очень маленьких экранов */
+@media (max-width: 480px) {
+    /* Уменьшаем padding для экономии места */
+    section {
+        padding-left: var(--spacing-xs);
+        padding-right: var(--spacing-xs);
+    }
+
+    /* Кнопки на всю ширину для удобства */
+    .btn,
+    .hero-cta,
+    .collection-btn {
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+    }
+
+    /* Текст должен быть читаемым */
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* Интерактивные элементы должны быть достаточно большими */
+    a, button {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+/* Исправление для модального окна на мобильных */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+        margin: 2rem auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Улучшение читаемости на мобильных */
+@media (max-width: 768px) {
+    /* Увеличиваем межстрочный интервал для удобства чтения */
+    p, li {
+        line-height: 1.7;
+    }
+
+    /* Заголовки должны иметь достаточные отступы */
+    h1, h2, h3 {
+        margin-top: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    /* Золотые разделители */
+    .gold-divider {
+        width: 60px;
+        margin: var(--spacing-sm) auto;
+    }
+}
+
+/* Оптимизация производительности на мобильных */
+@media (max-width: 768px) {
+    /* Отключаем сложные анимации на слабых устройствах */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* Упрощаем тени для производительности */
+    .quality-card,
+    .collection-card,
+    .about-image-wrapper {
+        box-shadow: 0 2px 8px rgba(43, 31, 23, 0.1);
+    }
+}

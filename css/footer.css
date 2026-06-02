@@ -1,0 +1,127 @@
+/* ============================================
+   FOOTER (ПОДВАЛ)
+   Trust-bar + Логотип + Юридические реквизиты
+============================================ */
+
+footer {
+    background-color: var(--light-linen);
+    padding: var(--spacing-lg) 0 var(--spacing-md) 0;
+}
+
+/* Нижний ряд */
+.footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--accent-gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+/* Логотип с декоративными звездами */
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer-star {
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+}
+
+.footer-brand {
+    font-family: var(--font-brand);
+    font-size: 2.5rem;
+    color: var(--accent-gold);
+}
+
+.footer-tagline {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Юридические реквизиты */
+.footer-legal {
+    text-align: center;
+}
+
+.footer-legal p {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    margin: 0.3rem 0;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .footer-brand {
+        font-size: 2rem;
+    }
+
+    .footer-tagline {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    footer {
+        padding: var(--spacing-md) 0 var(--spacing-sm) 0;
+    }
+
+    .footer-bottom {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+
+    .footer-logo {
+        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 0.4rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .footer-brand {
+        font-size: 1.8rem;
+    }
+
+    .footer-tagline {
+        font-size: 0.8rem;
+    }
+
+    .footer-legal {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .footer-legal p {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-brand {
+        font-size: 1.5rem;
+    }
+
+    .footer-star {
+        font-size: 1.2rem;
+    }
+
+    .footer-tagline {
+        font-size: 0.75rem;
+    }
+
+    .footer-legal p {
+        font-size: 0.7rem;
+        line-height: 1.4;
+    }
+}

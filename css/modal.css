@@ -1,0 +1,460 @@
+/* ============================================
+   МОДАЛЬНЫЕ ОКНА ТОВАРОВ
+   Всплывающие окна с слайдером, описанием и кнопками
+============================================ */
+
+/* Оверлей модального окна */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(43, 31, 23, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Контейнер модального окна */
+.modal-container {
+    position: relative;
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    max-width: 1000px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    transform: scale(0.9);
+    transition: transform var(--transition-normal);
+}
+
+.modal-overlay.active .modal-container {
+    transform: scale(1);
+}
+
+/* Кнопка закрытия */
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    background-color: var(--card-bg);
+    border: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+    background-color: var(--accent-gold);
+    transform: rotate(90deg);
+}
+
+/* Контент модального окна */
+.modal-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+}
+
+/* Левая колонка: Слайдер фотографий */
+.modal-slider {
+    position: relative;
+}
+
+.slider-images {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.slider-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    border-radius: 16px;
+}
+
+.slider-image.active {
+    opacity: 1;
+}
+
+/* Стрелки слайдера */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    transition: all var(--transition-fast);
+    z-index: 5;
+}
+
+.slider-arrow:hover {
+    background-color: var(--accent-gold);
+}
+
+.slider-arrow-left {
+    left: 1rem;
+}
+
+.slider-arrow-right {
+    right: 1rem;
+}
+
+/* Точки-индикаторы слайдера */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    background-color: var(--light-linen);
+    border: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.slider-dot.active {
+    background-color: var(--accent-gold);
+}
+
+/* Правая колонка: Информация о товаре */
+.modal-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.modal-price {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-description {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Выбор размеров */
+.modal-sizes {
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-sizes h4 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+.size-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.size-btn {
+    padding: 0.8rem 1rem;
+    background-color: transparent;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 2px solid var(--accent-gold);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.size-btn:hover,
+.size-btn.active {
+    background-color: var(--accent-gold);
+    color: var(--text-color);
+}
+
+/* Информация об упаковке */
+.modal-gift-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: var(--spacing-sm);
+    background-color: var(--light-linen);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.modal-gift-info::before {
+    content: '🎁';
+    font-size: 1.5rem;
+}
+
+/* Кнопки маркетплейсов */
+.modal-marketplace-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.marketplace-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    background-color: transparent;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid var(--accent-gold);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+}
+
+.marketplace-btn:hover {
+    background-color: var(--accent-gold);
+    color: var(--text-color);
+}
+
+/* Некликабельная кнопка "Скоро в продаже" */
+.marketplace-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #ccc;
+    color: #999;
+}
+
+.marketplace-btn.disabled:hover {
+    background-color: transparent;
+    color: #999;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .modal-container {
+        width: 95%;
+        max-width: 95%;
+        max-height: 92vh;
+        margin: 1rem auto;
+    }
+
+    .modal-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+        padding-top: 3rem;
+    }
+
+    .modal-close {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+
+    .slider-images {
+        height: 300px;
+    }
+
+    .slider-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .slider-arrow-left {
+        left: 0.5rem;
+    }
+
+    .slider-arrow-right {
+        right: 0.5rem;
+    }
+
+    .modal-title {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .modal-price {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .modal-description {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .modal-sizes h4 {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .size-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-gift-info {
+        font-size: 0.85rem;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .marketplace-btn {
+        font-size: 0.95rem;
+        padding: 0.9rem 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-container {
+        width: 98%;
+        max-height: 95vh;
+        border-radius: var(--radius-md);
+    }
+
+    .modal-content {
+        padding: var(--spacing-sm);
+        padding-top: 2.5rem;
+        gap: var(--spacing-sm);
+    }
+
+    .modal-close {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 32px;
+        height: 32px;
+        min-height: 32px;
+        font-size: 1.2rem;
+    }
+
+    .slider-images {
+        height: 250px;
+    }
+
+    .slider-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
+    .slider-arrow-left {
+        left: 0.3rem;
+    }
+
+    .slider-arrow-right {
+        right: 0.3rem;
+    }
+
+    .slider-dots {
+        gap: 0.4rem;
+        margin-top: 0.75rem;
+    }
+
+    .slider-dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .modal-price {
+        font-size: 1.3rem;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .modal-description {
+        font-size: 0.85rem;
+        line-height: 1.6;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .modal-sizes {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .modal-sizes h4 {
+        font-size: 1rem;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .size-btn {
+        padding: 0.7rem 0.9rem;
+        font-size: 0.85rem;
+    }
+
+    .modal-gift-info {
+        font-size: 0.8rem;
+        padding: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .modal-gift-info::before {
+        font-size: 1.2rem;
+    }
+
+    .marketplace-btn {
+        font-size: 0.9rem;
+        padding: 0.85rem 1.2rem;
+    }
+}

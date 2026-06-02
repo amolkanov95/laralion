@@ -1,0 +1,132 @@
+/* ============================================
+   БЛОК ПРЕИМУЩЕСТВ (QUALITY)
+   4 плашки с золотыми иконками и описанием
+============================================ */
+
+#quality {
+    background-color: var(--bg-color);
+    padding: var(--spacing-xl) 0;
+}
+
+.quality-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.quality-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.quality-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background-color: var(--card-bg);
+    border: 1px solid var(--accent-gold);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+}
+
+.quality-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-gold);
+}
+
+/* Иконка слева */
+.quality-icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    filter: brightness(0) saturate(100%) invert(73%) sepia(18%) saturate(629%) hue-rotate(358deg) brightness(92%) contrast(87%);
+    transition: transform var(--transition-normal);
+}
+
+.quality-card:hover .quality-icon {
+    transform: scale(1.1);
+}
+
+/* Текстовый контент справа */
+.quality-content {
+    flex: 1;
+}
+
+.quality-title {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.quality-description {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-color);
+    opacity: 0.85;
+    line-height: 1.6;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    #quality {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .quality-container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .quality-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-md);
+    }
+
+    .quality-card {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+
+    .quality-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .quality-title {
+        font-size: 1.1rem;
+    }
+
+    .quality-description {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .quality-card {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--spacing-md);
+    }
+
+    .quality-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .quality-title {
+        font-size: 1.05rem;
+    }
+
+    .quality-description {
+        font-size: 0.88rem;
+    }
+}

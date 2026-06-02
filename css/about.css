@@ -1,0 +1,201 @@
+/* ============================================
+   БЛОК "О НАС" (ABOUT)
+   Двухколоночный блок с фото и манифестом
+============================================ */
+
+#about {
+    background-color: var(--bg-color);
+    padding: var(--spacing-xl) 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    position: relative;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+}
+
+/* Левая колонка: Фото */
+.about-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.about-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+/* Правая колонка: Текст */
+.about-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.about-title {
+    font-family: var(--font-brand);
+    font-size: 4rem;
+    color: var(--accent-gold);
+    margin-bottom: 0;
+    line-height: 1.2;
+}
+
+.about-subtitle {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-description {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-md);
+}
+
+/* 3 пункта с иконками */
+.about-features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.about-feature {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.about-feature-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    filter: brightness(0) saturate(100%) invert(73%) sepia(18%) saturate(629%) hue-rotate(358deg) brightness(92%) contrast(87%);
+}
+
+.about-feature p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .about-content {
+        gap: var(--spacing-lg);
+    }
+
+    .about-image-wrapper {
+        height: 500px;
+    }
+
+    .about-title {
+        font-size: 3rem;
+    }
+
+    .about-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .about-description {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #about {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .about-container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .about-image-wrapper {
+        height: 350px;
+    }
+
+    .about-title {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .about-subtitle {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .about-description {
+        font-size: 0.95rem;
+        text-align: center;
+    }
+
+    .about-features {
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .about-feature {
+        justify-content: center;
+    }
+
+    .btn {
+        align-self: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-image-wrapper {
+        height: 280px;
+    }
+
+    .about-title {
+        font-size: 2rem;
+    }
+
+    .about-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .about-description {
+        font-size: 0.9rem;
+    }
+
+    .about-feature-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .about-feature p {
+        font-size: 0.9rem;
+    }
+}

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lara Lion — премиальное постельное белье из натуральных материалов. Французский светлый минимализм для вашего дома.">
+    <meta name="keywords" content="постельное белье, премиум, хлопок, Lara Lion, домашний текстиль, постельное белье Ярославль">
+    <meta name="author" content="Lara Lion">
+    <title>Lara Lion — Эстетика постельного совершенства</title>
+
+    <!-- Open Graph для социальных сетей -->
+    <meta property="og:title" content="Lara Lion — Эстетика постельного совершенства">
+    <meta property="og:description" content="Премиальное постельное белье из натуральных материалов. Французский светлый минимализм для вашего дома.">
+    <meta property="og:image" content="./Изображение/фото спальни для первого экрана.jpg">
+    <meta property="og:url" content="https://laralion.ru">
+    <meta property="og:type" content="website">
+
+    <!-- Preload критических ресурсов (адаптивно по ширине экрана) -->
+    <link rel="preload" as="image" href="./Изображение/фото спальни для первого экрана.jpg" media="(min-width: 769px)">
+    <link rel="preload" as="image" href="./Изображение/мобильный.jpg" media="(max-width: 768px)">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" as="style">
+
+    <!-- Подключение шрифтов Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Подключение CSS-модулей -->
+    <link rel="stylesheet" href="./css/variables.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/hero.css">
+    <link rel="stylesheet" href="./css/quality.css">
+    <link rel="stylesheet" href="./css/collections.css">
+    <link rel="stylesheet" href="./css/modal.css">
+    <link rel="stylesheet" href="./css/about.css">
+    <link rel="stylesheet" href="./css/gifting.css">
+    <link rel="stylesheet" href="./css/contacts.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./css/animations.css">
+    <link rel="stylesheet" href="./css/mobile-fixes.css">
+</head>
+<body>
+
+    <!-- ============================================
+         ШАПКА САЙТА (HEADER)
+    ============================================ -->
+    <header>
+        <!-- Логотип слева -->
+        <img src="./Изображение/Герб-логотип Lara Lion.png" alt="Lara Lion" class="header-logo">
+
+        <!-- Навигационное меню по центру -->
+        <nav>
+            <ul class="header-nav">
+                <li><a href="#collections">Каталог</a></li>
+                <li><a href="#collections">Постельное белье</a></li>
+                <li><a href="#collections">Кухонный текстиль</a></li>
+                <li><a href="#collections">Ткани</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#contacts">Контакты</a></li>
+            </ul>
+        </nav>
+
+        <!-- Кнопка ВКонтакте справа (десктоп) -->
+        <a href="https://vk.ru/id586451872" target="_blank" class="header-cta">
+            <span>ВКонтакте</span>
+        </a>
+
+        <!-- Кнопка вызова меню (мобильные) -->
+        <button class="header-burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- ============================================
+         ПОЛНОЭКРАННОЕ МОБИЛЬНОЕ МЕНЮ
+    ============================================ -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <button class="mobile-menu-close" type="button" aria-label="Закрыть меню"></button>
+        <nav class="mobile-menu-nav">
+            <a href="#collections">Каталог</a>
+            <a href="#collections">Постельное белье</a>
+            <a href="#collections">Кухонный текстиль</a>
+            <a href="#collections">Ткани</a>
+            <a href="#about">О нас</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+    </div>
+
+    <!-- ============================================
+         HERO-БЛОК (ПЕРВЫЙ ЭКРАН)
+    ============================================ -->
+    <section id="hero">
+        <!-- Фоновое изображение (адаптивная подмена: десктоп / мобайл) -->
+        <picture class="hero-bg">
+            <source media="(max-width: 768px)" srcset="./Изображение/мобильный.jpg">
+            <img src="./Изображение/фото спальни для первого экрана.jpg" alt="Спальня Lara Lion" loading="eager">
+        </picture>
+
+        <!-- Полупрозрачный оверлей -->
+        <div class="hero-overlay"></div>
+
+        <!-- Контентная область -->
+        <div class="hero-content">
+            <!-- Фирменная каллиграфическая надпись -->
+            <div class="hero-brand">Lara Lion</div>
+
+            <!-- Основной заголовок -->
+            <h1 class="hero-title">ЭСТЕТИКА ПОСТЕЛЬНОГО СОВЕРШЕНСТВА</h1>
+
+            <!-- Золотой разделитель -->
+            <div class="hero-divider"></div>
+
+            <!-- Подзаголовок -->
+            <p class="hero-subtitle">
+                Мы создаем уютное и красивое постельное белье из натуральных материалов для комфортного сна и стильного интерьера.
+            </p>
+
+            <!-- Кнопка CTA -->
+            <a href="#collections" class="hero-cta">
+                <span>Смотреть коллекцию</span>
+                <span>→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ============================================
+         БЛОК ПРЕИМУЩЕСТВ (QUALITY)
+    ============================================ -->
+    <section id="quality">
+        <div class="quality-container">
+            <!-- Заголовок секции -->
+            <h2 class="section-title">Наши преимущества</h2>
+            <div class="gold-divider"></div>
+
+            <!-- Сетка из 4 карточек -->
+            <div class="quality-grid">
+                <!-- Карточка 1: Качественные хлопки -->
+                <div class="quality-card">
+                    <img src="./Изображение/Иконки/IMG_20260531_125525.png" alt="Качественные хлопки" class="quality-icon">
+                    <div class="quality-content">
+                        <h3 class="quality-title">100% Качественные хлопки</h3>
+                        <p class="quality-description">Наше постельное белье изготовлено из натурального хлопка премиум-качества</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 2: Натуральные ткани -->
+                <div class="quality-card">
+                    <img src="./Изображение/Иконки/IMG_20260531_125554_edit_70412008510336.png" alt="Натуральные ткани" class="quality-icon">
+                    <div class="quality-content">
+                        <h3 class="quality-title">Натуральные ткани</h3>
+                        <p class="quality-description">Для производства мы используем ткани из премиального хлопка</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 3: Гипоаллергенные материалы -->
+                <div class="quality-card">
+                    <img src="./Изображение/Иконки/IMG_20260531_125644.png" alt="Гипоаллергенные материалы" class="quality-icon">
+                    <div class="quality-content">
+                        <h3 class="quality-title">Гипоаллергенные материалы</h3>
+                        <p class="quality-description">Безопасные материалы для чувствительной кожи</p>
+                    </div>
+                </div>
+
+                <!-- Карточка 4: Красивая упаковка -->
+                <div class="quality-card">
+                    <img src="./Изображение/Иконки/IMG_20260531_125721.png" alt="Красивая упаковка" class="quality-icon">
+                    <div class="quality-content">
+                        <h3 class="quality-title">Красивая упаковка</h3>
+                        <p class="quality-description">Подарочная упаковка для особых случаев</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         БЛОК КОЛЛЕКЦИЙ (COLLECTIONS)
+    ============================================ -->
+    <section id="collections">
+        <div class="collections-container">
+            <!-- Заголовок секции -->
+            <h2 class="section-title">Наши коллекции</h2>
+            <div class="gold-divider"></div>
+
+            <!-- Сетка карточек товаров -->
+            <div class="collections-grid">
+
+                <!-- ТОВАР 1: Классика -->
+                <div class="collection-card" data-product="klassika">
+                    <div class="collection-image-wrapper">
+                        <img src="./Классика/1.jpg" alt="Постельное белье Классика — коричневый хлопок премиум качества" class="collection-image" data-color="brown" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-name">Классика</h3>
+                        <p class="collection-description">Коричневый, 100% хлопок</p>
+
+                        <!-- Кружки выбора цвета -->
+                        <div class="color-swatches">
+                            <div class="color-swatch color-brown active" data-color="brown" data-image="./Классика/1.jpg" title="Коричневый"></div>
+                        </div>
+
+                        <p class="collection-price">от 7 400 ₽</p>
+                        <button class="collection-btn" onclick="openModal('klassika')">
+                            <span>Смотреть</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ТОВАР 2: Прованс -->
+                <div class="collection-card" data-product="provans">
+                    <div class="collection-image-wrapper">
+                        <img src="./Прованс/1.jpg" alt="Постельное белье Прованс — голубой и белый хлопок в романтичном стиле" class="collection-image" data-color="blue" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-name">Прованс</h3>
+                        <p class="collection-description">Голубой, белый, 100% хлопок</p>
+
+                        <!-- Кружки выбора цвета -->
+                        <div class="color-swatches">
+                            <div class="color-swatch color-blue active" data-color="blue" data-image="./Прованс/1.jpg" title="Голубой"></div>
+                            <div class="color-swatch color-brown" data-color="brown" data-image="./Прованс/2.jpg" title="Коричневый"></div>
+                        </div>
+
+                        <p class="collection-price">от 15 000 ₽</p>
+                        <button class="collection-btn" onclick="openModal('provans')">
+                            <span>Смотреть</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ТОВАР 3: Шарм -->
+                <div class="collection-card" data-product="sharm">
+                    <div class="collection-image-wrapper">
+                        <img src="./Шарм/1.jpg" alt="Постельное белье Шарм — зеленый шалфей, дизайнерский комплект" class="collection-image" data-color="green" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-name">Шарм</h3>
+                        <p class="collection-description">Шалфей, зеленый, 100% хлопок</p>
+
+                        <!-- Кружки выбора цвета -->
+                        <div class="color-swatches">
+                            <div class="color-swatch color-green active" data-color="green" data-image="./Шарм/1.jpg" title="Зеленый"></div>
+                        </div>
+
+                        <p class="collection-price">от 14 600 ₽</p>
+                        <button class="collection-btn" onclick="openModal('sharm')">
+                            <span>Смотреть</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         БЛОК "О НАС" (ABOUT)
+    ============================================ -->
+    <section id="about">
+        <div class="about-container">
+            <div class="about-content">
+                <!-- Левая колонка: Фото -->
+                <div class="about-image-wrapper">
+                    <img src="./Изображение/О нас.jpg" alt="О нас — Lara Lion, уютная спальня с постельным бельем премиум качества" class="about-image" loading="lazy">
+                </div>
+
+                <!-- Правая колонка: Текст -->
+                <div class="about-text">
+                    <h2 class="about-title">Lara Lion</h2>
+                    <p class="about-subtitle">— это про любовь к дому</p>
+                    <div class="gold-divider" style="margin: 1.5rem auto;"></div>
+
+                    <p class="about-description">
+                        Мы создаем постельное белье премиального качества для тех, кто ценит эстетику, натуральность и комфорт в каждой детали.
+                    </p>
+
+                    <!-- 3 пункта с иконками -->
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <img src="./Изображение/Иконки/IMG_20260531_125755.png" alt="Натуральные ткани" class="about-feature-icon">
+                            <p>Натуральные премиальные ткани</p>
+                        </div>
+                        <div class="about-feature">
+                            <img src="./Изображение/Иконки/IMG_20260531_125817.png" alt="Продуманный крой" class="about-feature-icon">
+                            <p>Продуманный крой</p>
+                        </div>
+                        <div class="about-feature">
+                            <img src="./Изображение/Иконки/IMG_20260531_125721.png" alt="Уют и атмосфера" class="about-feature-icon">
+                            <p>Для уюта и атмосферы</p>
+                        </div>
+                    </div>
+
+                    <a href="#contacts" class="btn">
+                        <span>Узнать больше о нас</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         БЛОК "ИСКУССТВО ДАРИТЬ" (GIFTING)
+    ============================================ -->
+    <section id="gifting">
+        <div class="gifting-container">
+            <div class="gifting-content">
+                <!-- Левая колонка: Текст -->
+                <div class="gifting-text">
+                    <h2 class="gifting-title">Искусство дарить</h2>
+                    <p class="gifting-subtitle">Распаковка как приятный ритуал</p>
+                    <div class="gold-divider" style="margin: 1.5rem auto;"></div>
+
+                    <p class="gifting-description">
+                        Каждый комплект упакован в крафт-коробку с изумрудной атласной лентой и фирменный холщовый шопер.
+                        Мы создаем не просто упаковку — мы создаем момент радости и предвкушения, который начинается еще до того,
+                        как вы увидите само постельное белье.
+                    </p>
+
+                    <p class="gifting-note">
+                        Фирменная подарочная упаковка включена в стоимость каждого комплекта.
+                    </p>
+                </div>
+
+                <!-- Правая колонка: Коллаж фото -->
+                <div class="gifting-collage">
+                    <img src="./Изображение/упаковка/Коробка.png" alt="Подарочная крафт-коробка с изумрудной лентой" class="gifting-image gifting-image-1" loading="lazy">
+                    <img src="./Изображение/упаковка/Шоппер.png" alt="Фирменный холщовый шопер Lara Lion" class="gifting-image gifting-image-2" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         БЛОК КОНТАКТОВ (CONTACTS)
+    ============================================ -->
+    <section id="contacts">
+        <div class="contacts-container">
+            <h2 class="section-title">Контакты</h2>
+            <div class="gold-divider"></div>
+
+            <div class="contacts-content">
+                <!-- Левая колонка: Где нас найти -->
+                <div class="contacts-location">
+                    <h3 class="contacts-subtitle">Где нас найти</h3>
+
+                    <div class="contact-item">
+                        <strong>Адрес:</strong>
+                        <p>150030, Ярославль, Фрунзенский район,<br>проспект Фрунзе, 3, офис 511, этаж 5</p>
+                    </div>
+
+                    <div class="contact-item">
+                        <strong>Режим работы:</strong>
+                        <p>Пн-Пт: с 9:00 до 18:00<br>Сб-Вс: по договоренности</p>
+                    </div>
+
+                    <div class="contact-item">
+                        <strong>Телефон:</strong>
+                        <p><a href="tel:+79066394170">8 906 639 41 70</a></p>
+                    </div>
+
+                    <div class="contact-item">
+                        <strong>Email:</strong>
+                        <p><a href="mailto:laralion@mail.ru">laralion@mail.ru</a></p>
+                    </div>
+
+                    <a href="https://yandex.ru/maps/?text=150030%2C%20Ярославль%2C%20Фрунзенский%20район%2C%20проспект%20Фрунзе%2C%203%2C%20офис%20511%2C%20этаж%205" target="_blank" class="btn">
+                        <span>Открыть на карте</span>
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- Правая колонка: Онлайн-платформы -->
+                <div class="contacts-online">
+                    <h3 class="contacts-subtitle">Онлайн-платформы</h3>
+
+                    <div class="marketplace-links">
+                        <a href="https://ozon.ru/s/lara-lion" target="_blank" class="marketplace-link">
+                            <span>Ozon</span>
+                            <span>Перейти в наш магазин →</span>
+                        </a>
+
+                        <a href="https://www.avito.ru/user/b03bd9dc3ec212cc3d4bc15dba05da6f/profile?src=sharing" target="_blank" class="marketplace-link">
+                            <span>Avito</span>
+                            <span>Перейти в наш магазин →</span>
+                        </a>
+
+                        <a href="https://vk.ru/creativeworkshop_yar" target="_blank" class="marketplace-link">
+                            <span>VK</span>
+                            <span>Перейти на нашу страницу →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER (ПОДВАЛ)
+    ============================================ -->
+    <footer>
+        <!-- Нижний ряд: Логотип и реквизиты -->
+        <div class="footer-bottom">
+            <div class="footer-logo">
+                <span class="footer-star">✦</span>
+                <span class="footer-brand">Lara Lion</span>
+                <span class="footer-tagline">Эстетика в доме</span>
+                <span class="footer-star">✦</span>
+            </div>
+
+            <div class="footer-legal">
+                <p>&copy; 2026 Lara Lion. Все права защищены.</p>
+                <p>ИП Молканова Л.Л. | ИНН 760200896208 | ОГРНИП 305760201100153</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Подключение JavaScript-модулей -->
+    <script src="./js/modal.js"></script>
+    <script src="./js/color-swatches.js"></script>
+    <script src="./js/scroll-animations.js"></script>
+    <script src="./js/smooth-scroll.js"></script>
+    <script src="./js/main.js"></script>
+
+</body>
+</html>

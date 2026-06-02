@@ -1,0 +1,200 @@
+/* ============================================
+   БЛОК КОНТАКТОВ (CONTACTS)
+   Двухколоночный блок с адресом и онлайн-платформами
+============================================ */
+
+#contacts {
+    background-color: var(--bg-color);
+    padding: var(--spacing-xl) 0;
+}
+
+.contacts-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.contacts-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+}
+
+/* Подзаголовки */
+.contacts-subtitle {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-md);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Левая колонка: Где нас найти */
+.contacts-location {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-item {
+    margin-bottom: var(--spacing-md);
+}
+
+.contact-item strong {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    display: block;
+    margin-bottom: var(--spacing-xs);
+}
+
+.contact-item p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.contact-item a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.contact-item a:hover {
+    color: var(--accent-gold);
+}
+
+/* Правая колонка: Онлайн-платформы */
+.contacts-online {
+    display: flex;
+    flex-direction: column;
+}
+
+.marketplace-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.marketplace-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: var(--spacing-md);
+    background-color: var(--card-bg);
+    border: 2px solid var(--accent-gold);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-normal);
+}
+
+.marketplace-link:hover {
+    background-color: var(--accent-gold);
+    transform: translateX(5px);
+}
+
+.marketplace-link span:first-child {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.marketplace-link span:last-child {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .contacts-content {
+        gap: var(--spacing-lg);
+    }
+
+    .contacts-subtitle {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #contacts {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .contacts-container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .contacts-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        margin-top: var(--spacing-md);
+    }
+
+    .contacts-subtitle {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .contacts-location {
+        align-items: center;
+        text-align: center;
+    }
+
+    .contact-item {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .contact-item strong {
+        font-size: 1rem;
+    }
+
+    .contact-item p {
+        font-size: 0.95rem;
+    }
+
+    .contacts-online {
+        align-items: center;
+    }
+
+    .btn {
+        align-self: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .contacts-subtitle {
+        font-size: 1.3rem;
+    }
+
+    .contact-item {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .contact-item strong {
+        font-size: 0.95rem;
+    }
+
+    .contact-item p {
+        font-size: 0.9rem;
+    }
+
+    .marketplace-link {
+        padding: var(--spacing-sm);
+    }
+
+    .marketplace-link span:first-child {
+        font-size: 1.1rem;
+    }
+
+    .marketplace-link span:last-child {
+        font-size: 0.85rem;
+    }
+}

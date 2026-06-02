@@ -1,0 +1,217 @@
+/* ============================================
+   HERO-БЛОК (ПЕРВЫЙ ЭКРАН)
+   Полноэкранный фон с каллиграфией и CTA
+============================================ */
+
+#hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 5%;
+    overflow: hidden;
+}
+
+/* Фоновое изображение (контейнер <picture>) */
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
+
+.hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Полупрозрачный оверлей для читаемости текста */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(252, 251, 249, 0.95) 0%,
+        rgba(252, 251, 249, 0.7) 50%,
+        rgba(252, 251, 249, 0.2) 80%,
+        transparent 100%
+    );
+    z-index: -1;
+}
+
+/* Контентная область Hero */
+.hero-content {
+    width: 50%;
+    max-width: 600px;
+    z-index: 10;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Фирменная каллиграфическая надпись "Lara Lion" */
+.hero-brand {
+    font-family: var(--font-brand);
+    font-size: 8rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+/* Основной заголовок H1 */
+.hero-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 0.8rem;
+    color: var(--text-color);
+    letter-spacing: 1px;
+}
+
+/* Золотой разделитель */
+.hero-divider {
+    width: 60%;
+    height: 1px;
+    background-color: var(--accent-gold);
+    margin: 0 auto 0.8rem auto;
+}
+
+/* Подзаголовок */
+.hero-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+/* Кнопка CTA */
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 2.5rem;
+    background-color: transparent;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 2px solid var(--accent-gold);
+    border-radius: 0;
+    transition: all var(--transition-normal);
+}
+
+.hero-cta:hover {
+    background-color: var(--accent-gold);
+    color: var(--text-color);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .hero-brand {
+        font-size: 6rem;
+    }
+
+    .hero-title {
+        font-size: 1.4rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #hero {
+        padding: 1.25rem;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100vh;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+
+    /* Оверлей минимальный — читаемость обеспечивает матовая карточка */
+    .hero-overlay {
+        background: rgba(43, 31, 23, 0.12);
+    }
+
+    /* Матовая карточка (glassmorphism) */
+    .hero-content {
+        width: 100%;
+        max-width: 420px;
+        padding: 2rem 1.5rem;
+        background-color: rgba(252, 251, 249, 0.42);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--accent-gold);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .hero-brand {
+        font-size: 3.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-title {
+        font-size: 1.15rem;
+        line-height: 1.25;
+        margin-top: 0;
+        margin-bottom: 0.6rem;
+    }
+
+    .hero-divider {
+        width: 50%;
+        margin: 0 auto 0.8rem auto;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+        line-height: 1.55;
+        margin-bottom: 1.25rem;
+    }
+
+    /* Кнопка на всю ширину карточки */
+    .hero-cta {
+        width: 100%;
+        justify-content: center;
+        padding: 0.9rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content {
+        padding: 1.75rem 1.25rem;
+    }
+
+    .hero-brand {
+        font-size: 3rem;
+    }
+
+    .hero-title {
+        font-size: 1.05rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+        margin-bottom: 1rem;
+    }
+}

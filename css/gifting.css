@@ -1,0 +1,201 @@
+/* ============================================
+   БЛОК "ИСКУССТВО ДАРИТЬ" (GIFTING)
+   Двухколоночный блок с текстом и коллажем упаковки
+============================================ */
+
+#gifting {
+    background-color: var(--light-linen);
+    padding: var(--spacing-xl) 0;
+}
+
+.gifting-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.gifting-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+}
+
+/* Левая колонка: Текст */
+.gifting-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.gifting-title {
+    font-family: var(--font-brand);
+    font-size: 4rem;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.gifting-subtitle {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.gifting-description {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-md);
+}
+
+.gifting-note {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent-gold);
+    padding: var(--spacing-sm);
+    background-color: var(--card-bg);
+    border-left: 3px solid var(--accent-gold);
+    border-radius: var(--radius-sm);
+}
+
+/* Правая колонка: Коллаж фото */
+.gifting-collage {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+.gifting-image {
+    width: 48%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-normal);
+    position: relative;
+}
+
+.gifting-image:hover {
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+/* Коробка — левая часть */
+.gifting-image-1 {
+    z-index: 1;
+}
+
+/* Шоппер — правая часть */
+.gifting-image-2 {
+    z-index: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .gifting-content {
+        gap: var(--spacing-lg);
+    }
+
+    .gifting-title {
+        font-size: 3rem;
+    }
+
+    .gifting-subtitle {
+        font-size: 1.3rem;
+    }
+
+    .gifting-description {
+        font-size: 1rem;
+    }
+
+    .gifting-collage {
+        height: 450px;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .gifting-image {
+        width: 80%;
+    }
+}
+
+@media (max-width: 768px) {
+    #gifting {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .gifting-container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .gifting-content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .gifting-title {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .gifting-subtitle {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .gifting-description {
+        font-size: 0.95rem;
+        text-align: center;
+    }
+
+    .gifting-note {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .gifting-collage {
+        height: auto;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .gifting-image {
+        width: 85%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gifting-title {
+        font-size: 2rem;
+    }
+
+    .gifting-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .gifting-description {
+        font-size: 0.9rem;
+    }
+
+    .gifting-note {
+        font-size: 0.85rem;
+        padding: var(--spacing-xs);
+    }
+
+    .gifting-collage {
+        gap: var(--spacing-sm);
+    }
+
+    .gifting-image {
+        width: 100%;
+        max-width: 280px;
+    }
+}
