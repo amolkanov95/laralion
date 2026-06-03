@@ -187,77 +187,8 @@
                 <button type="button" class="catalog-filter" data-filter="fabrics" aria-selected="false">Ткани</button>
             </div>
 
-            <!-- Сетка карточек товаров -->
-            <div class="collections-grid">
-
-                <!-- ТОВАР 1: Классика -->
-                <div class="collection-card" data-product="klassika" data-category="bedding">
-                    <div class="collection-image-wrapper">
-                        <img src="./collections/klassika/1.jpg" alt="Постельное белье Классика — коричневый хлопок премиум качества" class="collection-image" data-color="brown" loading="lazy">
-                    </div>
-                    <div class="collection-content">
-                        <h3 class="collection-name">Классика</h3>
-                        <p class="collection-description">Коричневый, 100% хлопок</p>
-
-                        <!-- Кружки выбора цвета -->
-                        <div class="color-swatches">
-                            <div class="color-swatch color-brown active" data-color="brown" data-image="./collections/klassika/1.jpg" title="Коричневый"></div>
-                        </div>
-
-                        <p class="collection-price">от 7 400 ₽</p>
-                        <button class="collection-btn" onclick="openModal('klassika')">
-                            <span>Смотреть</span>
-                            <span>→</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- ТОВАР 2: Прованс -->
-                <div class="collection-card" data-product="provans" data-category="bedding">
-                    <div class="collection-image-wrapper">
-                        <img src="./collections/provans/1.jpg" alt="Постельное белье Прованс — голубой и белый хлопок в романтичном стиле" class="collection-image" data-color="blue" loading="lazy">
-                    </div>
-                    <div class="collection-content">
-                        <h3 class="collection-name">Прованс</h3>
-                        <p class="collection-description">Голубой, белый, 100% хлопок</p>
-
-                        <!-- Кружки выбора цвета -->
-                        <div class="color-swatches">
-                            <div class="color-swatch color-blue active" data-color="blue" data-image="./collections/provans/1.jpg" title="Голубой"></div>
-                            <div class="color-swatch color-brown" data-color="brown" data-image="./collections/provans/2.jpg" title="Коричневый"></div>
-                        </div>
-
-                        <p class="collection-price">от 15 000 ₽</p>
-                        <button class="collection-btn" onclick="openModal('provans')">
-                            <span>Смотреть</span>
-                            <span>→</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- ТОВАР 3: Шарм -->
-                <div class="collection-card" data-product="sharm" data-category="bedding">
-                    <div class="collection-image-wrapper">
-                        <img src="./collections/sharm/1.jpg" alt="Постельное белье Шарм — зеленый шалфей, дизайнерский комплект" class="collection-image" data-color="green" loading="lazy">
-                    </div>
-                    <div class="collection-content">
-                        <h3 class="collection-name">Шарм</h3>
-                        <p class="collection-description">Шалфей, зеленый, 100% хлопок</p>
-
-                        <!-- Кружки выбора цвета -->
-                        <div class="color-swatches">
-                            <div class="color-swatch color-green active" data-color="green" data-image="./collections/sharm/1.jpg" title="Зеленый"></div>
-                        </div>
-
-                        <p class="collection-price">от 14 600 ₽</p>
-                        <button class="collection-btn" onclick="openModal('sharm')">
-                            <span>Смотреть</span>
-                            <span>→</span>
-                        </button>
-                    </div>
-                </div>
-
-            </div>
+            <!-- Сетка карточек товаров (рендерится из js/products.js через js/catalog-render.js) -->
+            <div class="collections-grid"></div>
 
             <!-- Заглушка для пустых категорий -->
             <div class="catalog-empty" hidden>
@@ -429,6 +360,8 @@
     </footer>
 
     <!-- Подключение JavaScript-модулей -->
+    <script src="./js/products.js"></script>
+    <script src="./js/catalog-render.js"></script>
     <script src="./js/modal.js"></script>
     <script src="./js/color-swatches.js"></script>
     <script src="./js/scroll-animations.js"></script>
