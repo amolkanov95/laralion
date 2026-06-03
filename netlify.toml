@@ -1,0 +1,29 @@
+# ============================================
+# Netlify — статический сайт Lara Lion (без сборки)
+# ============================================
+
+[build]
+  publish = "."
+  # Команды сборки нет: чистый HTML5/CSS3/Vanilla JS.
+
+# --- Безопасность: применяется ко всем ответам ---
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# --- Кэш изображений (7 дней) ---
+# CSS/JS/HTML намеренно НЕ кэшируем агрессивно: имён с хэшами нет (нет сборки),
+# поэтому полагаемся на ETag-ревалидацию Netlify — обновления доходят мгновенно.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/collections/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

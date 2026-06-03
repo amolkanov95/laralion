@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Страница не найдена — Lara Lion</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/base.css">
+
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--spacing-md);
+        }
+
+        .error-code {
+            font-family: var(--font-brand);
+            font-size: clamp(6rem, 22vw, 12rem);
+            line-height: 1;
+            color: var(--accent-gold);
+            font-weight: 400;
+        }
+
+        .error-title {
+            font-family: var(--font-heading);
+            margin-top: var(--spacing-sm);
+        }
+
+        .error-text {
+            max-width: 32rem;
+            color: var(--text-color);
+            opacity: 0.85;
+            margin-bottom: var(--spacing-md);
+        }
+    </style>
+</head>
+<body>
+    <main class="error-page">
+        <div class="error-code">404</div>
+        <div class="gold-divider"></div>
+        <h1 class="error-title">Страница не найдена</h1>
+        <p class="error-text">К сожалению, такой страницы не существует или она была перемещена. Вернитесь на главную, чтобы продолжить знакомство с коллекциями Lara Lion.</p>
+        <a href="/" class="btn">
+            <span>На главную</span>
+            <span>→</span>
+        </a>
+    </main>
+</body>
+</html>
