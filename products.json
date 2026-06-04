@@ -106,32 +106,6 @@
         "vk": "https://vk.ru/market/product/komplekt-postelnogo-belya-quotsharmquot-193576979-12230166"
       },
       "category": "bedding"
-    },
-    {
-      "shortDescription": "Голубой, белый, 100% хлопок",
-      "mainImage": "/collections/img_20260127_151842-2-gigapixel-standard-v2-3x.png",
-      "price": "16000",
-      "name": "Скэнди",
-      "slug": "scandy",
-      "fullDescription": "Постельное белье в скандинавском стиле станет украшением любой спальни",
-      "published": true,
-      "colors": [
-        {
-          "name": "Зеленый",
-          "hex": "#8FBC8F",
-          "image": "/collections/img_20260127_152737-2-gigapixel-standard-v2-2x.png"
-        }
-      ],
-      "sizes": [
-        "1.5",
-        "2",
-        "Семейный"
-      ],
-      "images": [
-        "/collections/img_20260127_151842-2-gigapixel-standard-v2-3x.png",
-        "/collections/img_20260127_154148-2-gigapixel-standard-v2-2x.png"
-      ],
-      "category": "bedding"
     }
   ]
 }
