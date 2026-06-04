@@ -19,7 +19,7 @@
     }[ch]));
 
     const cardHTML = (product) => {
-        const swatchesHTML = product.colors.map((color, index) => `
+        const swatchesHTML = (product.colors || []).map((color, index) => `
                             <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(color.image)}" title="${esc(color.name)}" style="background-color: ${esc(color.hex)}"></div>`
         ).join('');
 

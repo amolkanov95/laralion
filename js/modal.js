@@ -47,28 +47,35 @@ function closeModal(productId) {
 
 // Создать HTML модального окна
 function createModalHTML(productId, product) {
-    const imagesHTML = product.images.map((img, index) =>
+    // Поля могут отсутствовать, если товар заполнен в CMS частично:
+    // Decap опускает пустые опциональные поля (например, links без ссылок).
+    // Подставляем безопасные значения, чтобы окно открывалось в любом случае.
+    const images = Array.isArray(product.images) ? product.images : [];
+    const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+    const links = product.links || {};
+
+    const imagesHTML = images.map((img, index) =>
         `<img src="${img}" alt="${product.name}" class="slider-image ${index === 0 ? 'active' : ''}">`
     ).join('');
 
-    const dotsHTML = product.images.map((_, index) =>
+    const dotsHTML = images.map((_, index) =>
         `<div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="showSlide('${productId}', ${index})"></div>`
     ).join('');
 
-    const sizesHTML = product.sizes.map(size =>
+    const sizesHTML = sizes.map(size =>
         `<button class="size-btn">${size}</button>`
     ).join('');
 
-    const ozonBtn = product.links.ozon
-        ? `<a href="${product.links.ozon}" target="_blank" class="marketplace-btn">Купить на Ozon →</a>`
+    const ozonBtn = links.ozon
+        ? `<a href="${links.ozon}" target="_blank" class="marketplace-btn">Купить на Ozon →</a>`
         : `<button class="marketplace-btn disabled">Ozon — Скоро в продаже</button>`;
 
-    const avitoBtn = product.links.avito
-        ? `<a href="${product.links.avito}" target="_blank" class="marketplace-btn">Заказать на Avito →</a>`
+    const avitoBtn = links.avito
+        ? `<a href="${links.avito}" target="_blank" class="marketplace-btn">Заказать на Avito →</a>`
         : `<button class="marketplace-btn disabled">Avito — Скоро в продаже</button>`;
 
-    const vkBtn = product.links.vk
-        ? `<a href="${product.links.vk}" target="_blank" class="marketplace-btn">Обсудить в VK →</a>`
+    const vkBtn = links.vk
+        ? `<a href="${links.vk}" target="_blank" class="marketplace-btn">Обсудить в VK →</a>`
         : `<button class="marketplace-btn disabled">VK — Скоро в продаже</button>`;
 
     return `
@@ -124,8 +131,10 @@ function createModalHTML(productId, product) {
 // Показать слайд
 function showSlide(productId, index) {
     const modal = document.getElementById(`modal-${productId}`);
+    if (!modal) return;
     const images = modal.querySelectorAll('.slider-image');
     const dots = modal.querySelectorAll('.slider-dot');
+    if (!images.length) return; // у товара нет фото — слайдера нет
 
     // Убрать активный класс со всех
     images.forEach(img => img.classList.remove('active'));
@@ -141,7 +150,8 @@ function showSlide(productId, index) {
 // Переключить слайд
 function changeSlide(productId, direction) {
     const product = getProduct(productId);
-    const totalSlides = product.images.length;
+    const totalSlides = (product && Array.isArray(product.images)) ? product.images.length : 0;
+    if (totalSlides === 0) return; // нечего листать
     let newIndex = currentSlideIndex[productId] + direction;
 
     // Зацикливание слайдера
