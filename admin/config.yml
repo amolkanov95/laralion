@@ -56,7 +56,7 @@ collections:
                 summary: "{{fields.name}}"
                 fields:
                   - { name: "name", label: "Название цвета", widget: "string" }
-                  - { name: "hex", label: "Цвет кружка (HEX)", widget: "string", pattern: ["^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", "Формат: #RRGGBB"] }
+                  - { name: "hex", label: "Цвет кружка", widget: "color", allowInput: true }
                   - { name: "image", label: "Фото для этого цвета", widget: "image", hint: "Сжатое фото, до 400 КБ (см. подсказку к главному фото)." }
               - name: "images"
                 label: "Фотографии (слайдер в окне товара)"
