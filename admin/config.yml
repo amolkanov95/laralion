@@ -1,0 +1,80 @@
+# ============================================
+# Decap CMS — управление каталогом Lara Lion
+# Backend: GitHub (вход в /admin через GitHub-аккаунт, OAuth через Netlify).
+# Источник данных: products.json (один файл со списком товаров).
+# ============================================
+
+backend:
+  name: github
+  repo: amolkanov95/laralion
+  branch: main
+
+# Куда медиатека загружает новые изображения (путь от корня репозитория)
+media_folder: "collections"
+# Как путь к изображению подставляется в products.json и на сайт
+public_folder: "./collections"
+
+# Русская локализация интерфейса редактора
+locale: "ru"
+
+collections:
+  - name: "catalog"
+    label: "Каталог"
+    label_singular: "товар"
+    editor:
+      preview: false
+    files:
+      - name: "products"
+        label: "Товары"
+        file: "products.json"
+        description: "Список товаров каталога. Порядок здесь = порядок на сайте."
+        fields:
+          - name: "products"
+            label: "Товары"
+            label_singular: "товар"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.price}}"
+            fields:
+              - { name: "slug", label: "Идентификатор (латиницей, в URL)", widget: "string", pattern: ["^[a-z0-9-]+$", "Только строчные латинские буквы, цифры и дефис"] }
+              - { name: "name", label: "Название", widget: "string" }
+              - name: "category"
+                label: "Категория"
+                widget: "select"
+                default: "bedding"
+                options:
+                  - { label: "Постельное белье", value: "bedding" }
+                  - { label: "Кухонный текстиль", value: "kitchen" }
+                  - { label: "Ткани", value: "fabrics" }
+              - { name: "price", label: "Цена", widget: "string", hint: "Например: от 7 400 ₽" }
+              - { name: "shortDescription", label: "Краткое описание (под названием в карточке)", widget: "string" }
+              - { name: "fullDescription", label: "Полное описание (в окне товара)", widget: "text" }
+              - { name: "mainImage", label: "Главное фото (в карточке)", widget: "image" }
+              - name: "colors"
+                label: "Цвета"
+                label_singular: "цвет"
+                widget: "list"
+                summary: "{{fields.name}}"
+                fields:
+                  - { name: "name", label: "Название цвета", widget: "string" }
+                  - { name: "hex", label: "Цвет кружка (HEX)", widget: "string", pattern: ["^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$", "Формат: #RRGGBB"] }
+                  - { name: "image", label: "Фото для этого цвета", widget: "image" }
+              - name: "images"
+                label: "Фотографии (слайдер в окне товара)"
+                label_singular: "фото"
+                widget: "list"
+                field: { name: "image", label: "Фото", widget: "image" }
+              - name: "sizes"
+                label: "Размеры"
+                label_singular: "размер"
+                widget: "list"
+                hint: "Каждый размер — отдельный пункт. Например: Евро, Семейный."
+                field: { name: "size", label: "Размер", widget: "string" }
+              - name: "links"
+                label: "Ссылки на маркетплейсы"
+                widget: "object"
+                hint: "Пустое поле → на сайте отобразится «Скоро в продаже»."
+                fields:
+                  - { name: "ozon", label: "Ozon", widget: "string", required: false }
+                  - { name: "avito", label: "Avito", widget: "string", required: false }
+                  - { name: "vk", label: "VK", widget: "string", required: false }
+              - { name: "published", label: "Опубликован (показывать на сайте)", widget: "boolean", default: true }

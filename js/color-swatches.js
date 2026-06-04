@@ -1,9 +1,13 @@
 // ============================================
 // ПЕРЕКЛЮЧЕНИЕ ЦВЕТОВ ТОВАРОВ
 // Изменение главного фото при клике на кружок цвета
+//
+// Слушаем 'catalog:rendered' (не DOMContentLoaded): карточки строятся
+// асинхронно после загрузки products.json, поэтому к DOMContentLoaded
+// кружков .color-swatch в DOM ещё нет.
 // ============================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('catalog:rendered', () => {
     // Найти все кружки выбора цвета
     const colorSwatches = document.querySelectorAll('.color-swatch');
 

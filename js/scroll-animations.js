@@ -1,9 +1,13 @@
 // ============================================
 // SCROLL ANIMATIONS
 // Fade-in + Blur Reveal при прокрутке
+//
+// Слушаем 'catalog:rendered' (не DOMContentLoaded): карточки товаров
+// строятся асинхронно после загрузки products.json. Секции страницы
+// анимирует main.js на DOMContentLoaded — здесь добавляются карточки.
 // ============================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('catalog:rendered', () => {
     // Найти все секции для анимации
     const sections = document.querySelectorAll('#quality, #collections, #about, #gifting, #contacts');
 

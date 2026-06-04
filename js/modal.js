@@ -3,18 +3,17 @@
 // Открытие, закрытие, слайдер фотографий
 // ============================================
 
-// Данные товаров — единый источник js/products.js (подключён раньше modal.js).
-// Строим lookup по slug для быстрого доступа в openModal(slug).
-const productsData = Object.fromEntries(
-    (window.PRODUCTS || []).map(p => [p.slug, p])
-);
+// Данные товаров — единый источник js/products.js (загружается асинхронно).
+// Ищем товар по slug в момент вызова: к открытию модалки каталог уже загружен.
+const getProduct = (slug) =>
+    (window.PRODUCTS || []).find(p => p.slug === slug);
 
 // Текущий индекс слайда для каждого товара
 let currentSlideIndex = {};
 
 // Открыть модальное окно
 function openModal(productId) {
-    const product = productsData[productId];
+    const product = getProduct(productId);
     if (!product) return;
 
     // Создать модальное окно
@@ -141,7 +140,7 @@ function showSlide(productId, index) {
 
 // Переключить слайд
 function changeSlide(productId, direction) {
-    const product = productsData[productId];
+    const product = getProduct(productId);
     const totalSlides = product.images.length;
     let newIndex = currentSlideIndex[productId] + direction;
 

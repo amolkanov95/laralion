@@ -3,18 +3,15 @@
 // Строит карточки товаров из единого источника
 // window.PRODUCTS и вставляет в .collections-grid.
 //
-// Выполняется СИНХРОННО (IIFE), а не по DOMContentLoaded:
-// скрипт подключён в конце <body>, поэтому .collections-grid
-// уже в DOM. Карточки появляются ДО того, как остальные
-// модули (фильтр, color-swatches, анимации) навесят свои
-// обработчики на DOMContentLoaded.
+// Данные загружаются асинхронно (см. products.js), поэтому рендер
+// ждёт window.catalogReady. После построения карточек диспатчится
+// событие 'catalog:rendered' — на него переинициализируются модули
+// color-swatches и scroll-animations (карточек ещё нет на DOMContentLoaded).
 // ============================================
 
 (function renderCatalog() {
     const grid = document.querySelector('.collections-grid');
-    const products = window.PRODUCTS;
-
-    if (!grid || !Array.isArray(products)) return;
+    if (!grid) return;
 
     // Экранирование пользовательских строк, попадающих в HTML-разметку
     const esc = (str) => String(str).replace(/[&<>"']/g, (ch) => ({
@@ -47,8 +44,17 @@
                 </div>`;
     };
 
-    grid.innerHTML = products
-        .filter((p) => p.published !== false)
-        .map(cardHTML)
-        .join('');
+    const ready = window.catalogReady || Promise.resolve();
+
+    ready.then(() => {
+        const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
+
+        grid.innerHTML = products
+            .filter((p) => p.published !== false)
+            .map(cardHTML)
+            .join('');
+
+        // Карточки в DOM — оповестить зависимые модули (свотчи, анимации).
+        document.dispatchEvent(new CustomEvent('catalog:rendered'));
+    });
 })();
