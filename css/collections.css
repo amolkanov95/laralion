@@ -40,6 +40,11 @@
     transition: color var(--transition-normal), opacity var(--transition-normal);
 }
 
+/* Вкладка пустой категории скрывается из потока (без неё нет gap-просвета) */
+.catalog-filter[hidden] {
+    display: none;
+}
+
 /* Матово-золотая линия снизу (приём из шапки) */
 .catalog-filter::after {
     content: '';

@@ -117,4 +117,19 @@ document.addEventListener('DOMContentLoaded', () => {
             applyFilter(btn.dataset.filter);
         });
     });
+
+    // Скрыть вкладки категорий, в которых нет ни одного товара
+    // (вкладка «Все» остаётся всегда). Пересчёт по реальным данным каталога.
+    const syncFilterVisibility = () => {
+        const present = new Set(cards().map(c => c.dataset.category));
+        filters.forEach(btn => {
+            if (btn.dataset.filter === 'all') return;
+            btn.hidden = !present.has(btn.dataset.filter);
+        });
+    };
+
+    // Карточки рендерятся асинхронно (см. catalog-render.js). Ждём событие;
+    // если каталог уже отрисован к этому моменту — синхронизируем сразу.
+    document.addEventListener('catalog:rendered', syncFilterVisibility);
+    if (cards().length) syncFilterVisibility();
 });
