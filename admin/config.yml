@@ -12,7 +12,7 @@ backend:
 # Куда медиатека загружает новые изображения (путь от корня репозитория)
 media_folder: "collections"
 # Как путь к изображению подставляется в products.json и на сайт
-public_folder: "./collections"
+public_folder: "/collections"
 
 # Русская локализация интерфейса редактора
 locale: "ru"
