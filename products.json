@@ -106,6 +106,24 @@
         "vk": "https://vk.ru/market/product/komplekt-postelnogo-belya-quotsharmquot-193576979-12230166"
       },
       "category": "bedding"
+    },
+    {
+      "shortDescription": "Голубой, белый, 100% хлопок",
+      "mainImage": "/collections/bedstyler-design-52-.jpeg",
+      "price": "16 000 ₽",
+      "name": "Скэнди",
+      "slug": "scandy",
+      "fullDescription": "Отлично подойдет",
+      "published": true,
+      "colors": [],
+      "sizes": [
+        "Евро"
+      ],
+      "images": [
+        "/collections/bedstyler-design-55-.jpg",
+        "/collections/img_20260127_154148-2-gigapixel-standard-v2-2x.jpg"
+      ],
+      "category": "bedding"
     }
   ]
 }
