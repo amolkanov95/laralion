@@ -181,6 +181,23 @@
     margin-bottom: var(--spacing-md);
 }
 
+/* Выбор цвета внутри окна товара (кружки переиспользуют .color-swatches) */
+.modal-colors {
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-colors .color-swatches {
+    margin-bottom: var(--spacing-xs);
+}
+
+.modal-color-description {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
 .modal-description {
     font-family: var(--font-body);
     font-size: 1rem;
@@ -339,6 +356,14 @@
 
     .modal-description {
         font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .modal-colors .color-swatches {
+        justify-content: center;
+    }
+
+    .modal-color-description {
         text-align: center;
     }
 

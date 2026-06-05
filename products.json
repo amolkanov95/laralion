@@ -47,11 +47,15 @@
         {
           "name": "Голубой",
           "hex": "#87CEEB",
+          "hex2": "#FFFFFF",
+          "shortDescription": "Голубой, белый, 100% хлопок",
           "image": "/collections/provans/1.jpg"
         },
         {
           "name": "Коричневый",
           "hex": "#8B4513",
+          "hex2": "#FFFFFF",
+          "shortDescription": "Коричневый, белый, 100% хлопок",
           "image": "/collections/provans/2.jpg"
         }
       ],

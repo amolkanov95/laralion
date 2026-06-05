@@ -16,6 +16,7 @@ document.addEventListener('catalog:rendered', () => {
             // Получить родительскую карточку товара
             const card = this.closest('.collection-card');
             const image = card.querySelector('.collection-image');
+            const description = card.querySelector('.collection-description');
             const allSwatches = card.querySelectorAll('.color-swatch');
 
             // Убрать активный класс со всех кружков
@@ -23,6 +24,12 @@ document.addEventListener('catalog:rendered', () => {
 
             // Добавить активный класс к текущему кружку
             this.classList.add('active');
+
+            // Сменить краткое описание на текст выбранного цвета
+            const newDescription = this.getAttribute('data-description');
+            if (description && newDescription !== null) {
+                description.textContent = newDescription;
+            }
 
             // Изменить изображение
             const newImageSrc = this.getAttribute('data-image');

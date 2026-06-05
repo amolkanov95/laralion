@@ -18,9 +18,19 @@
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[ch]));
 
+    // Стиль кружка: два цвета (hex + hex2) → диагональ, иначе сплошной.
+    const swatchStyle = (color) => color.hex2
+        ? `background: linear-gradient(135deg, ${esc(color.hex)} 0 50%, ${esc(color.hex2)} 50% 100%)`
+        : `background-color: ${esc(color.hex)}`;
+
     const cardHTML = (product) => {
-        const swatchesHTML = (product.colors || []).map((color, index) => `
-                            <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(color.image)}" title="${esc(color.name)}" style="background-color: ${esc(color.hex)}"></div>`
+        const colors = product.colors || [];
+        // Описание активного (первого) цвета; fallback — общее краткое описание.
+        const colorDesc = (color) => color.shortDescription || product.shortDescription || '';
+        const initialDesc = colors.length ? colorDesc(colors[0]) : (product.shortDescription || '');
+
+        const swatchesHTML = colors.map((color, index) => `
+                            <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(color.image)}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></div>`
         ).join('');
 
         return `
@@ -30,7 +40,7 @@
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">${esc(product.name)}</h3>
-                        <p class="collection-description">${esc(product.shortDescription)}</p>
+                        <p class="collection-description">${esc(initialDesc)}</p>
 
                         <div class="color-swatches">${swatchesHTML}
                         </div>

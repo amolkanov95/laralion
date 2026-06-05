@@ -8,21 +8,58 @@
 const getProduct = (slug) =>
     (window.PRODUCTS || []).find(p => p.slug === slug);
 
+// Экранирование пользовательских строк, попадающих в HTML-атрибуты модалки.
+const escModal = (str) => String(str).replace(/[&<>"']/g, (ch) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[ch]));
+
+// Стиль кружка: два цвета (hex + hex2) → диагональ, иначе сплошной.
+const modalSwatchStyle = (color) => color.hex2
+    ? `background: linear-gradient(135deg, ${escModal(color.hex)} 0 50%, ${escModal(color.hex2)} 50% 100%)`
+    : `background-color: ${escModal(color.hex)}`;
+
+// Краткое описание цвета с откатом на общее описание товара.
+const colorShortDesc = (product, color) =>
+    (color && color.shortDescription) || product.shortDescription || '';
+
+// Индекс активного цвета карточки на странице (что выбрал пользователь до клика
+// «Смотреть»). Нет карточки/цветов — 0.
+const getActiveColorIndex = (slug) => {
+    const card = document.querySelector(`.collection-card[data-product="${CSS.escape(slug)}"]`);
+    if (!card) return 0;
+    const swatches = Array.from(card.querySelectorAll('.color-swatch'));
+    const active = swatches.findIndex(s => s.classList.contains('active'));
+    return active < 0 ? 0 : active;
+};
+
+// Индекс фото цвета в общем списке images товара (для старта слайдера на нужном кадре).
+const slideIndexForColor = (product, color) => {
+    if (!color || !color.image || !Array.isArray(product.images)) return 0;
+    const idx = product.images.indexOf(color.image);
+    return idx < 0 ? 0 : idx;
+};
+
 // Текущий индекс слайда для каждого товара
 let currentSlideIndex = {};
 
-// Открыть модальное окно
-function openModal(productId) {
+// Открыть модальное окно. colorIndex опционален: если не передан — берётся
+// активный цвет карточки (пользователь мог переключить кружок до «Смотреть»).
+function openModal(productId, colorIndex) {
     const product = getProduct(productId);
     if (!product) return;
 
+    const colors = Array.isArray(product.colors) ? product.colors : [];
+    const startColor = colorIndex == null ? getActiveColorIndex(productId) : colorIndex;
+    const activeColor = colors[startColor];
+
     // Создать модальное окно
-    const modal = createModalHTML(productId, product);
+    const modal = createModalHTML(productId, product, startColor);
     document.body.insertAdjacentHTML('beforeend', modal);
 
-    // Инициализировать слайдер
-    currentSlideIndex[productId] = 0;
-    showSlide(productId, 0);
+    // Инициализировать слайдер на кадре выбранного цвета
+    const startSlide = slideIndexForColor(product, activeColor);
+    currentSlideIndex[productId] = startSlide;
+    showSlide(productId, startSlide);
 
     // Показать модальное окно с анимацией
     setTimeout(() => {
@@ -46,13 +83,14 @@ function closeModal(productId) {
 }
 
 // Создать HTML модального окна
-function createModalHTML(productId, product) {
+function createModalHTML(productId, product, startColor = 0) {
     // Поля могут отсутствовать, если товар заполнен в CMS частично:
     // Decap опускает пустые опциональные поля (например, links без ссылок).
     // Подставляем безопасные значения, чтобы окно открывалось в любом случае.
     const images = Array.isArray(product.images) ? product.images : [];
     const sizes = Array.isArray(product.sizes) ? product.sizes : [];
     const links = product.links || {};
+    const colors = Array.isArray(product.colors) ? product.colors : [];
 
     const imagesHTML = images.map((img, index) =>
         `<img src="${img}" alt="${product.name}" class="slider-image ${index === 0 ? 'active' : ''}">`
@@ -65,6 +103,19 @@ function createModalHTML(productId, product) {
     const sizesHTML = sizes.map(size =>
         `<button class="size-btn">${size}</button>`
     ).join('');
+
+    // Блок выбора цвета внутри окна (только если у товара есть цвета).
+    // Клик по кружку перематывает слайдер на фото цвета и меняет строку описания.
+    const swatchesHTML = colors.map((color, index) => `
+                            <div class="color-swatch ${index === startColor ? 'active' : ''}" title="${escModal(color.name)}" style="${modalSwatchStyle(color)}" onclick="selectModalColor('${productId}', ${index})"></div>`
+    ).join('');
+
+    const colorsBlockHTML = colors.length ? `
+                        <div class="modal-colors">
+                            <div class="color-swatches">${swatchesHTML}
+                            </div>
+                            <p class="modal-color-description">${escModal(colorShortDesc(product, colors[startColor]))}</p>
+                        </div>` : '';
 
     const ozonBtn = links.ozon
         ? `<a href="${links.ozon}" target="_blank" class="marketplace-btn">Купить на Ozon →</a>`
@@ -100,6 +151,7 @@ function createModalHTML(productId, product) {
                     <div class="modal-info">
                         <h2 class="modal-title">${product.name}</h2>
                         <p class="modal-price">${product.price}</p>
+${colorsBlockHTML}
                         <p class="modal-description">${product.fullDescription}</p>
 
                         <!-- Выбор размеров -->
@@ -159,6 +211,30 @@ function changeSlide(productId, direction) {
     if (newIndex >= totalSlides) newIndex = 0;
 
     showSlide(productId, newIndex);
+}
+
+// Выбор цвета внутри окна товара: перематывает слайдер на фото цвета и
+// меняет строку краткого описания. Полное описание остаётся общим.
+function selectModalColor(productId, index) {
+    const product = getProduct(productId);
+    if (!product) return;
+    const colors = Array.isArray(product.colors) ? product.colors : [];
+    const color = colors[index];
+    if (!color) return;
+
+    const modal = document.getElementById(`modal-${productId}`);
+    if (!modal) return;
+
+    // Активный кружок
+    const swatches = modal.querySelectorAll('.modal-colors .color-swatch');
+    swatches.forEach((s, i) => s.classList.toggle('active', i === index));
+
+    // Строка краткого описания цвета
+    const desc = modal.querySelector('.modal-color-description');
+    if (desc) desc.textContent = colorShortDesc(product, color);
+
+    // Перемотать слайдер на кадр выбранного цвета
+    showSlide(productId, slideIndexForColor(product, color));
 }
 
 // Закрыть модальное окно при клике на оверлей
