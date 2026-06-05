@@ -32,15 +32,30 @@ const getActiveColorIndex = (slug) => {
     return active < 0 ? 0 : active;
 };
 
-// Индекс фото цвета в общем списке images товара (для старта слайдера на нужном кадре).
-const slideIndexForColor = (product, color) => {
-    if (!color || !color.image || !Array.isArray(product.images)) return 0;
-    const idx = product.images.indexOf(color.image);
-    return idx < 0 ? 0 : idx;
+// Галерея фотографий для показа в слайдере: у товара с цветами — фото выбранного
+// цвета (свой набор), у товара без цветов — общий список product.images.
+const colorImages = (product, colorIndex) => {
+    const colors = Array.isArray(product.colors) ? product.colors : [];
+    if (colors.length) {
+        const color = colors[colorIndex] || colors[0];
+        const imgs = Array.isArray(color && color.images) ? color.images : [];
+        if (imgs.length) return imgs;
+    }
+    return Array.isArray(product.images) ? product.images : [];
 };
 
-// Текущий индекс слайда для каждого товара
+// HTML кадров слайдера и точек-индикаторов для заданного набора фото.
+const sliderImagesHTML = (product, images) => images.map((img, index) =>
+    `<img src="${escModal(img)}" alt="${escModal(product.name)}" class="slider-image ${index === 0 ? 'active' : ''}">`
+).join('');
+
+const sliderDotsHTML = (productId, images) => images.map((_, index) =>
+    `<div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="showSlide('${productId}', ${index})"></div>`
+).join('');
+
+// Текущий индекс слайда и текущий выбранный цвет для каждого товара
 let currentSlideIndex = {};
+let currentColorIndex = {};
 
 // Открыть модальное окно. colorIndex опционален: если не передан — берётся
 // активный цвет карточки (пользователь мог переключить кружок до «Смотреть»).
@@ -48,18 +63,16 @@ function openModal(productId, colorIndex) {
     const product = getProduct(productId);
     if (!product) return;
 
-    const colors = Array.isArray(product.colors) ? product.colors : [];
     const startColor = colorIndex == null ? getActiveColorIndex(productId) : colorIndex;
-    const activeColor = colors[startColor];
 
     // Создать модальное окно
     const modal = createModalHTML(productId, product, startColor);
     document.body.insertAdjacentHTML('beforeend', modal);
 
-    // Инициализировать слайдер на кадре выбранного цвета
-    const startSlide = slideIndexForColor(product, activeColor);
-    currentSlideIndex[productId] = startSlide;
-    showSlide(productId, startSlide);
+    // Запомнить выбранный цвет и показать первый кадр его галереи
+    currentColorIndex[productId] = startColor;
+    currentSlideIndex[productId] = 0;
+    showSlide(productId, 0);
 
     // Показать модальное окно с анимацией
     setTimeout(() => {
@@ -87,18 +100,14 @@ function createModalHTML(productId, product, startColor = 0) {
     // Поля могут отсутствовать, если товар заполнен в CMS частично:
     // Decap опускает пустые опциональные поля (например, links без ссылок).
     // Подставляем безопасные значения, чтобы окно открывалось в любом случае.
-    const images = Array.isArray(product.images) ? product.images : [];
     const sizes = Array.isArray(product.sizes) ? product.sizes : [];
     const links = product.links || {};
     const colors = Array.isArray(product.colors) ? product.colors : [];
 
-    const imagesHTML = images.map((img, index) =>
-        `<img src="${img}" alt="${product.name}" class="slider-image ${index === 0 ? 'active' : ''}">`
-    ).join('');
-
-    const dotsHTML = images.map((_, index) =>
-        `<div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="showSlide('${productId}', ${index})"></div>`
-    ).join('');
+    // Слайдер строится из галереи стартового цвета (или общих фото для товара без цветов).
+    const images = colorImages(product, startColor);
+    const imagesHTML = sliderImagesHTML(product, images);
+    const dotsHTML = sliderDotsHTML(productId, images);
 
     const sizesHTML = sizes.map(size =>
         `<button class="size-btn">${size}</button>`
@@ -202,7 +211,9 @@ function showSlide(productId, index) {
 // Переключить слайд
 function changeSlide(productId, direction) {
     const product = getProduct(productId);
-    const totalSlides = (product && Array.isArray(product.images)) ? product.images.length : 0;
+    if (!product) return;
+    // Листаем в пределах галереи текущего выбранного цвета
+    const totalSlides = colorImages(product, currentColorIndex[productId] || 0).length;
     if (totalSlides === 0) return; // нечего листать
     let newIndex = currentSlideIndex[productId] + direction;
 
@@ -213,8 +224,9 @@ function changeSlide(productId, direction) {
     showSlide(productId, newIndex);
 }
 
-// Выбор цвета внутри окна товара: перематывает слайдер на фото цвета и
-// меняет строку краткого описания. Полное описание остаётся общим.
+// Выбор цвета внутри окна товара: перестраивает слайдер на галерею выбранного
+// цвета (свой набор фото) и меняет строку краткого описания.
+// Полное описание остаётся общим.
 function selectModalColor(productId, index) {
     const product = getProduct(productId);
     if (!product) return;
@@ -225,6 +237,8 @@ function selectModalColor(productId, index) {
     const modal = document.getElementById(`modal-${productId}`);
     if (!modal) return;
 
+    currentColorIndex[productId] = index;
+
     // Активный кружок
     const swatches = modal.querySelectorAll('.modal-colors .color-swatch');
     swatches.forEach((s, i) => s.classList.toggle('active', i === index));
@@ -233,8 +247,27 @@ function selectModalColor(productId, index) {
     const desc = modal.querySelector('.modal-color-description');
     if (desc) desc.textContent = colorShortDesc(product, color);
 
-    // Перемотать слайдер на кадр выбранного цвета
-    showSlide(productId, slideIndexForColor(product, color));
+    // Перестроить слайдер под галерею выбранного цвета
+    const images = colorImages(product, index);
+    const sliderImagesEl = modal.querySelector('.slider-images');
+    const dotsEl = modal.querySelector('.slider-dots');
+    if (sliderImagesEl) {
+        // Удалить старые кадры, оставив стрелки навигации
+        sliderImagesEl.querySelectorAll('.slider-image').forEach(n => n.remove());
+        const arrowLeft = sliderImagesEl.querySelector('.slider-arrow-left');
+        images.forEach((img, i) => {
+            const el = document.createElement('img');
+            el.src = img;
+            el.alt = product.name;
+            el.className = 'slider-image' + (i === 0 ? ' active' : '');
+            sliderImagesEl.insertBefore(el, arrowLeft);
+        });
+    }
+    if (dotsEl) dotsEl.innerHTML = sliderDotsHTML(productId, images);
+
+    // Слайдер на первый кадр новой галереи
+    currentSlideIndex[productId] = 0;
+    showSlide(productId, 0);
 }
 
 // Закрыть модальное окно при клике на оверлей

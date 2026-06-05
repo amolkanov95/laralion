@@ -23,20 +23,25 @@
         ? `background: linear-gradient(135deg, ${esc(color.hex)} 0 50%, ${esc(color.hex2)} 50% 100%)`
         : `background-color: ${esc(color.hex)}`;
 
+    // Первое фото цвета = фото цвета в карточке.
+    const colorImage = (color) => (Array.isArray(color.images) && color.images[0]) || '';
+
     const cardHTML = (product) => {
         const colors = product.colors || [];
         // Описание активного (первого) цвета; fallback — общее краткое описание.
         const colorDesc = (color) => color.shortDescription || product.shortDescription || '';
         const initialDesc = colors.length ? colorDesc(colors[0]) : (product.shortDescription || '');
+        // Фото в карточке: первое фото первого цвета, иначе общее главное фото.
+        const initialImage = colors.length ? colorImage(colors[0]) : (product.mainImage || '');
 
         const swatchesHTML = colors.map((color, index) => `
-                            <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(color.image)}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></div>`
+                            <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(colorImage(color))}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></div>`
         ).join('');
 
         return `
                 <div class="collection-card" data-product="${esc(product.slug)}" data-category="${esc(product.category)}">
                     <div class="collection-image-wrapper">
-                        <img src="${esc(product.mainImage)}" alt="${esc(product.name)}" class="collection-image" loading="lazy">
+                        <img src="${esc(initialImage)}" alt="${esc(product.name)}" class="collection-image" loading="lazy">
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">${esc(product.name)}</h3>

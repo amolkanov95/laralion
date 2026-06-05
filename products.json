@@ -12,7 +12,13 @@
         {
           "name": "Коричневый",
           "hex": "#8B4513",
-          "image": "/collections/klassika/1.jpg"
+          "images": [
+            "/collections/klassika/1.jpg",
+            "/collections/klassika/2.jpg",
+            "/collections/klassika/3.jpg",
+            "/collections/klassika/4.jpg",
+            "/collections/klassika/5.jpg"
+          ]
         }
       ],
       "sizes": [
@@ -20,13 +26,6 @@
         "2-спальный",
         "Евро",
         "Семейный"
-      ],
-      "images": [
-        "/collections/klassika/1.jpg",
-        "/collections/klassika/2.jpg",
-        "/collections/klassika/3.jpg",
-        "/collections/klassika/4.jpg",
-        "/collections/klassika/5.jpg"
       ],
       "links": {
         "ozon": null,
@@ -49,14 +48,19 @@
           "hex": "#87CEEB",
           "hex2": "#FFFFFF",
           "shortDescription": "Голубой, белый, 100% хлопок",
-          "image": "/collections/provans/1.jpg"
+          "images": [
+            "/collections/provans/1.jpg",
+            "/collections/provans/3.jpg"
+          ]
         },
         {
           "name": "Коричневый",
           "hex": "#8B4513",
           "hex2": "#FFFFFF",
           "shortDescription": "Коричневый, белый, 100% хлопок",
-          "image": "/collections/provans/2.jpg"
+          "images": [
+            "/collections/provans/2.jpg"
+          ]
         }
       ],
       "sizes": [
@@ -64,11 +68,6 @@
         "2-спальный",
         "Евро",
         "Семейный"
-      ],
-      "images": [
-        "/collections/provans/1.jpg",
-        "/collections/provans/2.jpg",
-        "/collections/provans/3.jpg"
       ],
       "links": {
         "ozon": null,
@@ -89,7 +88,12 @@
         {
           "name": "Зеленый",
           "hex": "#8FBC8F",
-          "image": "/collections/sharm/1.jpg"
+          "images": [
+            "/collections/sharm/1.jpg",
+            "/collections/sharm/2.jpg",
+            "/collections/sharm/3.jpg",
+            "/collections/sharm/4.jpg"
+          ]
         }
       ],
       "sizes": [
@@ -97,12 +101,6 @@
         "2-спальный",
         "Евро",
         "Семейный"
-      ],
-      "images": [
-        "/collections/sharm/1.jpg",
-        "/collections/sharm/2.jpg",
-        "/collections/sharm/3.jpg",
-        "/collections/sharm/4.jpg"
       ],
       "links": {
         "ozon": null,
