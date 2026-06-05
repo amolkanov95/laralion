@@ -36,7 +36,7 @@
       "category": "bedding"
     },
     {
-      "shortDescription": "Голубой, белый, 100% хлопок",
+      "shortDescription": "",
       "mainImage": "/collections/provans/1.jpg",
       "price": "от 15 000 ₽",
       "name": "Прованс",
@@ -52,10 +52,10 @@
           "image": "/collections/provans/1.jpg"
         },
         {
-          "name": "Коричневый",
-          "hex": "#8B4513",
+          "name": "Зеленый",
+          "hex": "#32ce5b",
           "hex2": "#FFFFFF",
-          "shortDescription": "Коричневый, белый, 100% хлопок",
+          "shortDescription": "Зеленый, белый, 100% хлопок",
           "image": "/collections/provans/2.jpg"
         }
       ],
