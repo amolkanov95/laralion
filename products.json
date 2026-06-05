@@ -37,7 +37,7 @@
     },
     {
       "shortDescription": "",
-      "mainImage": "/collections/provans/1.jpg",
+      "mainImage": "/collections/bedstyler-design-52-.jpeg",
       "price": "от 15 000 ₽",
       "name": "Прованс",
       "slug": "provans",
@@ -49,14 +49,14 @@
           "hex": "#87CEEB",
           "hex2": "#FFFFFF",
           "shortDescription": "Голубой, белый, 100% хлопок",
-          "image": "/collections/provans/1.jpg"
+          "image": "/collections/bedstyler-design-54-.jpeg"
         },
         {
           "name": "Зеленый",
           "hex": "#32ce5b",
           "hex2": "#FFFFFF",
           "shortDescription": "Зеленый, белый, 100% хлопок",
-          "image": "/collections/provans/2.jpg"
+          "image": "/collections/img_20260127_154148-2-gigapixel-standard-v2-2x.jpg"
         }
       ],
       "sizes": [
