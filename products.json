@@ -48,28 +48,18 @@
           "hex": "#87CEEB",
           "hex2": "#FFFFFF",
           "shortDescription": "Голубой, белый, 100% хлопок",
-<<<<<<< HEAD
           "images": [
-            "/collections/provans/1.jpg",
-            "/collections/provans/3.jpg"
+            "/collections/bedstyler-design-54-.jpeg"
           ]
-=======
-          "image": "/collections/bedstyler-design-54-.jpeg"
->>>>>>> 58d43ce74d6372307ee937f9b7e455f460e195cb
         },
         {
           "name": "Зеленый",
           "hex": "#32ce5b",
           "hex2": "#FFFFFF",
-<<<<<<< HEAD
-          "shortDescription": "Коричневый, белый, 100% хлопок",
-          "images": [
-            "/collections/provans/2.jpg"
-          ]
-=======
           "shortDescription": "Зеленый, белый, 100% хлопок",
-          "image": "/collections/img_20260127_154148-2-gigapixel-standard-v2-2x.jpg"
->>>>>>> 58d43ce74d6372307ee937f9b7e455f460e195cb
+          "images": [
+            "/collections/img_20260127_154148-2-gigapixel-standard-v2-2x.jpg"
+          ]
         }
       ],
       "sizes": [
