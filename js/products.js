@@ -10,6 +10,19 @@
 
 window.PRODUCTS = [];
 
+// Базовый префикс сайта = папка, в которой лежит index.html.
+// На корне домена (Cloudflare Worker, Netlify, localhost) — пустой;
+// на GitHub Pages, где сайт в подпапке /laralion/, — "/laralion".
+window.SITE_BASE = location.pathname.replace(/\/[^/]*$/, '');
+
+// Префиксует абсолютные пути изображений (из products.json: /collections/...)
+// базой подпапки, чтобы фото грузились и на GitHub Pages. Относительные и
+// внешние ссылки не трогаем; на корне домена SITE_BASE пуст → путь без изменений.
+window.assetURL = (path) => {
+    if (!path || !path.startsWith('/') || path.startsWith('//')) return path;
+    return window.SITE_BASE + path;
+};
+
 window.catalogReady = fetch('./products.json', { cache: 'no-cache' })
     .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);

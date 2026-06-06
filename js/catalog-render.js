@@ -32,10 +32,11 @@
         const colorDesc = (color) => color.shortDescription || product.shortDescription || '';
         const initialDesc = colors.length ? colorDesc(colors[0]) : (product.shortDescription || '');
         // Фото в карточке: первое фото первого цвета, иначе общее главное фото.
-        const initialImage = colors.length ? colorImage(colors[0]) : (product.mainImage || '');
+        // assetURL — префикс подпапки для GitHub Pages (см. products.js).
+        const initialImage = window.assetURL(colors.length ? colorImage(colors[0]) : (product.mainImage || ''));
 
         const swatchesHTML = colors.map((color, index) => `
-                            <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(colorImage(color))}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></div>`
+                            <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(window.assetURL(colorImage(color)))}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></div>`
         ).join('');
 
         return `

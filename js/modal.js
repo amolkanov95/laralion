@@ -46,7 +46,7 @@ const colorImages = (product, colorIndex) => {
 
 // HTML кадров слайдера и точек-индикаторов для заданного набора фото.
 const sliderImagesHTML = (product, images) => images.map((img, index) =>
-    `<img src="${escModal(img)}" alt="${escModal(product.name)}" class="slider-image ${index === 0 ? 'active' : ''}">`
+    `<img src="${escModal(window.assetURL(img))}" alt="${escModal(product.name)}" class="slider-image ${index === 0 ? 'active' : ''}">`
 ).join('');
 
 const sliderDotsHTML = (productId, images) => images.map((_, index) =>
@@ -257,7 +257,7 @@ function selectModalColor(productId, index) {
         const arrowLeft = sliderImagesEl.querySelector('.slider-arrow-left');
         images.forEach((img, i) => {
             const el = document.createElement('img');
-            el.src = img;
+            el.src = window.assetURL(img);
             el.alt = product.name;
             el.className = 'slider-image' + (i === 0 ? ' active' : '');
             sliderImagesEl.insertBefore(el, arrowLeft);
