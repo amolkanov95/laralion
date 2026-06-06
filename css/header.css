@@ -21,12 +21,78 @@ header {
     height: 160px;
     width: auto;
     transition: transform var(--transition-normal);
-    margin-right: 1rem;
-    margin-top: -10px;
 }
 
 .header-logo:hover {
     transform: scale(1.05);
+}
+
+/* Контейнер логотипа — основа для светового блика «золотая игла».
+   Размер задаёт логотип внутри; блик рисуется псевдоэлементом поверх. */
+.header-logo-wrap {
+    display: inline-block;
+    position: relative;
+    line-height: 0; /* убирает лишний нижний зазор inline-img */
+    margin-right: 1rem;
+    margin-top: -10px;
+}
+
+/* Световая полоса. Узкий тёплый янтарно-белый блик под наклоном.
+   Движение реализовано через background-position, поэтому полоса не
+   выходит за пределы логотипа и не требует overflow:hidden
+   (hover-эффект scale у логотипа остаётся не обрезанным). */
+.header-logo-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+        115deg,
+        transparent 38%,
+        rgba(255, 248, 224, 0.35) 47%,
+        rgba(255, 241, 204, 0.85) 50%,
+        rgba(255, 248, 224, 0.35) 53%,
+        transparent 62%
+    );
+    background-size: 300% 100%;
+    background-position: 0% 0;
+    background-repeat: no-repeat;
+    /* Маска силуэтом самого логотипа (по альфа-каналу PNG) —
+       блик строго в форме флажка, на прозрачные поля не выходит */
+    -webkit-mask-image: url(../images/logo.png);
+            mask-image: url(../images/logo.png);
+    -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+            mask-position: center;
+    /* overlay сильно усиливает контраст на золоте-среднетоне (яркий
+       блеск), а на почти-белом молочном фоне даёт лишь ~5% прироста —
+       фон практически не реагирует */
+    mix-blend-mode: overlay;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Один неторопливый проход слева направо при наведении.
+   Кривая ускоряет блик на старте и мягко тормозит к финишу. */
+.header-logo-wrap:hover::after {
+    opacity: 1;
+    animation: logo-sheen 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) 1;
+}
+
+@keyframes logo-sheen {
+    from { background-position: 0% 0; }
+    to   { background-position: 100% 0; }
+}
+
+/* Доступность: отключаем движение при системном запросе */
+@media (prefers-reduced-motion: reduce) {
+    .header-logo-wrap:hover::after {
+        animation: none;
+        opacity: 0;
+    }
 }
 
 /* Навигация центрирована по горизонтали относительно надписи "Lara Lion"
@@ -235,6 +301,9 @@ body.menu-open {
     /* Флаг-герб вплотную к верхней кромке экрана */
     .header-logo {
         height: 90px;
+    }
+
+    .header-logo-wrap {
         margin: 0;
         margin-top: -12px;
     }
