@@ -158,15 +158,6 @@
     transform: scale(1.1);
 }
 
-/* Плавное увеличение фото упаковки */
-.gifting-image {
-    transition: transform 0.3s ease;
-}
-
-.gifting-image:hover {
-    transform: scale(1.05);
-}
-
 /* Плавное смещение ссылок маркетплейсов */
 .marketplace-link {
     transition: all 0.3s ease;

@@ -62,39 +62,41 @@
     border-radius: var(--radius-sm);
 }
 
-/* Правая колонка: Коллаж фото */
+/* Правая колонка: Многослойный коллаж */
 .gifting-collage {
     position: relative;
     width: 100%;
-    height: 500px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-md);
+    max-width: 560px;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;   /* квадратное поле композиции */
 }
 
+/* Общие свойства обеих карточек */
 .gifting-image {
-    width: 48%;
-    height: auto;
-    border-radius: 16px;
+    position: absolute;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+}
+
+/* Базовый слой (анкер): шопер — крупная карточка, прижата к правому верхнему углу */
+.gifting-base {
+    top: 0;
+    right: 0;
+    width: 78%;
     box-shadow: var(--shadow-md);
-    transition: transform var(--transition-normal);
-    position: relative;
+    z-index: 1;
 }
 
-.gifting-image:hover {
-    transform: scale(1.05);
+/* Накладной слой: коробка — меньше на ~36%, перекрывает левый нижний угол базовой */
+.gifting-overlay {
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    border: 1px solid var(--accent-gold);
+    /* мягкая, сильно размытая «парящая» тень для глубины */
+    box-shadow: 0 24px 60px -12px rgba(43, 31, 23, 0.22);
     z-index: 2;
-}
-
-/* Коробка — левая часть */
-.gifting-image-1 {
-    z-index: 1;
-}
-
-/* Шоппер — правая часть */
-.gifting-image-2 {
-    z-index: 1;
 }
 
 /* Адаптивность */
@@ -116,13 +118,7 @@
     }
 
     .gifting-collage {
-        height: 450px;
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
-
-    .gifting-image {
-        width: 80%;
+        max-width: 480px;
     }
 }
 
@@ -160,15 +156,10 @@
         text-align: center;
     }
 
+    /* Коллаж уходит под текст (грид в одну колонку) — перекрытия текста нет.
+       Композицию сохраняем, делаем компактнее и центрируем. */
     .gifting-collage {
-        height: auto;
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
-
-    .gifting-image {
-        width: 85%;
-        max-width: 300px;
+        max-width: 420px;
     }
 }
 
@@ -191,11 +182,6 @@
     }
 
     .gifting-collage {
-        gap: var(--spacing-sm);
-    }
-
-    .gifting-image {
-        width: 100%;
-        max-width: 280px;
+        max-width: 340px;
     }
 }

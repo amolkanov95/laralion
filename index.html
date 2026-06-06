@@ -266,10 +266,12 @@
                     </p>
                 </div>
 
-                <!-- Правая колонка: Коллаж фото -->
+                <!-- Правая колонка: Многослойный коллаж -->
                 <div class="gifting-collage">
-                    <img src="./images/packaging/box.png" alt="Подарочная крафт-коробка с изумрудной лентой" class="gifting-image gifting-image-1" loading="lazy">
-                    <img src="./images/packaging/shopper.png" alt="Фирменный холщовый шопер Lara Lion" class="gifting-image gifting-image-2" loading="lazy">
+                    <!-- Базовый слой (анкер): шопер, квадрат 1:1 -->
+                    <img src="./images/packaging/shopper.webp" alt="Фирменный холщовый шопер Lara Lion" class="gifting-image gifting-base" width="1200" height="1200" loading="lazy">
+                    <!-- Накладной слой: коробка, квадрат 1:1, перекрывает левый нижний угол -->
+                    <img src="./images/packaging/box.webp" alt="Подарочная крафт-коробка с изумрудной лентой" class="gifting-image gifting-overlay" width="1200" height="1200" loading="lazy">
                 </div>
             </div>
         </div>
