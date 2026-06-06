@@ -10,3 +10,7 @@ desktop.ini
 # Редакторы
 .vscode/
 .idea/
+
+# Cloudflare Workers / Wrangler
+node_modules
+.wrangler

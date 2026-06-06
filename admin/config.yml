@@ -1,6 +1,8 @@
 # ============================================
 # Decap CMS — управление каталогом Lara Lion
-# Backend: GitHub (вход в /admin через GitHub-аккаунт, OAuth через Netlify).
+# Backend: GitHub (вход в /admin через GitHub-аккаунт).
+# OAuth-вход обслуживает Cloudflare Worker (эндпоинты /api/auth и /api/callback),
+# поэтому админка работает без Netlify.
 # Источник данных: products.json (один файл со списком товаров).
 # ============================================
 
@@ -8,6 +10,9 @@ backend:
   name: github
   repo: amolkanov95/laralion
   branch: main
+  # Домен Worker, на котором живут OAuth-эндпоинты (см. worker.js).
+  base_url: https://laralion.amolkanov95.workers.dev
+  auth_endpoint: /api/auth
 
 # Куда медиатека загружает новые изображения (путь от корня репозитория)
 media_folder: "collections"
