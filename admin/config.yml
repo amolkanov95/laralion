@@ -11,8 +11,10 @@ backend:
   repo: amolkanov95/laralion
   branch: main
   # Домен Worker, на котором живут OAuth-эндпоинты (см. worker.js).
+  # auth_endpoint — путь, добавляемый к base_url; БЕЗ ведущего слеша,
+  # иначе Decap склеит двойной слеш (base_url//api/auth) → 404.
   base_url: https://laralion.amolkanov95.workers.dev
-  auth_endpoint: /api/auth
+  auth_endpoint: api/auth
 
 # Куда медиатека загружает новые изображения (путь от корня репозитория)
 media_folder: "collections"
