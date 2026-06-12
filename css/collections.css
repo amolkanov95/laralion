@@ -73,26 +73,100 @@
     width: 100%;
 }
 
-.collections-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-lg);
+/* ── Слайдер-лукбук ──────────────────────────────────────────
+   Десктоп: transform-дорожка (3 карточки в окне) + золотые стрелки.
+   Мобильный (<=768px): нативный scroll-snap свайп с peek соседей. */
+
+.catalog-slider {
+    position: relative;
     margin-top: var(--spacing-lg);
+    /* Боковые зоны под стрелки, чтобы они стояли в свободном поле, не на карточках */
+    padding: 0 56px;
 }
 
-/* Состояние карточки, скрытой фильтром */
+/* Окно: по X прячем уехавшие карточки (clip), по Y оставляем видимыми
+   hover-подъём и тень — overflow:hidden обрезал бы их сверху */
+.catalog-viewport {
+    overflow-x: clip;
+    overflow-y: visible;
+}
+
+.collections-grid {
+    --slider-gap: var(--spacing-lg);
+    display: flex;
+    gap: var(--slider-gap);
+    align-items: stretch; /* единая высота карточек = самой высокой → нет вертикальных скачков */
+    /* Упругая кривая «скольжения ткани» */
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+    will-change: transform;
+}
+
+/* Ровно 3 карточки в видимой области */
+.collection-card {
+    flex: 0 0 calc((100% - 2 * var(--slider-gap)) / 3);
+}
+
+/* Карточка, скрытая фильтром (схлопывается из flex-ряда) */
 .collection-card.is-hidden {
     display: none;
 }
 
-/* Анимация появления/исчезновения при фильтрации */
-.collection-card.is-filtering {
-    transition: opacity var(--transition-normal), transform var(--transition-normal);
+/* Fade дорожки при смене категории */
+.collections-grid.is-fading {
+    opacity: 0;
 }
 
-.collection-card.is-fading {
-    opacity: 0;
-    transform: scale(0.92);
+/* Золотые навигационные стрелки (десктоп) */
+.catalog-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    background-color: var(--card-bg);
+    border: 1px solid var(--accent-gold);
+    border-radius: 50%;
+    cursor: pointer;
+    /* Постоянная мягкая тень-подложка → стрелки читаются на фоне карточек */
+    box-shadow: 0 2px 10px rgba(43, 31, 23, 0.16);
+    transition: color var(--transition-normal), background-color var(--transition-normal),
+                box-shadow var(--transition-normal), transform var(--transition-fast);
+}
+
+.catalog-arrow svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.catalog-arrow--prev {
+    left: 0;
+}
+
+.catalog-arrow--next {
+    right: 0;
+}
+
+/* Выразительный золотистый отклик при наведении */
+.catalog-arrow:hover {
+    background-color: var(--accent-gold);
+    color: var(--card-bg);
+    box-shadow: 0 4px 18px rgba(186, 150, 98, 0.5);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.catalog-arrow:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 3px;
+}
+
+.catalog-arrow[hidden] {
+    display: none;
 }
 
 /* Заглушка для пустых категорий */
@@ -111,7 +185,7 @@
 
 /* Уважение к настройке "уменьшить движение" */
 @media (prefers-reduced-motion: reduce) {
-    .collection-card.is-filtering,
+    .collections-grid,
     .catalog-filter,
     .catalog-filter::after {
         transition: none;
@@ -126,11 +200,19 @@
     box-shadow: var(--shadow-sm);
     transition: all var(--transition-normal);
     cursor: pointer;
+    /* Колонка: контент тянется на всю высоту, нижний блок прижимается к низу */
+    display: flex;
+    flex-direction: column;
 }
 
-.collection-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
+/* Hover-эффекты только для устройств с настоящим курсором.
+   На тач-экранах тап не должен поднимать/увеличивать карточку
+   (иначе её обрезает scroll-контейнер каталога) */
+@media (hover: hover) {
+    .collection-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+    }
 }
 
 /* Контейнер изображения */
@@ -151,13 +233,19 @@
     border-radius: 8px;
 }
 
-.collection-card:hover .collection-image {
-    transform: scale(1.02);
+@media (hover: hover) {
+    .collection-card:hover .collection-image {
+        transform: scale(1.02);
+    }
 }
 
 /* Контент карточки */
 .collection-content {
     padding: var(--spacing-md);
+    /* Тянется на всю высоту карточки, чтобы прижать цену+кнопку к низу */
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .collection-name {
@@ -229,6 +317,9 @@
     font-weight: 600;
     color: var(--accent-gold);
     margin-bottom: var(--spacing-sm);
+    /* Прижать цену+кнопку к низу карточки → блок «Смотреть» на одной высоте
+       во всех карточках независимо от длины описания */
+    margin-top: auto;
 }
 
 /* Кнопка "Смотреть" */
@@ -236,6 +327,8 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    /* Не растягиваться на всю ширину в flex-колонке контента */
+    align-self: flex-start;
     padding: 0.8rem 1.8rem;
     background-color: transparent;
     color: var(--text-color);
@@ -275,8 +368,7 @@
 /* Адаптивность */
 @media (max-width: 1024px) {
     .collections-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-md);
+        --slider-gap: var(--spacing-md);
     }
 
     .collection-image-wrapper {
@@ -309,9 +401,42 @@
     }
 
     .collections-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-md);
+        --slider-gap: var(--spacing-sm);
         margin-top: var(--spacing-md);
+        /* Мобильный: нативный свайп со scroll-snap, transform не используется */
+        transform: none !important;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* Боковые отступы, чтобы первая/последняя карточка центрировались при snap */
+        padding: 0 10%;
+        will-change: auto;
+    }
+
+    .collections-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Окно не обрезает — скроллит сам трек */
+    .catalog-viewport {
+        overflow: visible;
+    }
+
+    /* 1 карточка по центру, соседи выглядывают (~10% с каждого края) */
+    .collection-card {
+        flex: 0 0 80%;
+        scroll-snap-align: center;
+    }
+
+    /* На мобильном боковые зоны под стрелки не нужны */
+    .catalog-slider {
+        padding: 0;
+    }
+
+    /* Жестовое управление — стрелки скрыты */
+    .catalog-arrow {
+        display: none;
     }
 
     .collection-image-wrapper {

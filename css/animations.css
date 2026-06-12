@@ -121,17 +121,21 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.collection-card:hover {
-    transform: translateY(-8px);
-}
-
 /* Плавное увеличение изображений в карточках */
 .collection-image {
     transition: transform 0.5s ease;
 }
 
-.collection-card:hover .collection-image {
-    transform: scale(1.02);
+/* Hover-подъём/zoom — только для устройств с курсором.
+   На тач тап не должен увеличивать карточку (её обрезает scroll-контейнер) */
+@media (hover: hover) {
+    .collection-card:hover {
+        transform: translateY(-8px);
+    }
+
+    .collection-card:hover .collection-image {
+        transform: scale(1.02);
+    }
 }
 
 /* Золотая линия под ссылками меню */

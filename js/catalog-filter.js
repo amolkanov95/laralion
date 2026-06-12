@@ -1,7 +1,10 @@
 // ============================================
 // CATALOG FILTER
-// Фильтрация карточек каталога по категориям
-// с плавным перестроением сетки (FLIP)
+// Фильтрация карточек каталога по категориям.
+// Слайдер-дорожка плавно гаснет (fade), карточки переключаются
+// через .is-hidden, затем дорожка проявляется. После фильтрации
+// диспатчится 'catalog:filtered' — слайдер сбрасывается на первую
+// карточку и пересчитывает стрелки (см. catalog-slider.js).
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!filters.length || !grid) return;
 
-    // Длительность согласована с --transition-normal (0.3s)
-    const DURATION = 300;
+    // Длительность согласована с opacity-переходом дорожки (0.25s в CSS)
+    const DURATION = 250;
 
     const prefersReduced = () =>
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -29,78 +32,26 @@ document.addEventListener('DOMContentLoaded', () => {
         emptyEl.hidden = anyVisible;
     };
 
-    // Снять временные классы анимации после её завершения
-    const cleanup = (list) => {
-        setTimeout(() => {
-            list.forEach(c => {
-                c.classList.remove('is-filtering', 'is-fading');
-                c.style.transform = '';
-            });
-        }, DURATION + 50);
+    // Переключить видимость карточек по категории и оповестить слайдер
+    const apply = (category) => {
+        cards().forEach(c => c.classList.toggle('is-hidden', !matches(c, category)));
+        updateEmpty();
+        document.dispatchEvent(new CustomEvent('catalog:filtered'));
     };
 
     const applyFilter = (category) => {
-        const all = cards();
-
         // Без анимации для пользователей с prefers-reduced-motion
         if (prefersReduced()) {
-            all.forEach(c => c.classList.toggle('is-hidden', !matches(c, category)));
-            updateEmpty();
+            apply(category);
             return;
         }
 
-        const visibleNow = all.filter(c => !c.classList.contains('is-hidden'));
-        const toHide = visibleNow.filter(c => !matches(c, category));
-        const staying = visibleNow.filter(c => matches(c, category));
-        const toShow = all.filter(c => matches(c, category) && c.classList.contains('is-hidden'));
-
-        // FIRST: позиции остающихся карточек до перестроения
-        const firstRects = new Map();
-        staying.forEach(c => firstRects.set(c, c.getBoundingClientRect()));
-
-        const reflow = () => {
-            // Окончательно спрятать ушедшие карточки
-            toHide.forEach(c => {
-                c.classList.add('is-hidden');
-                c.classList.remove('is-filtering', 'is-fading');
-                c.style.transform = '';
-            });
-
-            // Подготовить появляющиеся (видимы, но прозрачны и уменьшены)
-            toShow.forEach(c => {
-                c.classList.remove('is-hidden');
-                c.classList.add('is-filtering', 'is-fading');
-            });
-
-            // LAST + INVERT: сместить остающиеся в старые позиции
-            staying.forEach(c => {
-                const first = firstRects.get(c);
-                const last = c.getBoundingClientRect();
-                const dx = first.left - last.left;
-                const dy = first.top - last.top;
-                if (dx || dy) {
-                    c.classList.add('is-filtering');
-                    c.style.transform = `translate(${dx}px, ${dy}px)`;
-                }
-            });
-
-            // PLAY: плавный переезд на места + проявление новых
-            requestAnimationFrame(() => {
-                staying.forEach(c => { c.style.transform = ''; });
-                toShow.forEach(c => c.classList.remove('is-fading'));
-            });
-
-            updateEmpty();
-            cleanup([...staying, ...toShow]);
-        };
-
-        if (toHide.length) {
-            // Фаза 1: плавно растворить уходящие карточки
-            toHide.forEach(c => c.classList.add('is-filtering', 'is-fading'));
-            setTimeout(reflow, DURATION);
-        } else {
-            reflow();
-        }
+        // Фаза 1: погасить дорожку → переключить карточки → проявить
+        grid.classList.add('is-fading');
+        setTimeout(() => {
+            apply(category);
+            requestAnimationFrame(() => grid.classList.remove('is-fading'));
+        }, DURATION);
     };
 
     filters.forEach(btn => {

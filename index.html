@@ -189,8 +189,20 @@
                 <button type="button" class="catalog-filter" data-filter="fabrics" aria-selected="false">Ткани</button>
             </div>
 
-            <!-- Сетка карточек товаров (рендерится из js/products.js через js/catalog-render.js) -->
-            <div class="collections-grid"></div>
+            <!-- Слайдер каталога: десктоп — transform-дорожка со стрелками,
+                 мобильный — нативный scroll-snap свайп. Трек .collections-grid
+                 рендерится из js/products.js через js/catalog-render.js -->
+            <div class="catalog-slider">
+                <button type="button" class="catalog-arrow catalog-arrow--prev" aria-label="Предыдущие товары" hidden>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <div class="catalog-viewport">
+                    <div class="collections-grid"></div>
+                </div>
+                <button type="button" class="catalog-arrow catalog-arrow--next" aria-label="Следующие товары" hidden>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
 
             <!-- Заглушка для пустых категорий -->
             <div class="catalog-empty" hidden>
@@ -370,6 +382,7 @@
     <script src="./js/color-swatches.js"></script>
     <script src="./js/scroll-animations.js"></script>
     <script src="./js/smooth-scroll.js"></script>
+    <script src="./js/catalog-slider.js"></script>
     <script src="./js/catalog-filter.js"></script>
     <script src="./js/main.js"></script>
 
