@@ -126,9 +126,9 @@
     transition: transform 0.5s ease;
 }
 
-/* Hover-подъём/zoom — только для устройств с курсором.
-   На тач тап не должен увеличивать карточку (её обрезает scroll-контейнер) */
-@media (hover: hover) {
+/* Hover-подъём/zoom — только на десктопе с курсором.
+   На мобильной ширине карточку обрезает scroll-контейнер каталога */
+@media (hover: hover) and (min-width: 769px) {
     .collection-card:hover {
         transform: translateY(-8px);
     }

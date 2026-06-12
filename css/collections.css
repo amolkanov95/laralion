@@ -205,10 +205,10 @@
     flex-direction: column;
 }
 
-/* Hover-эффекты только для устройств с настоящим курсором.
-   На тач-экранах тап не должен поднимать/увеличивать карточку
-   (иначе её обрезает scroll-контейнер каталога) */
-@media (hover: hover) {
+/* Hover-эффекты только на десктопе с настоящим курсором.
+   На мобильной ширине (карусель-scroll-контейнер) подъём карточки
+   обрезался бы границами трека — поэтому и (min-width: 769px) */
+@media (hover: hover) and (min-width: 769px) {
     .collection-card:hover {
         transform: translateY(-8px);
         box-shadow: var(--shadow-lg);
@@ -233,7 +233,7 @@
     border-radius: 8px;
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (min-width: 769px) {
     .collection-card:hover .collection-image {
         transform: scale(1.02);
     }
@@ -410,11 +410,13 @@
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        /* Жест распознаётся только по горизонтали — карточку нельзя «поднять» вверх */
-        touch-action: pan-x;
+        /* pan-x — листать карусель, pan-y — отдать вертикальный жест странице
+           (иначе скролл сайта «залипает» при касании карточки) */
+        touch-action: pan-x pan-y;
         overscroll-behavior-x: contain;
-        /* Боковые отступы, чтобы первая/последняя карточка центрировались при snap */
-        padding: 0 10%;
+        /* По бокам — центрирование первой/последней карточки;
+           по вертикали — буфер, чтобы overflow:hidden не обрезал тень карточки */
+        padding: 14px 10%;
         will-change: auto;
     }
 
