@@ -406,9 +406,13 @@
         /* Мобильный: нативный свайп со scroll-snap, transform не используется */
         transform: none !important;
         overflow-x: auto;
+        overflow-y: hidden;          /* запрет вертикального скролла трека */
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        /* Жест распознаётся только по горизонтали — карточку нельзя «поднять» вверх */
+        touch-action: pan-x;
+        overscroll-behavior-x: contain;
         /* Боковые отступы, чтобы первая/последняя карточка центрировались при snap */
         padding: 0 10%;
         will-change: auto;
