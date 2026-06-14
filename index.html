@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lara Lion — премиальное постельное белье из натуральных материалов. Французский светлый минимализм для вашего дома.">
-    <meta name="keywords" content="постельное белье, премиум, хлопок, Lara Lion, домашний текстиль, постельное белье Ярославль">
+    <meta name="description" content="Мастерская премиального домашнего текстиля Lara Lion в Ярославле. Индивидуальный пошив постельного белья из варёного хлопка, кухонного текстиля и тканей по вашим размерам.">
+    <meta name="keywords" content="постельное бельё варёный хлопок, постельное бельё с рюшами, купить постельное бельё Ярославль, индивидуальный пошив постельного белья, кухонный текстиль, ателье постельного белья Ярославль, домашний текстиль">
     <meta name="author" content="Lara Lion">
-    <title>Lara Lion — Эстетика постельного совершенства</title>
+    <title>Lara Lion | Премиальное постельное бельё из варёного хлопка в Ярославле</title>
+    <link rel="canonical" href="https://laralion.ru/">
 
     <!-- Open Graph для социальных сетей -->
-    <meta property="og:title" content="Lara Lion — Эстетика постельного совершенства">
-    <meta property="og:description" content="Премиальное постельное белье из натуральных материалов. Французский светлый минимализм для вашего дома.">
-    <meta property="og:image" content="./images/hero-desktop.jpg">
-    <meta property="og:url" content="https://laralion.ru">
     <meta property="og:type" content="website">
+    <meta property="og:title" content="Lara Lion | Премиальный домашний текстиль из варёного хлопка">
+    <meta property="og:description" content="Индивидуальный пошив постельного белья с рюшами, кухонного текстиля и тканей по вашим меркам в Ярославле. Фирменная подарочная упаковка включена.">
+    <meta property="og:url" content="https://laralion.ru/">
+    <meta property="og:image" content="https://laralion.ru/images/hero-desktop.jpg">
+    <meta property="og:site_name" content="Lara Lion">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lara Lion | Премиальный домашний текстиль из варёного хлопка">
+    <meta name="twitter:description" content="Пошив постельного белья из варёного хлопка и кухонного текстиля в Ярославле.">
+    <meta name="twitter:image" content="https://laralion.ru/images/hero-desktop.jpg">
 
     <!-- Preload критических ресурсов (адаптивно по ширине экрана) -->
     <link rel="preload" as="image" href="./images/hero-desktop.jpg" media="(min-width: 769px)">
@@ -39,6 +47,39 @@
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/animations.css">
     <link rel="stylesheet" href="./css/mobile-fixes.css">
+
+    <!-- Структурированные данные: организация (LocalBusiness / HomeGoodsStore) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HomeGoodsStore",
+      "name": "Lara Lion",
+      "image": "https://laralion.ru/images/hero-desktop.jpg",
+      "@id": "https://laralion.ru/#localbusiness",
+      "url": "https://laralion.ru/",
+      "telephone": "+79066394170",
+      "email": "laralion@mail.ru",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "проспект Фрунзе, 3, офис 511",
+        "addressLocality": "Ярославль",
+        "postalCode": "150030",
+        "addressCountry": "RU"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      },
+      "sameAs": [
+        "https://vk.ru/creativeworkshop_yar",
+        "https://ozon.ru/s/lara-lion",
+        "https://www.avito.ru/user/b03bd9dc3ec212cc3d4bc15dba05da6f/profile"
+      ]
+    }
+    </script>
 </head>
 <body>
 
@@ -178,7 +219,7 @@
     <section id="collections">
         <div class="collections-container">
             <!-- Заголовок секции -->
-            <h2 class="section-title">Наши коллекции</h2>
+            <h2 class="section-title">Наши коллекции из натуральных тканей</h2>
             <div class="gold-divider"></div>
 
             <!-- Линейка вкладок-фильтров по категориям -->
@@ -377,6 +418,7 @@
 
     <!-- Подключение JavaScript-модулей -->
     <script src="./js/products.js"></script>
+    <script src="./js/seo-jsonld.js"></script>
     <script src="./js/catalog-render.js"></script>
     <script src="./js/modal.js"></script>
     <script src="./js/color-swatches.js"></script>

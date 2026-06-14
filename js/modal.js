@@ -22,6 +22,34 @@ const modalSwatchStyle = (color) => color.hex2
 const colorShortDesc = (product, color) =>
     (color && color.shortDescription) || product.shortDescription || '';
 
+// Человекочитаемая категория для авто-шаблона alt (как в catalog-render.js).
+const MODAL_CATEGORY_LABEL = {
+    bedding: 'постельное бельё',
+    kitchen: 'кухонный текстиль',
+    fabrics: 'ткань'
+};
+
+// SEO-alt фото в слайдере: вариант B (ручной product.seoAlt) с откатом на A
+// (авто-шаблон из названия, категории и выбранного цвета). Единая логика с карточкой.
+const modalAltText = (product, colorName) => {
+    if (product.seoAlt && String(product.seoAlt).trim()) {
+        return String(product.seoAlt).trim();
+    }
+    const parts = [product.name];
+    const category = MODAL_CATEGORY_LABEL[product.category];
+    if (category) parts.push(category);
+    if (colorName) parts.push(String(colorName).toLowerCase());
+    parts.push('варёный хлопок');
+    return parts[0] + ' — ' + parts.slice(1).join(', ');
+};
+
+// Название выбранного цвета (для alt); у товара без цветов — пусто.
+const colorNameAt = (product, colorIndex) => {
+    const colors = Array.isArray(product.colors) ? product.colors : [];
+    const color = colors[colorIndex] || colors[0];
+    return color ? color.name : '';
+};
+
 // Индекс активного цвета карточки на странице (что выбрал пользователь до клика
 // «Смотреть»). Нет карточки/цветов — 0.
 const getActiveColorIndex = (slug) => {
@@ -45,9 +73,13 @@ const colorImages = (product, colorIndex) => {
 };
 
 // HTML кадров слайдера и точек-индикаторов для заданного набора фото.
-const sliderImagesHTML = (product, images) => images.map((img, index) =>
-    `<img src="${escModal(window.assetURL(img))}" alt="${escModal(product.name)}" class="slider-image ${index === 0 ? 'active' : ''}">`
-).join('');
+// colorName — название показываемого цвета (для осмысленного SEO-alt).
+const sliderImagesHTML = (product, images, colorName) => {
+    const alt = modalAltText(product, colorName);
+    return images.map((img, index) =>
+        `<img src="${escModal(window.assetURL(img))}" alt="${escModal(alt)}" class="slider-image ${index === 0 ? 'active' : ''}">`
+    ).join('');
+};
 
 const sliderDotsHTML = (productId, images) => images.map((_, index) =>
     `<div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="showSlide('${productId}', ${index})"></div>`
@@ -106,7 +138,7 @@ function createModalHTML(productId, product, startColor = 0) {
 
     // Слайдер строится из галереи стартового цвета (или общих фото для товара без цветов).
     const images = colorImages(product, startColor);
-    const imagesHTML = sliderImagesHTML(product, images);
+    const imagesHTML = sliderImagesHTML(product, images, colorNameAt(product, startColor));
     const dotsHTML = sliderDotsHTML(productId, images);
 
     const sizesHTML = sizes.map(size =>
@@ -255,10 +287,11 @@ function selectModalColor(productId, index) {
         // Удалить старые кадры, оставив стрелки навигации
         sliderImagesEl.querySelectorAll('.slider-image').forEach(n => n.remove());
         const arrowLeft = sliderImagesEl.querySelector('.slider-arrow-left');
+        const alt = modalAltText(product, color.name);
         images.forEach((img, i) => {
             const el = document.createElement('img');
             el.src = window.assetURL(img);
-            el.alt = product.name;
+            el.alt = alt;
             el.className = 'slider-image' + (i === 0 ? ' active' : '');
             sliderImagesEl.insertBefore(el, arrowLeft);
         });

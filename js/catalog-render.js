@@ -26,6 +26,28 @@
     // Первое фото цвета = фото цвета в карточке.
     const colorImage = (color) => (Array.isArray(color.images) && color.images[0]) || '';
 
+    // Человекочитаемая категория для авто-шаблона alt.
+    const CATEGORY_LABEL = {
+        bedding: 'постельное бельё',
+        kitchen: 'кухонный текстиль',
+        fabrics: 'ткань'
+    };
+
+    // SEO-alt фото: вариант B (ручной product.seoAlt) с откатом на A (авто-шаблон
+    // из названия, категории и активного цвета). colorName — опциональное название
+    // выбранного цвета. Возвращает НЕэкранированную строку (esc применяется в разметке).
+    const altText = (product, colorName) => {
+        if (product.seoAlt && String(product.seoAlt).trim()) {
+            return String(product.seoAlt).trim();
+        }
+        const parts = [product.name];
+        const category = CATEGORY_LABEL[product.category];
+        if (category) parts.push(category);
+        if (colorName) parts.push(String(colorName).toLowerCase());
+        parts.push('варёный хлопок');
+        return parts[0] + ' — ' + parts.slice(1).join(', ');
+    };
+
     const cardHTML = (product) => {
         const colors = product.colors || [];
         // Описание активного (первого) цвета; fallback — общее краткое описание.
@@ -34,6 +56,8 @@
         // Фото в карточке: первое фото первого цвета, иначе общее главное фото.
         // assetURL — префикс подпапки для GitHub Pages (см. products.js).
         const initialImage = window.assetURL(colors.length ? colorImage(colors[0]) : (product.mainImage || ''));
+        // Alt главного фото карточки: seoAlt → авто-шаблон (с активным = первым цветом).
+        const initialAlt = altText(product, colors.length ? colors[0].name : '');
 
         const swatchesHTML = colors.map((color, index) => `
                             <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(window.assetURL(colorImage(color)))}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></div>`
@@ -42,7 +66,7 @@
         return `
                 <div class="collection-card" data-product="${esc(product.slug)}" data-category="${esc(product.category)}">
                     <div class="collection-image-wrapper">
-                        <img src="${esc(initialImage)}" alt="${esc(product.name)}" class="collection-image" loading="lazy">
+                        <img src="${esc(initialImage)}" alt="${esc(initialAlt)}" class="collection-image" loading="lazy">
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">${esc(product.name)}</h3>
