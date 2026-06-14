@@ -261,12 +261,16 @@
         background: linear-gradient(180deg, rgba(43, 31, 23, 0), rgba(43, 31, 23, 0.22));
     }
 
-    .collection-card:hover .collection-image {
+    .collection-card:hover .collection-image,
+    .collection-card.is-hinting .collection-image {
         filter: grayscale(0) brightness(1);
         transform: scale(1);
     }
 
-    .collection-card:hover .collection-veil {
+    /* .is-hinting — разовая авто-демонстрация подъёма вуали на первой карточке
+       (см. js/awwwards-effects.js). Раскрытое состояние = hover, через те же transition. */
+    .collection-card:hover .collection-veil,
+    .collection-card.is-hinting .collection-veil {
         transform: translateY(-100%);
     }
 }
