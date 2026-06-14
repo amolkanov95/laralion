@@ -67,6 +67,7 @@
                 <div class="collection-card" data-product="${esc(product.slug)}" data-category="${esc(product.category)}">
                     <div class="collection-image-wrapper">
                         <img src="${esc(initialImage)}" alt="${esc(initialAlt)}" class="collection-image" loading="lazy">
+                        <div class="collection-veil" aria-hidden="true"></div>
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">${esc(product.name)}</h3>

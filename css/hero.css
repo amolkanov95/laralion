@@ -215,3 +215,33 @@
         margin-bottom: 1rem;
     }
 }
+
+/* ============================================
+   ПРИЁМ 4 — ПАРАЛЛАКС-СЛОИ HERO (только десктоп; логика — awwwards-effects.js)
+   Фону даём запас по высоте (±15%), чтобы сдвиг не оголял края.
+   #hero уже overflow:hidden — лишнее обрезается.
+============================================ */
+@media (min-width: 769px) {
+    .hero-bg {
+        top: -15%;
+        height: 130%;
+        will-change: transform;
+    }
+
+    .hero-content {
+        will-change: transform;
+    }
+}
+
+/* Reduced-motion: возврат к исходной раскладке без движения */
+@media (prefers-reduced-motion: reduce) {
+    .hero-bg {
+        top: 0;
+        height: 100%;
+        will-change: auto;
+    }
+
+    .hero-content {
+        will-change: auto;
+    }
+}

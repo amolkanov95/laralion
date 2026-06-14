@@ -48,11 +48,6 @@
     transition-delay: 0.4s;
 }
 
-/* Плавная смена изображений */
-.collection-image {
-    transition: opacity 0.3s ease;
-}
-
 /* Hover-эффекты для кнопок */
 .btn,
 .collection-btn,
@@ -121,20 +116,12 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Плавное увеличение изображений в карточках */
-.collection-image {
-    transition: transform 0.5s ease;
-}
-
-/* Hover-подъём/zoom — только на десктопе с курсором.
-   На мобильной ширине карточку обрезает scroll-контейнер каталога */
+/* Hover-подъём — только на десктопе с курсором.
+   На мобильной ширине карточку обрезает scroll-контейнер каталога.
+   Zoom/проявление фото вынесены в collections.css (приём 3, image-mask) */
 @media (hover: hover) and (min-width: 769px) {
     .collection-card:hover {
         transform: translateY(-8px);
-    }
-
-    .collection-card:hover .collection-image {
-        transform: scale(1.02);
     }
 }
 
@@ -215,4 +202,105 @@
 
 .color-swatch:hover {
     transform: scale(1.1);
+}
+
+/* ============================================
+   ПРИЁМ 1 — KINETIC-ЗАГОЛОВКИ (reveal из-под маски, построчно)
+   Заголовки секций/hero выезжают построчно при попадании во вьюпорт.
+   Анимация один раз (unobserve в scroll-animations.js). Только transform.
+============================================ */
+.kinetic-title .line-mask {
+    display: block;
+    overflow: hidden;
+    /* Запас ТОЛЬКО по вертикали под выносные элементы Great Vibes (.section-title,
+       .hero-brand, .about-title, .gifting-title — глубокие descender'ы, верхние
+       росчерки). padding раздвигает зону клиппинга, отрицательный margin его
+       компенсирует — высота заголовка не меняется (CLS = 0). Горизонтальные
+       отступы НЕ трогаем: отрицательный margin по X дал бы overflow на 320px. */
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    margin-top: -0.25em;
+    margin-bottom: -0.25em;
+}
+
+.kinetic-title .line-inner {
+    display: block;
+    /* 135% (вместо 110% демо) — полное сокрытие строки с учётом вертикального
+       padding маски (0.25em сверху/снизу). will-change не ставим: reveal
+       одноразовый, transform и так композитится на GPU. */
+    transform: translateY(135%);
+    transition: transform 1s cubic-bezier(.16, 1, .3, 1);
+}
+
+.kinetic-title .line-mask.is-in .line-inner {
+    transform: translateY(0);
+}
+
+.kinetic-title .line-mask:nth-child(2) .line-inner {
+    transition-delay: .12s;
+}
+
+.kinetic-title .line-mask:nth-child(3) .line-inner {
+    transition-delay: .24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kinetic-title .line-inner {
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+/* ============================================
+   ПРИЁМ 2 — МАГНИТНЫЕ КНОПКИ (логика: js/awwwards-effects.js)
+   Включается только на десктопе с мышью без reduced-motion.
+============================================ */
+/* Обёртка подписи: после переноса в .m-label у кнопки один flex-потомок,
+   поэтому собственный gap кнопки (текст + стрелка) переносим на .m-label.
+   Правило вне медиа-запроса → раскладка кнопки корректна на всех ширинах. */
+.m-label {
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+}
+
+@media (hover: hover) and (min-width: 769px) {
+    [data-magnetic] {
+        will-change: transform;
+        /* Плавный возврат + «доводка» за курсором. Сохраняем переходы
+           фона/цвета, чтобы существующий hover-эффект кнопок не пропал. */
+        transition: transform .35s cubic-bezier(.16, 1, .3, 1),
+                    background-color var(--transition-normal),
+                    color var(--transition-normal);
+    }
+
+    [data-magnetic] .m-label {
+        transition: transform .35s cubic-bezier(.16, 1, .3, 1);
+    }
+}
+
+/* ============================================
+   ПРИЁМ 4 — ПАРАЛЛАКС ФОТО В РАМКЕ (только десктоп; логика — awwwards-effects.js)
+   .about-image-wrapper уже overflow:hidden и position:relative. Фото делаем
+   absolute с запасом по высоте (±10%), чтобы сдвиг не оголял края рамки.
+============================================ */
+@media (min-width: 769px) {
+    .about-image[data-px-photo] {
+        position: absolute;
+        top: -10%;
+        left: 0;
+        width: 100%;
+        height: 120%;
+        will-change: transform;
+    }
+}
+
+/* Reduced-motion: фото возвращается в поток, без движения */
+@media (prefers-reduced-motion: reduce) {
+    .about-image[data-px-photo] {
+        position: static;
+        top: auto;
+        height: 100%;
+        will-change: auto;
+    }
 }

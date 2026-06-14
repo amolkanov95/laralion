@@ -131,7 +131,7 @@
     ============================================ -->
     <section id="hero">
         <!-- Фоновое изображение (адаптивная подмена: десктоп / мобайл) -->
-        <picture class="hero-bg">
+        <picture class="hero-bg" data-px="0.18">
             <source media="(max-width: 768px)" srcset="./images/hero-mobile.jpg">
             <img src="./images/hero-desktop.jpg" alt="Спальня Lara Lion" loading="eager">
         </picture>
@@ -140,12 +140,17 @@
         <div class="hero-overlay"></div>
 
         <!-- Контентная область -->
-        <div class="hero-content">
+        <div class="hero-content" data-px="-0.10">
             <!-- Фирменная каллиграфическая надпись -->
-            <div class="hero-brand">Lara Lion</div>
+            <div class="hero-brand kinetic-title">
+                <span class="line-mask"><span class="line-inner">Lara Lion</span></span>
+            </div>
 
             <!-- Основной заголовок -->
-            <h1 class="hero-title">ЭСТЕТИКА ПОСТЕЛЬНОГО СОВЕРШЕНСТВА</h1>
+            <h1 class="hero-title kinetic-title">
+                <span class="line-mask"><span class="line-inner">ЭСТЕТИКА ПОСТЕЛЬНОГО</span></span>
+                <span class="line-mask"><span class="line-inner">СОВЕРШЕНСТВА</span></span>
+            </h1>
 
             <!-- Золотой разделитель -->
             <div class="hero-divider"></div>
@@ -156,9 +161,11 @@
             </p>
 
             <!-- Кнопка CTA -->
-            <a href="#collections" class="hero-cta">
-                <span>Смотреть коллекцию</span>
-                <span>→</span>
+            <a href="#collections" class="hero-cta" data-magnetic>
+                <span class="m-label">
+                    <span>Смотреть коллекцию</span>
+                    <span>→</span>
+                </span>
             </a>
         </div>
     </section>
@@ -169,7 +176,9 @@
     <section id="quality">
         <div class="quality-container">
             <!-- Заголовок секции -->
-            <h2 class="section-title">Наши преимущества</h2>
+            <h2 class="section-title kinetic-title">
+                <span class="line-mask"><span class="line-inner">Наши преимущества</span></span>
+            </h2>
             <div class="gold-divider"></div>
 
             <!-- Сетка из 4 карточек -->
@@ -219,7 +228,10 @@
     <section id="collections">
         <div class="collections-container">
             <!-- Заголовок секции -->
-            <h2 class="section-title">Наши коллекции из натуральных тканей</h2>
+            <h2 class="section-title kinetic-title">
+                <span class="line-mask"><span class="line-inner">Наши коллекции</span></span>
+                <span class="line-mask"><span class="line-inner">из натуральных тканей</span></span>
+            </h2>
             <div class="gold-divider"></div>
 
             <!-- Линейка вкладок-фильтров по категориям -->
@@ -260,12 +272,14 @@
             <div class="about-content">
                 <!-- Левая колонка: Фото -->
                 <div class="about-image-wrapper">
-                    <img src="./images/about.jpg" alt="О нас — Lara Lion, уютная спальня с постельным бельем премиум качества" class="about-image" loading="lazy">
+                    <img src="./images/about.jpg" alt="О нас — Lara Lion, уютная спальня с постельным бельем премиум качества" class="about-image" data-px-photo="0.08" loading="lazy">
                 </div>
 
                 <!-- Правая колонка: Текст -->
                 <div class="about-text">
-                    <h2 class="about-title">Lara Lion</h2>
+                    <h2 class="about-title kinetic-title">
+                        <span class="line-mask"><span class="line-inner">Lara Lion</span></span>
+                    </h2>
                     <p class="about-subtitle">— это про любовь к дому</p>
                     <div class="gold-divider" style="margin: 1.5rem auto;"></div>
 
@@ -289,9 +303,11 @@
                         </div>
                     </div>
 
-                    <a href="#contacts" class="btn">
-                        <span>Узнать больше о нас</span>
-                        <span>→</span>
+                    <a href="#contacts" class="btn" data-magnetic>
+                        <span class="m-label">
+                            <span>Узнать больше о нас</span>
+                            <span>→</span>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -306,7 +322,9 @@
             <div class="gifting-content">
                 <!-- Левая колонка: Текст -->
                 <div class="gifting-text">
-                    <h2 class="gifting-title">Искусство дарить</h2>
+                    <h2 class="gifting-title kinetic-title">
+                        <span class="line-mask"><span class="line-inner">Искусство дарить</span></span>
+                    </h2>
                     <p class="gifting-subtitle">Распаковка как приятный ритуал</p>
                     <div class="gold-divider" style="margin: 1.5rem auto;"></div>
 
@@ -337,7 +355,9 @@
     ============================================ -->
     <section id="contacts">
         <div class="contacts-container">
-            <h2 class="section-title">Контакты</h2>
+            <h2 class="section-title kinetic-title">
+                <span class="line-mask"><span class="line-inner">Контакты</span></span>
+            </h2>
             <div class="gold-divider"></div>
 
             <div class="contacts-content">
@@ -365,9 +385,11 @@
                         <p><a href="mailto:laralion@mail.ru">laralion@mail.ru</a></p>
                     </div>
 
-                    <a href="https://yandex.ru/maps/?text=150030%2C%20Ярославль%2C%20Фрунзенский%20район%2C%20проспект%20Фрунзе%2C%203%2C%20офис%20511%2C%20этаж%205" target="_blank" class="btn">
-                        <span>Открыть на карте</span>
-                        <span>→</span>
+                    <a href="https://yandex.ru/maps/?text=150030%2C%20Ярославль%2C%20Фрунзенский%20район%2C%20проспект%20Фрунзе%2C%203%2C%20офис%20511%2C%20этаж%205" target="_blank" class="btn" data-magnetic>
+                        <span class="m-label">
+                            <span>Открыть на карте</span>
+                            <span>→</span>
+                        </span>
                     </a>
                 </div>
 
@@ -427,6 +449,7 @@
     <script src="./js/catalog-slider.js"></script>
     <script src="./js/catalog-filter.js"></script>
     <script src="./js/main.js"></script>
+    <script src="./js/awwwards-effects.js"></script>
 
 </body>
 </html>

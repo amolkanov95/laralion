@@ -7,6 +7,35 @@
 // анимирует main.js на DOMContentLoaded — здесь добавляются карточки.
 // ============================================
 
+// ============================================
+// ПРИЁМ 1 — KINETIC-ЗАГОЛОВКИ
+// Построчный reveal масок при попадании во вьюпорт. Заголовки — статичный
+// HTML (не зависят от каталога), поэтому наблюдаем на DOMContentLoaded.
+// Анимация один раз: unobserve после срабатывания. CLS=0 (см. animations.css).
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    const lines = document.querySelectorAll('.kinetic-title .line-mask');
+    if (!lines.length) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+        // Сразу показать содержимое без анимации
+        lines.forEach((line) => line.classList.add('is-in'));
+        return;
+    }
+
+    const kineticObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                kineticObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.25 });
+
+    lines.forEach((line) => kineticObserver.observe(line));
+});
+
 document.addEventListener('catalog:rendered', () => {
     // Найти все секции для анимации
     const sections = document.querySelectorAll('#quality, #collections, #about, #gifting, #contacts');
