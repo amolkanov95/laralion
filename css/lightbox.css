@@ -1,0 +1,150 @@
+/* ============================================
+   ПОЛНОЭКРАННЫЙ ПРОСМОТР ФОТО ТОВАРА (LIGHTBOX)
+   Только тач-устройства. Открывается тапом по фото в модалке.
+   Фото целиком (contain), жесты: свайп, pinch-зум, двойной тап,
+   панорамирование, свайп вниз / кнопка × для закрытия.
+============================================ */
+
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2500;            /* выше модалки (2000) */
+    background-color: #0c0a08; /* нейтральный тёмный — фото читается лучше */
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    /* Жесты обрабатываем сами — гасим нативные прокрутку/зум страницы */
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    overscroll-behavior: contain;
+}
+
+.lightbox-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Сцена, по которой двигается фото (translateY при свайпе вниз) */
+.lightbox-stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+}
+
+/* Само фото — целиком, без обрезки */
+.lightbox-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    /* transform управляется из JS (зум + панорамирование) */
+    transform-origin: 0 0;
+    will-change: transform;
+    -webkit-user-drag: none;
+    user-drag: none;
+    pointer-events: none; /* жесты ловит оверлей, не картинка */
+}
+
+/* Плавный возврат после жеста (зум-аут, отмена закрытия).
+   Во время активного жеста класс снимается — фото следует за пальцем 1:1. */
+.lightbox-image.animating {
+    transition: transform var(--transition-normal);
+}
+
+.lightbox-stage.animating {
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+/* Кнопка закрытия — всегда видна, запасной выход (важно при зуме) */
+.lightbox-close {
+    position: absolute;
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: 0.75rem;
+    width: 44px;
+    height: 44px;
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.6rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    transition: background-color var(--transition-fast);
+}
+
+.lightbox-close:active {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Счётчик кадров (1 / 5) */
+.lightbox-counter {
+    position: absolute;
+    top: max(0.95rem, env(safe-area-inset-top));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    padding: 0.3rem 0.85rem;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 999px;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    /* Прячется при зуме, чтобы не мешать */
+    transition: opacity var(--transition-fast);
+}
+
+/* Точки-индикаторы */
+.lightbox-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: max(1.1rem, env(safe-area-inset-bottom));
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: opacity var(--transition-fast);
+}
+
+.lightbox-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.lightbox-dot.active {
+    background-color: #fff;
+    transform: scale(1.25);
+}
+
+/* При активном зуме прячем оверлейные подсказки — мешают рассматривать */
+.lightbox-overlay.zoomed .lightbox-counter,
+.lightbox-overlay.zoomed .lightbox-dots {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Единственный кадр — точки не нужны */
+.lightbox-dots:empty {
+    display: none;
+}
+
+/* Подсказка-аффорданс на фото в модалке: фото кликабельно (только тач) */
+.slider-image.is-zoomable {
+    cursor: zoom-in;
+}

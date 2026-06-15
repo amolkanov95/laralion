@@ -76,8 +76,9 @@ const colorImages = (product, colorIndex) => {
 // colorName — название показываемого цвета (для осмысленного SEO-alt).
 const sliderImagesHTML = (product, images, colorName) => {
     const alt = modalAltText(product, colorName);
+    const zoomable = isTouchDevice ? ' is-zoomable' : '';
     return images.map((img, index) =>
-        `<img src="${escModal(window.assetURL(img))}" alt="${escModal(alt)}" class="slider-image ${index === 0 ? 'active' : ''}">`
+        `<img src="${escModal(window.assetURL(img))}" alt="${escModal(alt)}" class="slider-image${zoomable} ${index === 0 ? 'active' : ''}">`
     ).join('');
 };
 
@@ -88,6 +89,44 @@ const sliderDotsHTML = (productId, images) => images.map((_, index) =>
 // Текущий индекс слайда и текущий выбранный цвет для каждого товара
 let currentSlideIndex = {};
 let currentColorIndex = {};
+
+// Тач-устройство: фото в модалке можно открыть в полноэкранном просмотре.
+// Определяем по типу указателя — на десктопе поведение модалки не меняется.
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+
+// Открыть полноэкранный просмотр текущей галереи (текущий цвет + текущий кадр).
+// Галерея и индекс берутся из состояния модалки — данные не дублируются.
+// Листание внутри просмотрщика синхронизируется обратно в модалку.
+function openProductLightbox(productId) {
+    if (typeof window.openLightbox !== 'function') return;
+    const product = getProduct(productId);
+    if (!product) return;
+    const colorIndex = currentColorIndex[productId] || 0;
+    const imgs = colorImages(product, colorIndex);
+    if (!imgs.length) return;
+    window.openLightbox({
+        images: imgs.map((img) => window.assetURL(img)),
+        startIndex: currentSlideIndex[productId] || 0,
+        alt: modalAltText(product, colorNameAt(product, colorIndex)),
+        onIndexChange: (i) => showSlide(productId, i)
+    });
+}
+
+// Навесить открытие просмотрщика на фото слайдера (только тач).
+// Делегирование на контейнере: переживает перестроение кадров при смене цвета.
+function enableLightboxTrigger(productId) {
+    if (!isTouchDevice) return;
+    const modal = document.getElementById(`modal-${productId}`);
+    if (!modal) return;
+    const sliderImages = modal.querySelector('.slider-images');
+    if (!sliderImages) return;
+    sliderImages.classList.add('lightbox-enabled');
+    sliderImages.addEventListener('click', (e) => {
+        if (e.target.classList.contains('slider-image')) {
+            openProductLightbox(productId);
+        }
+    });
+}
 
 // Открыть модальное окно. colorIndex опционален: если не передан — берётся
 // активный цвет карточки (пользователь мог переключить кружок до «Смотреть»).
@@ -105,6 +144,9 @@ function openModal(productId, colorIndex) {
     currentColorIndex[productId] = startColor;
     currentSlideIndex[productId] = 0;
     showSlide(productId, 0);
+
+    // Тап по фото открывает полноэкранный просмотр (только тач-устройства)
+    enableLightboxTrigger(productId);
 
     // Показать модальное окно с анимацией
     setTimeout(() => {
@@ -292,7 +334,7 @@ function selectModalColor(productId, index) {
             const el = document.createElement('img');
             el.src = window.assetURL(img);
             el.alt = alt;
-            el.className = 'slider-image' + (i === 0 ? ' active' : '');
+            el.className = 'slider-image' + (isTouchDevice ? ' is-zoomable' : '') + (i === 0 ? ' active' : '');
             sliderImagesEl.insertBefore(el, arrowLeft);
         });
     }
