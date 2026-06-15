@@ -21,19 +21,43 @@
     // ---- ПРИЁМ 12: прелоадер-вуаль ----
     // В начале IIFE — до остального кода, чтобы вуаль снималась даже если
     // последующие эффекты упадут. Запуск на первом кадре (rAF), не ждём
-    // window.load → минимальное влияние на LCP. Inline-failsafe в <body>
-    // подстрахует, если этот модуль не загрузится.
+    // window.load. Вуаль уходит, когда выполнены ОБА условия: прошёл минимум
+    // показа бренда (HOLD) И готов первый экран (hero-изображение + шрифты),
+    // но в любом случае не позже жёсткого потолка (CAP). Inline-failsafe
+    // в <body> (2.5с) подстрахует, если этот модуль не загрузится.
     const pre = document.getElementById('preloader');
     if (pre) {
         if (reduce) {
             pre.remove();                       // без анимации — сразу убрать
         } else {
+            const HOLD = 500;                   // минимум показа бренда
+            const CAP = 2000;                   // потолок ожидания готовности
+            let lifted = false;
+
+            const lift = () => {
+                if (lifted) return;
+                lifted = true;
+                pre.classList.add('lift');      // вуаль уходит вверх
+                window.setTimeout(() => pre.remove(), 800); // после CSS-transition (.8s)
+            };
+
+            // Готовность первого экрана: hero-изображение + шрифты бренда/заголовка.
+            const heroImg = document.querySelector('#hero .hero-bg img');
+            const imgReady = (heroImg && !heroImg.complete)
+                ? new Promise((res) => {
+                    heroImg.addEventListener('load', res, { once: true });
+                    heroImg.addEventListener('error', res, { once: true });
+                })
+                : Promise.resolve();
+            const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+
             window.requestAnimationFrame(() => {
                 pre.classList.add('reveal');    // проявить бренд
-                window.setTimeout(() => {
-                    pre.classList.add('lift');  // вуаль уходит вверх
-                    window.setTimeout(() => pre.remove(), 800); // после CSS-transition (.8s)
-                }, 500);                        // hold — показать бренд
+                const held = new Promise((res) => window.setTimeout(res, HOLD));
+                // Уйти, когда показали минимум И первый экран готов…
+                Promise.all([held, imgReady, fontsReady]).then(lift);
+                // …но не позже жёсткого потолка, что бы ни случилось.
+                window.setTimeout(lift, CAP);
             });
         }
     }
