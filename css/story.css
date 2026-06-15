@@ -4,10 +4,12 @@
    вертикальная лента (мобайл ≤768px).
 ============================================ */
 #story {
-    background-color: var(--light-linen);   /* мягкий контраст к #quality/#collections */
+    background-color: var(--bg-color);   /* чередование: quality(linen) → story(bg) → collections(linen) */
     padding: var(--spacing-xl) 0;
     position: relative;
-    overflow: hidden;
+    /* overflow:hidden НЕ ставим: он сделал бы #story scroll-контейнером и
+       сломал position:sticky у .story-media. Зум кадра scale(1.04) обрезает
+       overflow:hidden на самой .story-media. */
 }
 
 .story-container {

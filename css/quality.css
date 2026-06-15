@@ -4,7 +4,7 @@
 ============================================ */
 
 #quality {
-    background-color: var(--bg-color);
+    background-color: var(--light-linen);
     padding: var(--spacing-xl) 0;
 }
 
