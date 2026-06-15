@@ -304,3 +304,145 @@
         will-change: auto;
     }
 }
+
+/* ============================================================
+   ПРИЁМ 12 — ПРЕЛОАДЕР-ВУАЛЬ (логика: js/awwwards-effects.js)
+   Заставка при загрузке: проявляется бренд, затем вуаль уходит
+   вверх и удаляется из DOM. z-index 3000 — выше модалки (2000).
+============================================================ */
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-color);
+    will-change: transform;
+    transition: transform .8s cubic-bezier(.76, 0, .24, 1);
+}
+
+.preloader .pl-brand {
+    font-family: var(--font-brand);
+    font-size: clamp(3rem, 10vw, 6rem);
+    color: var(--accent-gold);
+    line-height: 1;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s ease, transform .8s cubic-bezier(.16, 1, .3, 1);
+}
+
+.preloader .pl-sub {
+    font-family: var(--font-heading);
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    font-size: .8rem;
+    color: #9b8d7e;
+    margin-top: .6rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity .6s .15s ease;
+}
+
+.preloader.reveal .pl-brand {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.preloader.reveal .pl-sub {
+    opacity: 1;
+}
+
+.preloader.lift {
+    transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .preloader,
+    .preloader .pl-brand,
+    .preloader .pl-sub {
+        transition: none !important;
+    }
+}
+
+/* ============================================================
+   ПРИЁМ 15 — КНОПКА «ВВЕРХ» С КРУГОВЫМ ПРОГРЕССОМ
+   Логика: js/awwwards-effects.js. z-index 90 — ниже модалки (2000),
+   чтобы открытая модалка перекрывала кнопку.
+============================================================ */
+.to-top {
+    position: fixed;
+    right: 1.4rem;
+    bottom: 1.4rem;
+    z-index: 90;
+    width: 56px;
+    height: 56px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(16px) scale(.9);
+    pointer-events: none;
+    transition: opacity .4s, transform .4s;
+}
+
+.to-top.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.to-top .bg {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--card-bg);
+    box-shadow: 0 6px 20px rgba(43, 31, 23, .18);
+    transition: background .25s;
+}
+
+.to-top svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+}
+
+.to-top .ring-track {
+    stroke: rgba(186, 150, 98, .2);
+}
+
+.to-top .ring-fill {
+    stroke: var(--accent-gold);
+    stroke-linecap: round;
+    transition: stroke-dashoffset .1s linear;
+}
+
+.to-top .arrow {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: color .25s;
+}
+
+.to-top:hover .bg {
+    background: var(--accent-gold);
+}
+
+.to-top:hover .arrow {
+    color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .to-top {
+        transition: opacity .4s;
+    }
+
+    .to-top .ring-fill {
+        transition: none;
+    }
+}

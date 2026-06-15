@@ -18,6 +18,26 @@
     const canHover = window.matchMedia('(hover: hover)').matches;
     const isDesktop = window.matchMedia('(min-width: 769px)').matches;
 
+    // ---- ПРИЁМ 12: прелоадер-вуаль ----
+    // В начале IIFE — до остального кода, чтобы вуаль снималась даже если
+    // последующие эффекты упадут. Запуск на первом кадре (rAF), не ждём
+    // window.load → минимальное влияние на LCP. Inline-failsafe в <body>
+    // подстрахует, если этот модуль не загрузится.
+    const pre = document.getElementById('preloader');
+    if (pre) {
+        if (reduce) {
+            pre.remove();                       // без анимации — сразу убрать
+        } else {
+            window.requestAnimationFrame(() => {
+                pre.classList.add('reveal');    // проявить бренд
+                window.setTimeout(() => {
+                    pre.classList.add('lift');  // вуаль уходит вверх
+                    window.setTimeout(() => pre.remove(), 800); // после CSS-transition (.8s)
+                }, 500);                        // hold — показать бренд
+            });
+        }
+    }
+
     // ---- ПРИЁМ 2: магнитные кнопки (только десктоп + мышь) ----
     if (canHover && isDesktop && !reduce) {
         document.querySelectorAll('[data-magnetic]').forEach((btn) => {
@@ -120,5 +140,37 @@
 
             io.observe(firstCard);
         }, { once: true });
+    }
+
+    // ---- ПРИЁМ 15: кнопка «вверх» с кольцом прогресса (все устройства) ----
+    // Собственный rAF-throttled слушатель scroll (не связан с параллаксом
+    // приёма 4). Кольцо — единственный индикатор прогресса прокрутки.
+    const toTop = document.getElementById('toTop');
+    const ring = document.getElementById('ringFill');
+    if (toTop && ring) {
+        const C = 2 * Math.PI * 25;            // длина окружности r=25 ≈ 157.1
+        ring.style.strokeDasharray = C.toFixed(1);
+        ring.style.strokeDashoffset = C.toFixed(1);
+
+        let ticking = false;
+        const onScroll = () => {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(() => {
+                const h = document.documentElement;
+                const max = h.scrollHeight - h.clientHeight;
+                const p = max > 0 ? h.scrollTop / max : 0;
+                ring.style.strokeDashoffset = (C * (1 - p)).toFixed(1);   // заполнение кольца
+                toTop.classList.toggle('show', h.scrollTop > h.clientHeight * 0.6);
+                ticking = false;
+            });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        onScroll();
+
+        toTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+        });
     }
 })();
