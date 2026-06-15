@@ -446,3 +446,26 @@
         transition: none;
     }
 }
+
+/* ============================================
+   ПРИЁМ 7 — ЗОЛОТОЙ РАЗДЕЛИТЕЛЬ, «РИСУЮЩИЙ СЕБЯ»
+   Опциональный модификатор. Без класса .gold-divider--draw
+   разделитель работает как раньше (статичный).
+   Прорисовка из центра: scaleX 0→1, origin center. Только transform.
+============================================ */
+.gold-divider--draw {
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 1.1s cubic-bezier(.16, 1, .3, 1);
+}
+
+.gold-divider--draw.is-drawn {
+    transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gold-divider--draw {
+        transform: none !important;
+        transition: none !important;
+    }
+}

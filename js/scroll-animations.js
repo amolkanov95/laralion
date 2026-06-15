@@ -77,3 +77,68 @@ document.addEventListener('catalog:rendered', () => {
         observer.observe(card);
     });
 });
+
+// ============================================
+// STORY-СЕКЦИЯ — sticky-смена фото по шагам
+// Десктоп: при входе шага в кадр активируется соответствующий кадр фото.
+// Мобайл: фото внутри шагов (CSS), JS только подсвечивает шаги.
+// reduce: первый кадр активен, все шаги показаны, без наблюдателя.
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    const steps = document.querySelectorAll('#story .story-step');
+    if (!steps.length) return;
+
+    const frames = document.querySelectorAll('#story .story-frame');
+    const badge = document.getElementById('storyBadge');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const setFrame = (idx) => {
+        frames.forEach((f) => f.classList.toggle('is-active', +f.dataset.frame === idx));
+        if (badge) badge.textContent = `Шаг ${idx + 1} / ${frames.length}`;
+    };
+
+    if (reduce) {
+        steps.forEach((s) => s.classList.add('in'));
+        if (frames.length) {
+            frames.forEach((f, i) => f.classList.toggle('is-active', i === 0));
+        }
+        return;
+    }
+
+    const storyObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in');
+                setFrame(+entry.target.dataset.step);
+            }
+        });
+    }, { threshold: 0.6 });
+
+    steps.forEach((s) => storyObserver.observe(s));
+});
+
+// ============================================
+// ПРИЁМ 7 — ЗОЛОТЫЕ РАЗДЕЛИТЕЛИ «рисуют себя»
+// Только элементы с классом .gold-divider--draw. Один раз (unobserve).
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    const dividers = document.querySelectorAll('.gold-divider--draw');
+    if (!dividers.length) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+        dividers.forEach((d) => d.classList.add('is-drawn'));
+        return;
+    }
+
+    const dObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-drawn');
+                dObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    dividers.forEach((d) => dObserver.observe(d));
+});
