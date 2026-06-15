@@ -11,7 +11,11 @@
     justify-content: flex-start;
     padding: 0 5%;
     overflow: hidden;
-    background-color: var(--light-linen);   /* совпадает с #quality: при сдвиге фото параллаксом нет видимого разрыва */
+    /* Фон за фото = linen (как #quality), чтобы сдвиг параллакса не оголял разрыв.
+       isolation:isolate создаёт stacking-контекст: иначе фон #hero (z-index auto)
+       рисуется ПОВЕРХ .hero-bg/.hero-overlay (z-index -2/-1) и перекрывает фото. */
+    isolation: isolate;
+    background-color: var(--light-linen);
 }
 
 /* Фоновое изображение (контейнер <picture>) */
