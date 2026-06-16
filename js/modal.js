@@ -83,7 +83,7 @@ const sliderImagesHTML = (product, images, colorName) => {
 };
 
 const sliderDotsHTML = (productId, images) => images.map((_, index) =>
-    `<div class="slider-dot ${index === 0 ? 'active' : ''}" onclick="showSlide('${productId}', ${index})"></div>`
+    `<button type="button" class="slider-dot ${index === 0 ? 'active' : ''}" aria-label="Фото ${index + 1}" onclick="showSlide('${escModal(productId)}', ${index})"></button>`
 ).join('');
 
 // Текущий индекс слайда и текущий выбранный цвет для каждого товара
@@ -128,11 +128,39 @@ function enableLightboxTrigger(productId) {
     });
 }
 
+// Элемент, на который вернуть фокус после закрытия окна (триггер «Смотреть»).
+let lastFocusedTrigger = null;
+
+// Селектор фокусируемых элементов внутри модалки (для перевода фокуса и trap по Tab).
+const FOCUSABLE = 'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])';
+
+// Удержание фокуса внутри открытой модалки (Tab/Shift+Tab по кругу).
+function trapFocus(e) {
+    if (e.key !== 'Tab') return;
+    const modal = document.querySelector('.modal-overlay.active');
+    if (!modal) return;
+    const items = Array.from(modal.querySelectorAll(FOCUSABLE))
+        .filter(el => el.offsetParent !== null);
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+    }
+}
+
 // Открыть модальное окно. colorIndex опционален: если не передан — берётся
 // активный цвет карточки (пользователь мог переключить кружок до «Смотреть»).
 function openModal(productId, colorIndex) {
     const product = getProduct(productId);
     if (!product) return;
+
+    // Запомнить элемент, вызвавший окно, чтобы вернуть на него фокус при закрытии
+    lastFocusedTrigger = document.activeElement;
 
     const startColor = colorIndex == null ? getActiveColorIndex(productId) : colorIndex;
 
@@ -149,9 +177,16 @@ function openModal(productId, colorIndex) {
     enableLightboxTrigger(productId);
 
     // Показать модальное окно с анимацией
+    const overlay = document.getElementById(`modal-${productId}`);
     setTimeout(() => {
-        document.getElementById(`modal-${productId}`).classList.add('active');
+        overlay.classList.add('active');
+        // Перевести фокус в окно (на кнопку закрытия)
+        const closeBtn = overlay.querySelector('.modal-close');
+        if (closeBtn) closeBtn.focus();
     }, 10);
+
+    // Удерживать фокус внутри окна
+    document.addEventListener('keydown', trapFocus);
 
     // Заблокировать скролл body
     document.body.style.overflow = 'hidden';
@@ -162,10 +197,18 @@ function closeModal(productId) {
     const modal = document.getElementById(`modal-${productId}`);
     modal.classList.remove('active');
 
+    // Снять удержание фокуса
+    document.removeEventListener('keydown', trapFocus);
+
     // Удалить модальное окно после анимации
     setTimeout(() => {
         modal.remove();
         document.body.style.overflow = '';
+        // Вернуть фокус на триггер, открывший окно
+        if (lastFocusedTrigger && typeof lastFocusedTrigger.focus === 'function') {
+            lastFocusedTrigger.focus();
+        }
+        lastFocusedTrigger = null;
     }, 300);
 }
 
@@ -184,13 +227,13 @@ function createModalHTML(productId, product, startColor = 0) {
     const dotsHTML = sliderDotsHTML(productId, images);
 
     const sizesHTML = sizes.map(size =>
-        `<button class="size-btn">${size}</button>`
+        `<button type="button" class="size-btn">${escModal(size)}</button>`
     ).join('');
 
     // Блок выбора цвета внутри окна (только если у товара есть цвета).
     // Клик по кружку перематывает слайдер на фото цвета и меняет строку описания.
     const swatchesHTML = colors.map((color, index) => `
-                            <div class="color-swatch ${index === startColor ? 'active' : ''}" title="${escModal(color.name)}" style="${modalSwatchStyle(color)}" onclick="selectModalColor('${productId}', ${index})"></div>`
+                            <button type="button" class="color-swatch ${index === startColor ? 'active' : ''}" aria-label="Цвет: ${escModal(color.name)}" title="${escModal(color.name)}" style="${modalSwatchStyle(color)}" onclick="selectModalColor('${escModal(productId)}', ${index})"></button>`
     ).join('');
 
     const colorsBlockHTML = colors.length ? `
@@ -201,29 +244,30 @@ function createModalHTML(productId, product, startColor = 0) {
                         </div>` : '';
 
     const ozonBtn = links.ozon
-        ? `<a href="${links.ozon}" target="_blank" class="marketplace-btn">Купить на Ozon →</a>`
-        : `<button class="marketplace-btn disabled">Ozon — Скоро в продаже</button>`;
+        ? `<a href="${escModal(links.ozon)}" target="_blank" rel="noopener" class="marketplace-btn">Купить на Ozon →</a>`
+        : `<button type="button" class="marketplace-btn disabled" disabled>Ozon — Скоро в продаже</button>`;
 
     const avitoBtn = links.avito
-        ? `<a href="${links.avito}" target="_blank" class="marketplace-btn">Заказать на Avito →</a>`
-        : `<button class="marketplace-btn disabled">Avito — Скоро в продаже</button>`;
+        ? `<a href="${escModal(links.avito)}" target="_blank" rel="noopener" class="marketplace-btn">Заказать на Avito →</a>`
+        : `<button type="button" class="marketplace-btn disabled" disabled>Avito — Скоро в продаже</button>`;
 
     const vkBtn = links.vk
-        ? `<a href="${links.vk}" target="_blank" class="marketplace-btn">Обсудить в VK →</a>`
-        : `<button class="marketplace-btn disabled">VK — Скоро в продаже</button>`;
+        ? `<a href="${escModal(links.vk)}" target="_blank" rel="noopener" class="marketplace-btn">Обсудить в VK →</a>`
+        : `<button type="button" class="marketplace-btn disabled" disabled>VK — Скоро в продаже</button>`;
 
+    const pid = escModal(productId);
     return `
-        <div class="modal-overlay" id="modal-${productId}" onclick="closeModalOnOverlay(event, '${productId}')">
+        <div class="modal-overlay" id="modal-${pid}" role="dialog" aria-modal="true" aria-labelledby="modal-title-${pid}" onclick="closeModalOnOverlay(event, '${pid}')">
             <div class="modal-container">
-                <button class="modal-close" onclick="closeModal('${productId}')">×</button>
+                <button type="button" class="modal-close" aria-label="Закрыть" onclick="closeModal('${pid}')">×</button>
 
                 <div class="modal-content">
                     <!-- Левая колонка: Слайдер -->
                     <div class="modal-slider">
                         <div class="slider-images">
                             ${imagesHTML}
-                            <div class="slider-arrow slider-arrow-left" onclick="changeSlide('${productId}', -1)">‹</div>
-                            <div class="slider-arrow slider-arrow-right" onclick="changeSlide('${productId}', 1)">›</div>
+                            <button type="button" class="slider-arrow slider-arrow-left" aria-label="Предыдущее фото" onclick="changeSlide('${pid}', -1)">‹</button>
+                            <button type="button" class="slider-arrow slider-arrow-right" aria-label="Следующее фото" onclick="changeSlide('${pid}', 1)">›</button>
                         </div>
                         <div class="slider-dots">
                             ${dotsHTML}
@@ -232,14 +276,14 @@ function createModalHTML(productId, product, startColor = 0) {
 
                     <!-- Правая колонка: Информация -->
                     <div class="modal-info">
-                        <h2 class="modal-title">${product.name}</h2>
-                        <p class="modal-price">${product.price}</p>
+                        <h2 class="modal-title" id="modal-title-${pid}">${escModal(product.name)}</h2>
+                        <p class="modal-price">${escModal(product.price)}</p>
 ${colorsBlockHTML}
-                        <p class="modal-description">${product.fullDescription}</p>
+                        <p class="modal-description">${escModal(product.fullDescription)}</p>
 
                         <!-- Выбор размеров -->
                         <div class="modal-sizes">
-                            <h4>Выберите размер:</h4>
+                            <h3>Выберите размер:</h3>
                             <div class="size-buttons">
                                 ${sizesHTML}
                             </div>

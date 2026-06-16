@@ -60,10 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             filters.forEach(f => {
                 f.classList.remove('is-active');
-                f.setAttribute('aria-selected', 'false');
+                f.setAttribute('aria-pressed', 'false');
             });
             btn.classList.add('is-active');
-            btn.setAttribute('aria-selected', 'true');
+            btn.setAttribute('aria-pressed', 'true');
 
             applyFilter(btn.dataset.filter);
         });

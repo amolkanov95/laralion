@@ -4,25 +4,11 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🦁 Lara Lion — сайт загружен');
-
-    // Инициализация плавного скролла
+    // Плавный скролл к якорям (единый источник — см. ниже)
     initSmoothScroll();
 
-    // Инициализация мобильного меню
+    // Мобильное меню
     initMobileMenu();
-
-    // Инициализация анимаций при прокрутке
-    initScrollAnimations();
-
-    // Инициализация переключения цветов товаров
-    initColorSwatches();
-
-    // Добавить класс для колыхания декоративных элементов
-    const floralDecor = document.querySelector('.about-decor');
-    if (floralDecor) {
-        floralDecor.classList.add('floral-decor');
-    }
 });
 
 // Плавный скролл к якорям
@@ -88,62 +74,6 @@ function initMobileMenu() {
         if (e.key === 'Escape' && menu.classList.contains('open')) {
             closeMenu();
         }
-    });
-}
-
-// Анимации при прокрутке
-function initScrollAnimations() {
-    const sections = document.querySelectorAll('#quality, #collections, #about, #gifting, #contacts');
-
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    sections.forEach(section => {
-        section.classList.add('fade-in-section');
-        observer.observe(section);
-    });
-
-    // Анимация карточек с задержкой
-    const cards = document.querySelectorAll('.collection-card, .quality-card');
-    cards.forEach((card, index) => {
-        card.classList.add('fade-in-section', `fade-in-delay-${(index % 4) + 1}`);
-        observer.observe(card);
-    });
-}
-
-// Переключение цветов товаров
-function initColorSwatches() {
-    const colorSwatches = document.querySelectorAll('.color-swatch');
-
-    colorSwatches.forEach(swatch => {
-        swatch.addEventListener('click', function() {
-            const card = this.closest('.collection-card');
-            const image = card.querySelector('.collection-image');
-            const allSwatches = card.querySelectorAll('.color-swatch');
-
-            allSwatches.forEach(s => s.classList.remove('active'));
-            this.classList.add('active');
-
-            const newImageSrc = this.getAttribute('data-image');
-            image.style.opacity = '0';
-
-            setTimeout(() => {
-                image.src = newImageSrc;
-                image.style.opacity = '1';
-            }, 150);
-        });
     });
 }
 

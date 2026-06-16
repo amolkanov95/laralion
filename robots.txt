@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /%D0%90%D1%80%D1%85%D0%B8%D0%B2/
 
 Sitemap: https://laralion.ru/sitemap.xml

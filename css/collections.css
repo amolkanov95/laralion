@@ -318,6 +318,9 @@
 .color-swatch {
     width: 30px;
     height: 30px;
+    padding: 0;
+    -webkit-appearance: none;
+    appearance: none;
     border-radius: 50%;
     /* Постоянная мягкая обводка: круг читается, даже если одна половина
        двухцветного кружка (например, белая) сливается со светлым фоном карточки.

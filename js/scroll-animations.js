@@ -2,9 +2,11 @@
 // SCROLL ANIMATIONS
 // Fade-in + Blur Reveal при прокрутке
 //
-// Слушаем 'catalog:rendered' (не DOMContentLoaded): карточки товаров
-// строятся асинхронно после загрузки products.json. Секции страницы
-// анимирует main.js на DOMContentLoaded — здесь добавляются карточки.
+// Единый источник анимаций появления (раньше дублировалось в main.js).
+// Секции и карточки преимуществ — статичный HTML, наблюдаются на
+// DOMContentLoaded (анимируются даже при сбое загрузки каталога).
+// Карточки товаров рендерятся асинхронно (products.json) — подключаются
+// на событие 'catalog:rendered'.
 // ============================================
 
 // ============================================
@@ -36,46 +38,39 @@ document.addEventListener('DOMContentLoaded', () => {
     lines.forEach((line) => kineticObserver.observe(line));
 });
 
-document.addEventListener('catalog:rendered', () => {
-    // Найти все секции для анимации
-    const sections = document.querySelectorAll('#quality, #collections, #about, #gifting, #contacts');
+// Единый наблюдатель появления: добавляет .visible один раз и отписывается.
+const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            fadeObserver.unobserve(entry.target);
+        }
+    });
+}, { root: null, rootMargin: '0px', threshold: 0.1 });
 
-    // Создать Intersection Observer
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1 // Триггер при 10% видимости
-    };
+// Подключить элемент к наблюдателю с каскадной задержкой.
+// Цикл задержек 1→2→3→4 (в CSS определены .fade-in-delay-1..4),
+// поэтому индекс берётся по модулю — корректно при любом числе элементов.
+const observeWithDelay = (el, index) => {
+    el.classList.add('fade-in-section', `fade-in-delay-${(index % 4) + 1}`);
+    fadeObserver.observe(el);
+};
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                // Отключить наблюдение после появления (анимация один раз)
-                observer.unobserve(entry.target);
-            }
+// Секции и карточки преимуществ — статичный HTML: наблюдаем сразу,
+// не дожидаясь каталога (анимируются даже при сбое загрузки products.json).
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#quality, #collections, #about, #gifting, #contacts')
+        .forEach(section => {
+            section.classList.add('fade-in-section');
+            fadeObserver.observe(section);
         });
-    }, observerOptions);
 
-    // Добавить класс fade-in-section ко всем секциям
-    sections.forEach(section => {
-        section.classList.add('fade-in-section');
-        observer.observe(section);
-    });
+    document.querySelectorAll('.quality-card').forEach(observeWithDelay);
+});
 
-    // Анимация для карточек товаров с задержкой
-    const collectionCards = document.querySelectorAll('.collection-card');
-    collectionCards.forEach((card, index) => {
-        card.classList.add('fade-in-section', `fade-in-delay-${index + 1}`);
-        observer.observe(card);
-    });
-
-    // Анимация для карточек преимуществ с задержкой
-    const qualityCards = document.querySelectorAll('.quality-card');
-    qualityCards.forEach((card, index) => {
-        card.classList.add('fade-in-section', `fade-in-delay-${index + 1}`);
-        observer.observe(card);
-    });
+// Карточки товаров строятся асинхронно — подключаем после рендера каталога.
+document.addEventListener('catalog:rendered', () => {
+    document.querySelectorAll('.collection-card').forEach(observeWithDelay);
 });
 
 // ============================================

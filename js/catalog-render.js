@@ -60,7 +60,7 @@
         const initialAlt = altText(product, colors.length ? colors[0].name : '');
 
         const swatchesHTML = colors.map((color, index) => `
-                            <div class="color-swatch ${index === 0 ? 'active' : ''}" data-color="${esc(color.name)}" data-image="${esc(window.assetURL(colorImage(color)))}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></div>`
+                            <button type="button" class="color-swatch ${index === 0 ? 'active' : ''}" aria-label="Цвет: ${esc(color.name)}" data-color="${esc(color.name)}" data-image="${esc(window.assetURL(colorImage(color)))}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></button>`
         ).join('');
 
         return `

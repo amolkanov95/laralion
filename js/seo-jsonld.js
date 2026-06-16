@@ -60,10 +60,14 @@
 
         const lowPrice = parsePrice(product.price);
         if (lowPrice != null) {
+            // offerCount = число вариантов покупки (размеры), минимум 1.
+            const sizes = Array.isArray(product.sizes) ? product.sizes : [];
             item.offers = {
                 '@type': 'AggregateOffer',
                 priceCurrency: 'RUB',
-                lowPrice: lowPrice
+                lowPrice: lowPrice,
+                offerCount: Math.max(1, sizes.length),
+                availability: 'https://schema.org/InStock'
             };
         }
 
