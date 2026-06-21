@@ -1,6 +1,6 @@
 // ============================================
 // ПОЛНОЭКРАННЫЙ ПРОСМОТР ФОТО ТОВАРА (LIGHTBOX)
-// Только тач-устройства. Открывается из modal.js тапом по фото.
+// Открывается из modal.js кликом/тапом по фото.
 //
 // Точка входа: window.openLightbox({ images, startIndex, alt, onIndexChange })
 //   images       — массив готовых URL (уже прошли через assetURL)
@@ -8,9 +8,10 @@
 //   alt          — alt-текст (SEO/доступность)
 //   onIndexChange(i) — колбэк синхронизации: модалка остаётся на том же кадре
 //
-// Жесты: свайп ←/→ листать, pinch и двойной тап — зум,
-// палец по увеличенному фото — панорамирование, свайп вниз — закрыть.
-// Запасной выход — кнопка ×. Логика галереи берётся из modal.js (не дублируется).
+// Тач: свайп ←/→ листать, pinch и двойной тап — зум, палец по
+// увеличенному фото — панорамирование, свайп вниз — закрыть.
+// Десктоп: стрелки ‹ › и клавиши ←/→ листать; клик по фону, клавиша
+// Esc или кнопка × — закрыть. Логика галереи берётся из modal.js.
 // ============================================
 
 (function lightboxModule() {
@@ -23,7 +24,7 @@
     const DOUBLE_TAP_DIST = 30;   // максимум смещения между тапами, px
 
     // --- Состояние сеанса ---
-    let overlay, stage, imgEl, closeBtn, counterEl, dotsEl;
+    let overlay, stage, imgEl, closeBtn, counterEl, dotsEl, prevBtn, nextBtn;
     let images = [];
     let index = 0;
     let altText = '';
@@ -55,6 +56,8 @@
             <div class="lightbox-stage">
                 <img class="lightbox-image" alt="">
             </div>
+            <button class="lightbox-arrow lightbox-arrow-left" type="button" aria-label="Предыдущее фото">‹</button>
+            <button class="lightbox-arrow lightbox-arrow-right" type="button" aria-label="Следующее фото">›</button>
             <div class="lightbox-dots" aria-hidden="true"></div>
         `;
         document.body.appendChild(overlay);
@@ -64,8 +67,12 @@
         closeBtn = overlay.querySelector('.lightbox-close');
         counterEl = overlay.querySelector('.lightbox-counter');
         dotsEl = overlay.querySelector('.lightbox-dots');
+        prevBtn = overlay.querySelector('.lightbox-arrow-left');
+        nextBtn = overlay.querySelector('.lightbox-arrow-right');
 
         closeBtn.addEventListener('click', close);
+        prevBtn.addEventListener('click', () => goTo(index - 1, -1));
+        nextBtn.addEventListener('click', () => goTo(index + 1, 1));
 
         // Жесты вешаем на оверлей (фото — pointer-events:none)
         overlay.addEventListener('touchstart', onTouchStart, { passive: false });
@@ -73,8 +80,24 @@
         overlay.addEventListener('touchend', onTouchEnd, { passive: false });
         overlay.addEventListener('touchcancel', onTouchEnd, { passive: false });
 
+        // Десктоп: клик по тёмному фону (вне фото) закрывает просмотр.
+        // На тач закрытие — свайпом вниз; click конфликтовал бы с тапами/зумом.
+        if (!window.matchMedia('(pointer: coarse)').matches) {
+            overlay.addEventListener('click', onOverlayClick);
+        }
+
         // Кадр по размеру фото — пересчёт границ панорамирования
         imgEl.addEventListener('load', measureImage);
+    }
+
+    // Клик по фону закрывает. Фото — pointer-events:none, поэтому попадание
+    // по нему определяем по его прямоугольнику (а не по e.target).
+    function onOverlayClick(e) {
+        if (e.target.closest('.lightbox-close, .lightbox-arrow')) return;
+        const r = imgEl.getBoundingClientRect();
+        const onImage = e.clientX >= r.left && e.clientX <= r.right &&
+                        e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!onImage) close();
     }
 
     // --- Открытие / закрытие ---
@@ -114,9 +137,13 @@
     function render() {
         imgEl.src = images[index];
         imgEl.alt = altText;
+        const multi = images.length > 1;
         counterEl.textContent = `${index + 1} / ${images.length}`;
-        counterEl.style.display = images.length > 1 ? '' : 'none';
-        dotsEl.innerHTML = images.length > 1
+        counterEl.style.display = multi ? '' : 'none';
+        // Стрелки (десктоп) нужны только при нескольких кадрах
+        prevBtn.style.display = multi ? '' : 'none';
+        nextBtn.style.display = multi ? '' : 'none';
+        dotsEl.innerHTML = multi
             ? images.map((_, i) => `<span class="lightbox-dot${i === index ? ' active' : ''}"></span>`).join('')
             : '';
     }
@@ -376,11 +403,12 @@
         gesture = null;
     }
 
-    // Закрытие по Escape (на случай тач-ноутбуков с клавиатурой)
+    // Клавиатура (десктоп / тач-ноутбуки): Esc — закрыть, ←/→ — листать
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && overlay && overlay.classList.contains('active')) {
-            close();
-        }
+        if (!overlay || !overlay.classList.contains('active')) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') goTo(index - 1, -1);
+        else if (e.key === 'ArrowRight') goTo(index + 1, 1);
     });
 
     // Экспорт точки входа

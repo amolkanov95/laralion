@@ -76,9 +76,8 @@ const colorImages = (product, colorIndex) => {
 // colorName — название показываемого цвета (для осмысленного SEO-alt).
 const sliderImagesHTML = (product, images, colorName) => {
     const alt = modalAltText(product, colorName);
-    const zoomable = isTouchDevice ? ' is-zoomable' : '';
     return images.map((img, index) =>
-        `<img src="${escModal(window.assetURL(img))}" alt="${escModal(alt)}" class="slider-image${zoomable} ${index === 0 ? 'active' : ''}">`
+        `<img src="${escModal(window.assetURL(img))}" alt="${escModal(alt)}" class="slider-image is-zoomable ${index === 0 ? 'active' : ''}">`
     ).join('');
 };
 
@@ -89,10 +88,6 @@ const sliderDotsHTML = (productId, images) => images.map((_, index) =>
 // Текущий индекс слайда и текущий выбранный цвет для каждого товара
 let currentSlideIndex = {};
 let currentColorIndex = {};
-
-// Тач-устройство: фото в модалке можно открыть в полноэкранном просмотре.
-// Определяем по типу указателя — на десктопе поведение модалки не меняется.
-const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 
 // Открыть полноэкранный просмотр текущей галереи (текущий цвет + текущий кадр).
 // Галерея и индекс берутся из состояния модалки — данные не дублируются.
@@ -112,10 +107,9 @@ function openProductLightbox(productId) {
     });
 }
 
-// Навесить открытие просмотрщика на фото слайдера (только тач).
+// Навесить открытие просмотрщика на фото слайдера (клик/тап).
 // Делегирование на контейнере: переживает перестроение кадров при смене цвета.
 function enableLightboxTrigger(productId) {
-    if (!isTouchDevice) return;
     const modal = document.getElementById(`modal-${productId}`);
     if (!modal) return;
     const sliderImages = modal.querySelector('.slider-images');
@@ -173,7 +167,7 @@ function openModal(productId, colorIndex) {
     currentSlideIndex[productId] = 0;
     showSlide(productId, 0);
 
-    // Тап по фото открывает полноэкранный просмотр (только тач-устройства)
+    // Клик/тап по фото открывает полноэкранный просмотр
     enableLightboxTrigger(productId);
 
     // Показать модальное окно с анимацией
@@ -378,7 +372,7 @@ function selectModalColor(productId, index) {
             const el = document.createElement('img');
             el.src = window.assetURL(img);
             el.alt = alt;
-            el.className = 'slider-image' + (isTouchDevice ? ' is-zoomable' : '') + (i === 0 ? ' active' : '');
+            el.className = 'slider-image is-zoomable' + (i === 0 ? ' active' : '');
             sliderImagesEl.insertBefore(el, arrowLeft);
         });
     }

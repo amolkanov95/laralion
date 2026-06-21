@@ -1,8 +1,8 @@
 /* ============================================
    ПОЛНОЭКРАННЫЙ ПРОСМОТР ФОТО ТОВАРА (LIGHTBOX)
-   Только тач-устройства. Открывается тапом по фото в модалке.
-   Фото целиком (contain), жесты: свайп, pinch-зум, двойной тап,
-   панорамирование, свайп вниз / кнопка × для закрытия.
+   Открывается кликом/тапом по фото в модалке. Фото целиком (contain).
+   Тач: свайп, pinch-зум, двойной тап, панорамирование, свайп вниз.
+   Десктоп: стрелки ‹ ›, клавиши ←/→, клик по фону / кнопка × / Esc.
 ============================================ */
 
 .lightbox-overlay {
@@ -132,6 +132,48 @@
     transform: scale(1.25);
 }
 
+/* Стрелки навигации — десктоп (мышь). На тач листают жестами. */
+.lightbox-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    transition: background-color var(--transition-fast);
+}
+
+.lightbox-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.lightbox-arrow-left {
+    left: 0.75rem;
+}
+
+.lightbox-arrow-right {
+    right: 0.75rem;
+}
+
+/* На тач навигация жестами — кнопки-стрелки не нужны */
+@media (pointer: coarse) {
+    .lightbox-arrow {
+        display: none;
+    }
+}
+
 /* При активном зуме прячем оверлейные подсказки — мешают рассматривать */
 .lightbox-overlay.zoomed .lightbox-counter,
 .lightbox-overlay.zoomed .lightbox-dots {
@@ -144,7 +186,7 @@
     display: none;
 }
 
-/* Подсказка-аффорданс на фото в модалке: фото кликабельно (только тач) */
+/* Аффорданс: фото в модалке кликабельно — открывает полноэкранный просмотр */
 .slider-image.is-zoomable {
     cursor: zoom-in;
 }
