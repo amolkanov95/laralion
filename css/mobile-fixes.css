@@ -60,8 +60,12 @@
         line-height: 1.6;
     }
 
-    /* Интерактивные элементы должны быть достаточно большими */
-    a, button {
+    /* Интерактивные элементы — удобный тач-таргет ≥44px.
+       Круглые иконочные кнопки исключены: им размер задаёт собственный
+       width/height, а min-height вытянул бы их в овалы (кружки цвета,
+       точки слайдера, стрелки, крестики, кнопка «наверх»). */
+    a,
+    button:not(.color-swatch):not(.slider-dot):not(.slider-arrow):not(.catalog-arrow):not(.modal-close):not(.lightbox-close):not(.lightbox-arrow):not(.to-top):not(.mobile-menu-close) {
         min-height: 44px;
         display: inline-flex;
         align-items: center;
