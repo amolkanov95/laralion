@@ -50,13 +50,22 @@ function withSecurityHeaders(response, url) {
 // redirect_uri вычисляется из домена запроса, поэтому к домену не привязан.
 async function handleAuth(request, env, url) {
     try {
+        const state = crypto.randomUUID();
         const authUrl = new URL('https://github.com/login/oauth/authorize');
         authUrl.searchParams.set('client_id', env.GITHUB_CLIENT_ID);
         authUrl.searchParams.set('redirect_uri', `${url.origin}/api/callback`);
         // repo,user — права на запись в репозиторий (нужно Decap для коммитов).
         authUrl.searchParams.set('scope', 'repo,user');
-        authUrl.searchParams.set('state', crypto.randomUUID());
-        return Response.redirect(authUrl.toString(), 301);
+        authUrl.searchParams.set('state', state);
+        // CSRF-защита: тот же state кладём в HttpOnly-cookie и сверяем в callback.
+        // 302 (не 301): редирект не должен кэшироваться, иначе cookie не переустановится.
+        return new Response(null, {
+            status: 302,
+            headers: {
+                'Location': authUrl.toString(),
+                'Set-Cookie': `oauth_state=${state}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=600`,
+            },
+        });
     } catch (error) {
         return new Response(`Ошибка авторизации: ${error.message}`, { status: 500 });
     }
@@ -65,6 +74,13 @@ async function handleAuth(request, env, url) {
 // Callback: обмен code на access_token и возврат его в окно Decap.
 async function handleCallback(request, env, url) {
     try {
+        // CSRF-проверка: state из query (его вернул GitHub) должен совпасть с cookie.
+        const stateParam = url.searchParams.get('state');
+        const cookieState = readCookie(request, 'oauth_state');
+        if (!stateParam || !cookieState || stateParam !== cookieState) {
+            return new Response('Ошибка авторизации: неверный state (CSRF).', { status: 400 });
+        }
+
         const code = url.searchParams.get('code');
         const response = await fetch('https://github.com/login/oauth/access_token', {
             method: 'POST',
@@ -82,21 +98,31 @@ async function handleCallback(request, env, url) {
 
         const result = await response.json();
 
+        // Очистить state-cookie независимо от исхода обмена.
+        const clearCookie = 'oauth_state=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0';
+
         if (result.error) {
             return new Response(renderBody('error', result), {
                 status: 401,
-                headers: { 'Content-Type': 'text/html' },
+                headers: { 'Content-Type': 'text/html', 'Set-Cookie': clearCookie },
             });
         }
 
         const content = { token: result.access_token, provider: 'github' };
         return new Response(renderBody('success', content), {
             status: 200,
-            headers: { 'Content-Type': 'text/html' },
+            headers: { 'Content-Type': 'text/html', 'Set-Cookie': clearCookie },
         });
     } catch (error) {
         return new Response(`Ошибка callback: ${error.message}`, { status: 500 });
     }
+}
+
+// Прочитать значение cookie из заголовка запроса.
+function readCookie(request, name) {
+    const header = request.headers.get('Cookie') || '';
+    const match = header.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
+    return match ? match[1] : null;
 }
 
 // HTML, который отдаётся во всплывающее окно: устанавливает связь с открывшим
