@@ -75,7 +75,7 @@ document.addEventListener('catalog:rendered', () => {
 
 // ============================================
 // STORY-СЕКЦИЯ — sticky-смена фото по шагам
-// Десктоп: при входе шага в кадр активируется соответствующий кадр фото.
+// Десктоп: активен кадр шага, чей центр ближе всего к линии активации.
 // Мобайл: фото внутри шагов (CSS), JS только подсвечивает шаги.
 // reduce: первый кадр активен, все шаги показаны, без наблюдателя.
 // ============================================
@@ -100,14 +100,45 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const storyObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in');
-                setFrame(+entry.target.dataset.step);
+    // Активный кадр = шаг, чей центр ближе всего к «линии активации» (доля высоты
+    // вьюпорта). Сравнение по центру, а не по площади: когда два шага помещаются на
+    // экране целиком, их ratio равны (1.0) и max-ratio залипал бы на раннем шаге,
+    // переключая кадр лишь когда предыдущий шаг уползёт за верх экрана — отсюда
+    // «последний кадр срабатывает поздно». Линия даёт ровный тайминг и симметрию
+    // (вниз/вверх); пересчёт на каждом коллбэке устойчив к пакетной доставке событий.
+    let currentFrame = 0;                       // совпадает с .is-active кадром 0 в HTML
+    const ACTIVATE_LINE = 0.45;                 // доля высоты вьюпорта
+
+    // Дробный список порогов — частые коллбэки наблюдателя для плавного пересчёта.
+    const thresholds = [];
+    for (let i = 0; i <= 20; i++) thresholds.push(i / 20);
+
+    const pickFrame = () => {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const line = vh * ACTIVATE_LINE;
+        let best = -1;
+        let bestDist = Infinity;
+        steps.forEach((s) => {
+            const r = s.getBoundingClientRect();
+            if (r.bottom <= 0 || r.top >= vh) return;      // шаг вне экрана — пропускаем
+            const dist = Math.abs((r.top + r.bottom) / 2 - line);
+            if (dist < bestDist) {
+                bestDist = dist;
+                best = +s.dataset.step;
             }
         });
-    }, { threshold: 0.6 });
+        if (best !== -1 && best !== currentFrame) {
+            currentFrame = best;
+            setFrame(best);
+        }
+    };
+
+    const storyObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.classList.add('in'); // текст проявляется и остаётся
+        });
+        pickFrame();
+    }, { threshold: thresholds });
 
     steps.forEach((s) => storyObserver.observe(s));
 });
