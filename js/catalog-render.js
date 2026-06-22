@@ -13,6 +13,14 @@
     const grid = document.querySelector('.collections-grid');
     if (!grid) return;
 
+    // Делегированный клик: «Смотреть» открывает модалку (вместо инлайн onclick — под строгую CSP).
+    // openModal — глобальная функция из modal.js; на момент клика она уже определена.
+    grid.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action="openModal"]');
+        if (!btn || !grid.contains(btn)) return;
+        if (typeof openModal === 'function') openModal(btn.dataset.slug);
+    });
+
     // Экранирование пользовательских строк, попадающих в HTML-разметку
     const esc = (str) => String(str).replace(/[&<>"']/g, (ch) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -77,7 +85,7 @@
                         </div>
 
                         <p class="collection-price">${esc(product.price)}</p>
-                        <button class="collection-btn" onclick="openModal('${esc(product.slug)}')">
+                        <button class="collection-btn" data-action="openModal" data-slug="${esc(product.slug)}">
                             <span>Смотреть</span>
                             <span>→</span>
                         </button>
