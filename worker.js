@@ -17,9 +17,34 @@ export default {
         if (url.pathname === '/api/auth') return handleAuth(request, env, url);
         if (url.pathname === '/api/callback') return handleCallback(request, env, url);
         // Всё остальное — статический сайт (HTML/CSS/JS/изображения).
-        return env.ASSETS.fetch(request);
+        // Заголовки безопасности (Слой 2) добавляем только к статике;
+        // ответы /api/* не трогаем — у callback свой инлайн-скрипт.
+        const response = await env.ASSETS.fetch(request);
+        return withSecurityHeaders(response, url);
     },
 };
+
+// Заголовки безопасности для статических ответов (Слой 2: настоящие HTTP-заголовки
+// для Cloudflare/будущего laralion.ru; на GitHub Pages их аналог — CSP-мета в HTML).
+function withSecurityHeaders(response, url) {
+    const headers = new Headers(response.headers);
+    headers.set('X-Content-Type-Options', 'nosniff');
+    headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    headers.set('X-Frame-Options', 'SAMEORIGIN');
+    headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+    headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    // Строгую CSP НЕ применяем к /admin: Decap CMS (инлайн-стили, blob:, web workers,
+    // запросы к api.github.com, внешний скрипт unpkg) под ней сломается.
+    // Админка защищается SRI + noindex + входом через GitHub OAuth.
+    if (!url.pathname.startsWith('/admin')) {
+        headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
+    }
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers,
+    });
+}
 
 // Старт GitHub OAuth: редирект на страницу авторизации GitHub.
 // redirect_uri вычисляется из домена запроса, поэтому к домену не привязан.

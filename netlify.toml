@@ -14,6 +14,9 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    # Строгую CSP в for="/*" НЕ добавляем: она применилась бы и к /admin и сломала
+    # бы Decap. Публичную CSP на Netlify даёт <meta> в index.html (Слой 1).
 
 # --- Кэш изображений (7 дней) ---
 # CSS/JS/HTML намеренно НЕ кэшируем агрессивно: имён с хэшами нет (нет сборки),
