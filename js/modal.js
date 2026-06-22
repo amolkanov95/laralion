@@ -81,8 +81,8 @@ const sliderImagesHTML = (product, images, colorName) => {
     ).join('');
 };
 
-const sliderDotsHTML = (productId, images) => images.map((_, index) =>
-    `<button type="button" class="slider-dot ${index === 0 ? 'active' : ''}" aria-label="Фото ${index + 1}" onclick="showSlide('${escModal(productId)}', ${index})"></button>`
+const sliderDotsHTML = (images) => images.map((_, index) =>
+    `<button type="button" class="slider-dot ${index === 0 ? 'active' : ''}" aria-label="Фото ${index + 1}" data-action="showSlide" data-index="${index}"></button>`
 ).join('');
 
 // Текущий индекс слайда и текущий выбранный цвет для каждого товара
@@ -147,6 +147,30 @@ function trapFocus(e) {
     }
 }
 
+// Делегированный клик внутри модального окна (вместо инлайн onclick — под строгую CSP).
+// Навешивается на оверлей в openModal; productId берём из id оверлея
+// (тот же приём, что в обработчике Escape ниже). Логика самих функций не меняется.
+function handleModalClick(e) {
+    const overlay = e.currentTarget;
+    const productId = overlay.id.replace('modal-', '');
+    const el = e.target.closest('[data-action]');
+    if (el && overlay.contains(el)) {
+        const action = el.dataset.action;
+        if (action === 'closeModal') {
+            closeModal(productId);
+        } else if (action === 'showSlide') {
+            showSlide(productId, Number(el.dataset.index));
+        } else if (action === 'selectModalColor') {
+            selectModalColor(productId, Number(el.dataset.index));
+        } else if (action === 'changeSlide') {
+            changeSlide(productId, Number(el.dataset.dir));
+        }
+        return;
+    }
+    // Клик мимо кнопок — возможно, по фону оверлея (закрытие).
+    closeModalOnOverlay(e, productId);
+}
+
 // Открыть модальное окно. colorIndex опционален: если не передан — берётся
 // активный цвет карточки (пользователь мог переключить кружок до «Смотреть»).
 function openModal(productId, colorIndex) {
@@ -172,6 +196,7 @@ function openModal(productId, colorIndex) {
 
     // Показать модальное окно с анимацией
     const overlay = document.getElementById(`modal-${productId}`);
+    overlay.addEventListener('click', handleModalClick);
     setTimeout(() => {
         overlay.classList.add('active');
         // Перевести фокус в окно (на кнопку закрытия)
@@ -218,7 +243,7 @@ function createModalHTML(productId, product, startColor = 0) {
     // Слайдер строится из галереи стартового цвета (или общих фото для товара без цветов).
     const images = colorImages(product, startColor);
     const imagesHTML = sliderImagesHTML(product, images, colorNameAt(product, startColor));
-    const dotsHTML = sliderDotsHTML(productId, images);
+    const dotsHTML = sliderDotsHTML(images);
 
     const sizesHTML = sizes.map(size =>
         `<button type="button" class="size-btn">${escModal(size)}</button>`
@@ -227,7 +252,7 @@ function createModalHTML(productId, product, startColor = 0) {
     // Блок выбора цвета внутри окна (только если у товара есть цвета).
     // Клик по кружку перематывает слайдер на фото цвета и меняет строку описания.
     const swatchesHTML = colors.map((color, index) => `
-                            <button type="button" class="color-swatch ${index === startColor ? 'active' : ''}" aria-label="Цвет: ${escModal(color.name)}" title="${escModal(color.name)}" style="${modalSwatchStyle(color)}" onclick="selectModalColor('${escModal(productId)}', ${index})"></button>`
+                            <button type="button" class="color-swatch ${index === startColor ? 'active' : ''}" aria-label="Цвет: ${escModal(color.name)}" title="${escModal(color.name)}" style="${modalSwatchStyle(color)}" data-action="selectModalColor" data-index="${index}"></button>`
     ).join('');
 
     const colorsBlockHTML = colors.length ? `
@@ -251,17 +276,17 @@ function createModalHTML(productId, product, startColor = 0) {
 
     const pid = escModal(productId);
     return `
-        <div class="modal-overlay" id="modal-${pid}" role="dialog" aria-modal="true" aria-labelledby="modal-title-${pid}" onclick="closeModalOnOverlay(event, '${pid}')">
+        <div class="modal-overlay" id="modal-${pid}" role="dialog" aria-modal="true" aria-labelledby="modal-title-${pid}">
             <div class="modal-container">
-                <button type="button" class="modal-close" aria-label="Закрыть" onclick="closeModal('${pid}')">×</button>
+                <button type="button" class="modal-close" aria-label="Закрыть" data-action="closeModal">×</button>
 
                 <div class="modal-content">
                     <!-- Левая колонка: Слайдер -->
                     <div class="modal-slider">
                         <div class="slider-images">
                             ${imagesHTML}
-                            <button type="button" class="slider-arrow slider-arrow-left" aria-label="Предыдущее фото" onclick="changeSlide('${pid}', -1)">‹</button>
-                            <button type="button" class="slider-arrow slider-arrow-right" aria-label="Следующее фото" onclick="changeSlide('${pid}', 1)">›</button>
+                            <button type="button" class="slider-arrow slider-arrow-left" aria-label="Предыдущее фото" data-action="changeSlide" data-dir="-1">‹</button>
+                            <button type="button" class="slider-arrow slider-arrow-right" aria-label="Следующее фото" data-action="changeSlide" data-dir="1">›</button>
                         </div>
                         <div class="slider-dots">
                             ${dotsHTML}
@@ -376,7 +401,7 @@ function selectModalColor(productId, index) {
             sliderImagesEl.insertBefore(el, arrowLeft);
         });
     }
-    if (dotsEl) dotsEl.innerHTML = sliderDotsHTML(productId, images);
+    if (dotsEl) dotsEl.innerHTML = sliderDotsHTML(images);
 
     // Слайдер на первый кадр новой галереи
     currentSlideIndex[productId] = 0;
