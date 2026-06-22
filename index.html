@@ -99,8 +99,8 @@
             <div class="pl-sub">Эстетика в доме</div>
         </div>
     </div>
-    <script>/* failsafe: гарантированно снять вуаль не позже 2.5с */
-      setTimeout(function(){var p=document.getElementById('preloader');if(p)p.classList.add('lift');},2500);</script>
+    <!-- Failsafe прелоадера вынесен в отдельный файл ради строгой CSP (script-src 'self') -->
+    <script src="./js/preloader-failsafe.js"></script>
 
     <!-- ============================================
          ШАПКА САЙТА (HEADER)
