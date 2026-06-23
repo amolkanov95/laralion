@@ -11,6 +11,10 @@ desktop.ini
 .vscode/
 .idea/
 
+# Claude Code (локальные настройки)
+.claude/settings.json
+.claude/settings.local.json
+
 # Cloudflare Workers / Wrangler
 node_modules
 .wrangler
