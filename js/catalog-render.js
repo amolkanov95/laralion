@@ -76,7 +76,7 @@
         ).join('');
 
         return `
-                <div class="collection-card" data-product="${esc(product.slug)}" data-category="${esc(product.category)}">
+                <article class="collection-card" data-product="${esc(product.slug)}" data-category="${esc(product.category)}">
                     <div class="collection-image-wrapper">
                         <img src="${esc(initialImage)}" alt="${esc(initialAlt)}" class="collection-image" loading="lazy">
                         <div class="collection-veil" aria-hidden="true"></div>
@@ -94,7 +94,7 @@
                             <span>→</span>
                         </button>
                     </div>
-                </div>`;
+                </article>`;
     };
 
     const ready = window.catalogReady || Promise.resolve();

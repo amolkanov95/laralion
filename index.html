@@ -7,7 +7,7 @@
     <!-- Безопасность (Слой 1: работает на любом хостинге, включая GitHub Pages) -->
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
-    <meta name="description" content="Мастерская премиального домашнего текстиля Lara Lion в Ярославле. Индивидуальный пошив постельного белья из варёного хлопка, кухонного текстиля и тканей по вашим размерам.">
+    <meta name="description" content="Премиальный домашний текстиль Lara Lion в Ярославле: индивидуальный пошив постельного белья из варёного хлопка, кухонного текстиля и тканей по вашим меркам.">
     <meta name="keywords" content="постельное бельё варёный хлопок, постельное бельё с рюшами, купить постельное бельё Ярославль, индивидуальный пошив постельного белья, кухонный текстиль, ателье постельного белья Ярославль, домашний текстиль">
     <meta name="author" content="Lara Lion">
     <title>Постельное бельё из варёного хлопка — Lara Lion, Ярославль</title>
@@ -22,10 +22,12 @@
 
     <!-- Open Graph для социальных сетей -->
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
     <meta property="og:title" content="Lara Lion | Премиальный домашний текстиль из варёного хлопка">
     <meta property="og:description" content="Индивидуальный пошив постельного белья с рюшами, кухонного текстиля и тканей по вашим меркам в Ярославле. Фирменная подарочная упаковка включена.">
     <meta property="og:url" content="https://laralion.ru/">
     <meta property="og:image" content="https://laralion.ru/images/hero-desktop.jpg">
+    <meta property="og:image:alt" content="Спальня с постельным бельём Lara Lion из варёного хлопка">
     <meta property="og:site_name" content="Lara Lion">
 
     <!-- Twitter / X -->
@@ -116,7 +118,7 @@
         </span>
 
         <!-- Навигационное меню по центру -->
-        <nav>
+        <nav aria-label="Основная навигация">
             <ul class="header-nav">
                 <li><a href="#collections">Каталог</a></li>
                 <li><a href="#about">О нас</a></li>
@@ -142,7 +144,7 @@
     ============================================ -->
     <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
         <button class="mobile-menu-close" type="button" aria-label="Закрыть меню"></button>
-        <nav class="mobile-menu-nav">
+        <nav class="mobile-menu-nav" aria-label="Мобильное меню">
             <a href="#collections">Каталог</a>
             <a href="#about">О нас</a>
             <a href="#contacts">Контакты</a>
