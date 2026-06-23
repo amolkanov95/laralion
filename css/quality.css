@@ -15,10 +15,12 @@
 }
 
 .quality-grid {
+    list-style: none;
+    margin: var(--spacing-lg) 0 0;
+    padding: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-md);
-    margin-top: var(--spacing-lg);
 }
 
 .quality-card {
