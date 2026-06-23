@@ -13,12 +13,16 @@
     const grid = document.querySelector('.collections-grid');
     if (!grid) return;
 
-    // Делегированный клик: «Смотреть» открывает модалку (вместо инлайн onclick — под строгую CSP).
+    // Делегированный клик: открываем модалку по клику в ЛЮБУЮ область карточки
+    // (пользователи чаще тапают саму карточку, а не кнопку). Кружки цвета
+    // исключены — они только меняют цвет. Кнопка «Смотреть» остаётся видимым CTA
+    // и точкой входа для клавиатуры: её click всплывает сюда и тоже открывает окно.
     // openModal — глобальная функция из modal.js; на момент клика она уже определена.
     grid.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-action="openModal"]');
-        if (!btn || !grid.contains(btn)) return;
-        if (typeof openModal === 'function') openModal(btn.dataset.slug);
+        if (e.target.closest('.color-swatches')) return; // выбор цвета — не открытие
+        const card = e.target.closest('.collection-card');
+        if (!card || !grid.contains(card)) return;
+        if (typeof openModal === 'function') openModal(card.dataset.product);
     });
 
     // Экранирование пользовательских строк, попадающих в HTML-разметку
@@ -85,7 +89,7 @@
                         </div>
 
                         <p class="collection-price">${esc(product.price)}</p>
-                        <button class="collection-btn" data-action="openModal" data-slug="${esc(product.slug)}">
+                        <button type="button" class="collection-btn">
                             <span>Смотреть</span>
                             <span>→</span>
                         </button>
@@ -95,7 +99,19 @@
 
     const ready = window.catalogReady || Promise.resolve();
 
-    ready.then(() => {
+    // Ждём И данные, И полный разбор DOM. Модули-подписчики (color-swatches,
+    // scroll-animations и др.) подключены тегами <script> ПОСЛЕ этого файла и
+    // регистрируют слушатель 'catalog:rendered' лишь после своей загрузки.
+    // Крошечный products.json на быстром (локальном) хостинге успевал
+    // зарезолвиться и отправить событие РАНЬШЕ, чем эти скрипты догружались —
+    // событие уходило в пустоту, переключение цвета не навешивалось.
+    // DOMContentLoaded гарантирует, что все синхронные <script> уже выполнены
+    // и подписка состоялась до диспатча (гонка publish-before-subscribe).
+    const domReady = document.readyState === 'loading'
+        ? new Promise((res) => document.addEventListener('DOMContentLoaded', res, { once: true }))
+        : Promise.resolve();
+
+    Promise.all([ready, domReady]).then(() => {
         const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
 
         grid.innerHTML = products

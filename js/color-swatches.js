@@ -31,15 +31,32 @@ document.addEventListener('catalog:rendered', () => {
                 description.textContent = newDescription;
             }
 
-            // Изменить изображение
+            // Изменить изображение.
+            // Смена привязана к ЗАГРУЗКЕ нового кадра, а не к таймеру: фото
+            // комплектов — webp 150–370 КБ, и при первом выборе цвета (lazy,
+            // ещё не в кэше) кадр не успевал декодироваться за 150 мс — старый
+            // src возвращался видимым и «фото не менялось». Preload гарантирует,
+            // что новый кадр готов до показа, независимо от кэша и скорости сети.
             const newImageSrc = this.getAttribute('data-image');
-            image.src = newImageSrc;
+            if (newImageSrc && image.getAttribute('src') !== newImageSrc) {
+                // Токен против гонки быстрых переключений: применяем только
+                // последний выбор (ранние preload завершатся вхолостую).
+                const token = (card._swatchToken || 0) + 1;
+                card._swatchToken = token;
 
-            // Плавная анимация смены изображения
-            image.style.opacity = '0';
-            setTimeout(() => {
-                image.style.opacity = '1';
-            }, 150);
+                const reveal = () => {
+                    if (card._swatchToken !== token) return; // был более поздний клик
+                    image.src = newImageSrc;
+                    image.style.opacity = '1';
+                };
+
+                image.style.opacity = '0';      // плавно гасим старый кадр (CSS opacity 0.3s)
+                const pre = new Image();
+                pre.onload = reveal;
+                pre.onerror = reveal;           // на ошибке не оставляем фото невидимым
+                pre.src = newImageSrc;
+                if (pre.complete) reveal();      // уже в кэше — onload может не сработать
+            }
         });
     });
 });
