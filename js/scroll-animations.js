@@ -59,7 +59,7 @@ const observeWithDelay = (el, index) => {
 // Секции и карточки преимуществ — статичный HTML: наблюдаем сразу,
 // не дожидаясь каталога (анимируются даже при сбое загрузки products.json).
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('#quality, #collections, #about, #gifting, #contacts')
+    document.querySelectorAll('#quality, #collections, #about, #gifting, #faq, #contacts')
         .forEach(section => {
             section.classList.add('fade-in-section');
             fadeObserver.observe(section);

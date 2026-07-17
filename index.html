@@ -62,6 +62,7 @@
     <link rel="stylesheet" href="./css/about.css">
     <link rel="stylesheet" href="./css/story.css">
     <link rel="stylesheet" href="./css/gifting.css">
+    <link rel="stylesheet" href="./css/faq.css">
     <link rel="stylesheet" href="./css/contacts.css">
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/animations.css">
@@ -96,6 +97,46 @@
         "https://vk.ru/creativeworkshop_yar",
         "https://ozon.ru/s/lara-lion",
         "https://www.avito.ru/user/a473e347f13379228ba139453378b361/profile"
+      ]
+    }
+    </script>
+
+    <!-- Структурированные данные: FAQ (тексты = видимой секции #faq) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Из какого материала сшито постельное бельё?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Всё постельное бельё Lara Lion шьётся из 100% варёного хлопка премиум-класса. Это натуральная ткань, прошедшая особую обработку: она мягкая с первого прикосновения, дышащая и приятная к коже, а с каждой стиркой становится только нежнее." }
+        },
+        {
+          "@type": "Question",
+          "name": "Как ухаживать за варёным хлопком?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Стирайте при 30–40° в деликатном режиме мягкими средствами без хлорного отбеливателя, отжим — на низких оборотах. Гладить не обязательно: мягкая «мятая» фактура — природная особенность варёного хлопка и часть его очарования." }
+        },
+        {
+          "@type": "Question",
+          "name": "Шьёте ли вы на заказ по индивидуальным размерам?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Да, шьём комплекты по вашим меркам — под нестандартные матрасы, одеяла и подушки. Также есть готовые комплекты: их можно заказать напрямую или в наших магазинах на Ozon и Avito." }
+        },
+        {
+          "@type": "Question",
+          "name": "Какие сроки изготовления заказа?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Сроки зависят от состава заказа — в среднем пошив занимает около 3 дней. Точный срок подтвердим при оформлении заказа." }
+        },
+        {
+          "@type": "Question",
+          "name": "Как я получу свой заказ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Отправляем заказы СДЭК и Почтой России по всей России, работает Авито-доставка, а заказы на маркетплейсах доставляют их собственные службы." }
+        },
+        {
+          "@type": "Question",
+          "name": "Входит ли подарочная упаковка в стоимость?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Да. Каждый комплект упакован в крафт-коробку с изумрудной атласной лентой и фирменный холщовый шопер — готовый подарок, не требующий лишних хлопот. Упаковка включена в стоимость." }
+        }
       ]
     }
     </script>
@@ -616,6 +657,50 @@
                     <!-- Накладной слой: коробка, квадрат 1:1, перекрывает левый нижний угол -->
                     <img src="./images/packaging/box.webp" alt="Подарочная крафт-коробка с изумрудной лентой" class="gifting-image gifting-overlay" width="1200" height="1200" loading="lazy">
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         БЛОК FAQ (ВОПРОСЫ И ОТВЕТЫ)
+    ============================================ -->
+    <section id="faq" aria-labelledby="faq-heading">
+        <div class="faq-container">
+            <h2 class="section-title kinetic-title" id="faq-heading">
+                <span class="line-mask"><span class="line-inner">Вопросы и ответы</span></span>
+            </h2>
+            <div class="gold-divider"></div>
+
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary class="faq-question">Из какого материала сшито постельное бельё?</summary>
+                    <p class="faq-answer">Всё постельное бельё Lara Lion шьётся из 100% варёного хлопка премиум-класса. Это натуральная ткань, прошедшая особую обработку: она мягкая с первого прикосновения, дышащая и приятная к коже, а с каждой стиркой становится только нежнее.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Как ухаживать за варёным хлопком?</summary>
+                    <p class="faq-answer">Стирайте при 30–40° в деликатном режиме мягкими средствами без хлорного отбеливателя, отжим — на низких оборотах. Гладить не обязательно: мягкая «мятая» фактура — природная особенность варёного хлопка и часть его очарования.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Шьёте ли вы на заказ по индивидуальным размерам?</summary>
+                    <p class="faq-answer">Да, шьём комплекты по вашим меркам — под нестандартные матрасы, одеяла и подушки. Также есть готовые комплекты: их можно заказать напрямую или в наших магазинах на Ozon и Avito.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Какие сроки изготовления заказа?</summary>
+                    <p class="faq-answer">Сроки зависят от состава заказа — в среднем пошив занимает около 3 дней. Точный срок подтвердим при оформлении заказа.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Как я получу свой заказ?</summary>
+                    <p class="faq-answer">Отправляем заказы СДЭК и Почтой России по всей России, работает Авито-доставка, а заказы на маркетплейсах доставляют их собственные службы.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Входит ли подарочная упаковка в стоимость?</summary>
+                    <p class="faq-answer">Да. Каждый комплект упакован в крафт-коробку с изумрудной атласной лентой и фирменный холщовый шопер — готовый подарок, не требующий лишних хлопот. Упаковка включена в стоимость.</p>
+                </details>
             </div>
         </div>
     </section>
