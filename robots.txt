@@ -3,4 +3,26 @@ Allow: /
 Disallow: /admin/
 Disallow: /%D0%90%D1%80%D1%85%D0%B8%D0%B2/
 
-Sitemap: https://laralion.ru/sitemap.xml
+# ИИ-краулеры: явное разрешение (GEO). У каждого агента своя группа —
+# краулер читает только её, поэтому Disallow дублируется.
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://amolkanov95.github.io/laralion/sitemap.xml
