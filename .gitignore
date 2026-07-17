@@ -14,6 +14,8 @@ desktop.ini
 # Claude Code (локальные настройки)
 .claude/settings.json
 .claude/settings.local.json
+.superpowers/
+.playwright-mcp/
 
 # Cloudflare Workers / Wrangler
 node_modules
