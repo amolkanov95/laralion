@@ -139,12 +139,6 @@
     transform: rotate(90deg);
 }
 
-/* Плавное увеличение иконок блока about
-   (у иконок преимуществ — свои анимации в quality.css) */
-.about-feature-icon {
-    transition: transform 0.3s ease;
-}
-
 /* Плавное смещение ссылок маркетплейсов */
 .marketplace-link {
     transition: all 0.3s ease;
