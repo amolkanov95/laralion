@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 0 5%;
+    padding: 0 var(--hero-pad-x);
     overflow: hidden;
     /* Фон за фото = linen (как #quality), чтобы сдвиг параллакса не оголял разрыв.
        isolation:isolate создаёт stacking-контекст: иначе фон #hero (z-index auto)
@@ -54,7 +54,7 @@
 /* Контентная область Hero */
 .hero-content {
     width: 50%;
-    max-width: 600px;
+    max-width: var(--hero-content-max);
     z-index: 10;
     position: relative;
     display: flex;
