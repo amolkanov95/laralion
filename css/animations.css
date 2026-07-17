@@ -118,7 +118,7 @@
 
 /* Hover-подъём — только на десктопе с курсором.
    На мобильной ширине карточку обрезает scroll-контейнер каталога.
-   Zoom/проявление фото вынесены в collections.css (приём 3, image-mask) */
+   Zoom фото — в collections.css */
 @media (hover: hover) and (min-width: 769px) {
     .collection-card:hover {
         transform: translateY(-8px);

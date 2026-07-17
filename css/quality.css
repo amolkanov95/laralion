@@ -1,6 +1,8 @@
 /* ============================================
    БЛОК ПРЕИМУЩЕСТВ (QUALITY)
-   4 плашки с золотыми иконками и описанием
+   Bento-сетка: карточки 01 и 04 укрупнены (span 2).
+   Линейные SVG-иконки (уголь + золото), номера Great Vibes,
+   индивидуальные hover-анимации иконок.
 ============================================ */
 
 #quality {
@@ -19,44 +21,83 @@
     margin: var(--spacing-lg) 0 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-md);
 }
 
+.quality-card--wide {
+    grid-column: span 2;
+}
+
 .quality-card {
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
     padding: var(--spacing-md);
     background-color: var(--card-bg);
-    border: 1px solid var(--accent-gold);
+    border: 1px solid rgba(186, 150, 98, 0.45);
+    border-top: 3px solid var(--accent-gold);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.quality-card:hover {
+/* Компактные карточки (02, 03) — вертикальная компоновка */
+.quality-card:not(.quality-card--wide) {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-sm);
+}
+
+/* Специфичность выше, чем .fade-in-section.visible (animations.css),
+   иначе transform: translateY(0) оттуда перебивает подъём при hover */
+.quality-grid .quality-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
-    border-color: var(--accent-gold);
 }
 
-/* Иконка слева */
-.quality-icon {
+/* Декоративный номер карточки (приём из раздела Story) */
+.quality-num {
+    position: absolute;
+    top: 2px;
+    right: 16px;
+    font-family: var(--font-brand);
+    font-size: 2.8rem;
+    line-height: 1;
+    color: var(--accent-gold);
+    opacity: 0.26;
+    pointer-events: none;
+}
+
+/* Круглая золотая подложка иконки */
+.quality-icon-wrap {
     flex-shrink: 0;
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    border-radius: var(--radius-sm);
-    filter: brightness(0) saturate(100%) invert(73%) sepia(18%) saturate(629%) hue-rotate(358deg) brightness(92%) contrast(87%);
-    transition: transform var(--transition-normal);
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(186, 150, 98, 0.10);
 }
 
-.quality-card:hover .quality-icon {
-    transform: scale(1.1);
+/* Линейный стиль: угольный контур + золотой акцентный штрих (.accent) */
+.quality-icon {
+    width: 46px;
+    height: 46px;
+    overflow: visible;
+    fill: none;
+    stroke: var(--text-color);
+    stroke-width: 1.6;
+    stroke-linecap: round;
 }
 
-/* Текстовый контент справа */
+.quality-icon .accent {
+    stroke: var(--accent-gold);
+}
+
 .quality-content {
     flex: 1;
 }
@@ -77,6 +118,87 @@
     line-height: 1.6;
 }
 
+/* ---- Индивидуальные hover-анимации иконок (триггер — карточка) ---- */
+@media (hover: hover) {
+    /* 01 — хлопок «дышит» */
+    .quality-card:hover .icon-cotton {
+        animation: q-breathe 2.4s ease-in-out infinite;
+    }
+
+    /* 02 — нить шва «дорисовывается» бегущим пунктиром */
+    .icon-stitch .thread {
+        stroke-dasharray: 4 5;
+    }
+
+    .quality-card:hover .icon-stitch .thread {
+        animation: q-stitch 1.6s linear infinite;
+    }
+
+    /* 03 — лист покачивается, прожилка прорисовывается */
+    .icon-leaf {
+        transform-origin: 50% 90%;
+    }
+
+    .quality-card:hover .icon-leaf {
+        animation: q-sway 2.6s ease-in-out infinite;
+    }
+
+    .icon-leaf .vein {
+        stroke-dasharray: 30;
+        stroke-dashoffset: 30;
+    }
+
+    .quality-card:hover .icon-leaf .vein {
+        animation: q-draw 0.9s ease forwards;
+    }
+
+    /* 04 — крышка коробки приоткрывается */
+    .icon-box .lid {
+        transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-box: fill-box;
+        transform-origin: 15% 80%;
+    }
+
+    .quality-card:hover .icon-box .lid {
+        transform: translateY(-3px) rotate(-8deg);
+    }
+}
+
+@keyframes q-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+@keyframes q-stitch {
+    to { stroke-dashoffset: -18; }
+}
+
+@keyframes q-sway {
+    0%, 100% { transform: rotate(-2.5deg); }
+    50% { transform: rotate(2.5deg); }
+}
+
+@keyframes q-draw {
+    to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .quality-card:hover .icon-cotton,
+    .quality-card:hover .icon-stitch .thread,
+    .quality-card:hover .icon-leaf,
+    .quality-card:hover .icon-leaf .vein {
+        animation: none;
+    }
+
+    .icon-box .lid {
+        transition: none;
+    }
+
+    .icon-leaf .vein {
+        stroke-dashoffset: 0;
+    }
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
     #quality {
@@ -93,14 +215,34 @@
         margin-top: var(--spacing-md);
     }
 
+    .quality-card--wide {
+        grid-column: auto;
+    }
+
+    /* На мобильных все карточки — горизонтальные, как раньше */
+    .quality-card:not(.quality-card--wide) {
+        flex-direction: row;
+        text-align: left;
+    }
+
     .quality-card {
         padding: var(--spacing-sm);
         gap: var(--spacing-sm);
     }
 
+    .quality-icon-wrap {
+        width: 56px;
+        height: 56px;
+    }
+
     .quality-icon {
-        width: 50px;
-        height: 50px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .quality-num {
+        font-size: 2.2rem;
+        right: 12px;
     }
 
     .quality-title {
@@ -113,15 +255,21 @@
 }
 
 @media (max-width: 480px) {
-    .quality-card {
+    .quality-card,
+    .quality-card:not(.quality-card--wide) {
         flex-direction: column;
         text-align: center;
         padding: var(--spacing-md);
     }
 
+    .quality-icon-wrap {
+        width: 64px;
+        height: 64px;
+    }
+
     .quality-icon {
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
     }
 
     .quality-title {

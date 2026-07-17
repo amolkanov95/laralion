@@ -348,38 +348,71 @@
             </h2>
             <div class="gold-divider"></div>
 
-            <!-- Список из 4 преимуществ (семантический ul/li) -->
+            <!-- Bento-сетка из 4 преимуществ: 01 и 04 укрупнены (span 2).
+                 Иконки — линейные inline-SVG (стили и анимации в quality.css) -->
             <ul class="quality-grid" role="list">
-                <!-- Преимущество 1: Варёный хлопок -->
-                <li class="quality-card">
-                    <img src="./images/icons/IMG_20260531_125525.png" alt="" aria-hidden="true" class="quality-icon">
+                <!-- 01: Варёный хлопок (укрупнённая) -->
+                <li class="quality-card quality-card--wide">
+                    <span class="quality-num" aria-hidden="true">01</span>
+                    <span class="quality-icon-wrap" aria-hidden="true">
+                        <svg class="quality-icon icon-cotton" viewBox="0 0 48 48" focusable="false">
+                            <circle cx="24" cy="12" r="7"/>
+                            <circle cx="16" cy="18" r="7"/>
+                            <circle cx="32" cy="18" r="7"/>
+                            <path class="accent" d="M24 25c0 7-2 11-4 16"/>
+                            <path class="accent" d="M22 34c4-3 8-2 11 1"/>
+                        </svg>
+                    </span>
                     <div class="quality-content">
                         <h3 class="quality-title">100% варёный хлопок</h3>
                         <p class="quality-description">Постельное бельё Lara Lion шьётся из натурального варёного хлопка премиум-класса — мягкого, дышащего и приятного к коже с каждой стиркой.</p>
                     </div>
                 </li>
 
-                <!-- Преимущество 2: Ручная работа -->
+                <!-- 02: Ручная работа -->
                 <li class="quality-card">
-                    <img src="./images/icons/1.png" alt="" aria-hidden="true" class="quality-icon">
+                    <span class="quality-num" aria-hidden="true">02</span>
+                    <span class="quality-icon-wrap" aria-hidden="true">
+                        <svg class="quality-icon icon-stitch" viewBox="0 0 48 48" focusable="false">
+                            <path d="M15 33 L33 15"/>
+                            <ellipse cx="31" cy="17" rx="2.2" ry="3.4" transform="rotate(45 31 17)"/>
+                            <path class="accent thread" d="M8 40 C14 46 26 44 32 36 C36 31 38 26 37 21"/>
+                        </svg>
+                    </span>
                     <div class="quality-content">
                         <h3 class="quality-title">Ручная работа</h3>
                         <p class="quality-description">Аккуратные рюши, ровные швы и прочные завязки — каждый комплект постельного белья с рюшами шьётся вручную с вниманием к деталям.</p>
                     </div>
                 </li>
 
-                <!-- Преимущество 3: Гипоаллергенные материалы -->
+                <!-- 03: Гипоаллергенные материалы -->
                 <li class="quality-card">
-                    <img src="./images/icons/IMG_20260531_125644.png" alt="" aria-hidden="true" class="quality-icon">
+                    <span class="quality-num" aria-hidden="true">03</span>
+                    <span class="quality-icon-wrap" aria-hidden="true">
+                        <svg class="quality-icon icon-leaf" viewBox="0 0 48 48" focusable="false">
+                            <path d="M24 6 C37 14 38 30 24 42 C10 30 11 14 24 6 Z"/>
+                            <path class="accent vein" d="M24 13 L24 36 M24 20 C20 21 18 23 17 26 M24 24 C28 25 30 27 31 30"/>
+                        </svg>
+                    </span>
                     <div class="quality-content">
                         <h3 class="quality-title">Гипоаллергенные материалы</h3>
                         <p class="quality-description">Только безопасные гипоаллергенные ткани — домашний текстиль Lara Lion подходит чувствительной коже, маленьким детям и аллергикам.</p>
                     </div>
                 </li>
 
-                <!-- Преимущество 4: Подарочная упаковка -->
-                <li class="quality-card">
-                    <img src="./images/icons/IMG_20260531_125721.png" alt="" aria-hidden="true" class="quality-icon">
+                <!-- 04: Подарочная упаковка (укрупнённая) -->
+                <li class="quality-card quality-card--wide">
+                    <span class="quality-num" aria-hidden="true">04</span>
+                    <span class="quality-icon-wrap" aria-hidden="true">
+                        <svg class="quality-icon icon-box" viewBox="0 0 48 48" focusable="false">
+                            <rect x="13" y="22" width="22" height="17" rx="1.5"/>
+                            <path class="accent" d="M24 22 L24 39"/>
+                            <g class="lid">
+                                <rect x="10" y="16" width="28" height="6" rx="1"/>
+                                <path class="accent" d="M24 16 C20 10 15 11 16 14 C17 16 21 16 24 16 C27 16 31 16 32 14 C33 11 28 10 24 16 Z"/>
+                            </g>
+                        </svg>
+                    </span>
                     <div class="quality-content">
                         <h3 class="quality-title">Подарочная упаковка</h3>
                         <p class="quality-description">К каждому заказу — фирменная подарочная упаковка: готовый подарок к празднику, который не требует лишних хлопот и времени.</p>
