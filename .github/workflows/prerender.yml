@@ -15,6 +15,12 @@ on:
 permissions:
   contents: write
 
+# Серия правок в Decap подряд = серия пушей: оставляем только свежайший run,
+# отменённый старый безопасен — новый пересобирает всё из полного снимка.
+concurrency:
+  group: prerender
+  cancel-in-progress: true
+
 jobs:
   prerender:
     runs-on: ubuntu-latest
@@ -23,7 +29,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Smoke-тест общего шаблона карточки
         # run: | — из-за «: » внутри строки команда не может быть plain-скаляром YAML
