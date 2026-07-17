@@ -4,7 +4,7 @@
 ============================================ */
 
 footer {
-    background-color: var(--light-linen);
+    background-color: var(--bg-color);   /* чередование: contacts(linen) → footer(bg) */
     padding: var(--spacing-lg) 0 var(--spacing-md) 0;
 }
 
