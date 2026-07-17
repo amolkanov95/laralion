@@ -1,9 +1,7 @@
 // ============================================
-// AWWWARDS-ЭФФЕКТЫ (приёмы 2, 4 + подсказка к приёму 3)
+// AWWWARDS-ЭФФЕКТЫ (приёмы 2, 4)
 //   2 — магнитные кнопки (притяжение CTA к курсору)
 //   4 — мягкий параллакс hero-фона и крупных фото
-//   3* — разовая авто-демонстрация image-mask hover на первой карточке
-//        (намёк пользователю, что вуаль поднимается при наведении)
 //
 // Самодостаточный модуль (IIFE). Подключается ПОСЛЕ main.js.
 // Внешних зависимостей нет. Эффекты включаются только при выполнении
@@ -123,47 +121,6 @@
             window.addEventListener('resize', onScroll, { passive: true });
             update(); // стартовая раскладка (offset≈0 у hero → без CLS)
         }
-    }
-
-    // ---- ПРИЁМ 3* (подсказка): авто-демонстрация подъёма вуали ----
-    // Один раз при первом появлении каталога первая видимая карточка сама
-    // проигрывает hover-механику (вуаль вверх + фото в цвет) и плавно
-    // возвращается — намёк, что эффект реагирует на курсор. Только десктоп
-    // с мышью без reduced-motion; на мобайле/сенсоре не запускается.
-    if (canHover && isDesktop && !reduce) {
-        document.addEventListener('catalog:rendered', () => {
-            const grid = document.querySelector('.collections-grid');
-            if (!grid || !('IntersectionObserver' in window)) return;
-
-            const firstCard = grid.querySelector('.collection-card:not(.is-hidden)');
-            if (!firstCard) return;
-
-            let done = false;       // подсказка проигрывается единожды за загрузку
-            let cancelled = false;  // пользователь сам навёл курсор → подсказка не нужна
-
-            grid.addEventListener('mouseover', () => { cancelled = true; }, { once: true });
-
-            const play = () => {
-                if (done || cancelled) return;
-                done = true;
-                // Раскрытие через те же transition (0.9s), что и hover (collections.css)
-                firstCard.classList.add('is-hinting');
-                // Держим раскрытым ~0.7s, затем плавный возврат (ещё 0.9s)
-                window.setTimeout(() => firstCard.classList.remove('is-hinting'), 1600);
-            };
-
-            const io = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        io.unobserve(entry.target);
-                        // Пауза, чтобы взгляд успел переместиться на каталог
-                        window.setTimeout(play, 500);
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            io.observe(firstCard);
-        }, { once: true });
     }
 
     // ---- ПРИЁМ 15: кнопка «вверх» с кольцом прогресса (все устройства) ----
