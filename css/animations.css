@@ -139,14 +139,10 @@
     transform: rotate(90deg);
 }
 
-/* Плавное увеличение иконок преимуществ */
-.quality-icon,
+/* Плавное увеличение иконок блока about
+   (у иконок преимуществ — свои анимации в quality.css) */
 .about-feature-icon {
     transition: transform 0.3s ease;
-}
-
-.quality-card:hover .quality-icon {
-    transform: scale(1.1);
 }
 
 /* Плавное смещение ссылок маркетплейсов */
