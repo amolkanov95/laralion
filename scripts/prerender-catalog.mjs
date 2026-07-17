@@ -29,6 +29,12 @@ const data = JSON.parse(readFileSync(join(ROOT, 'products.json'), 'utf8'));
 const products = (Array.isArray(data.products) ? data.products : [])
     .filter((p) => p && p.published !== false);
 
+// Guard: при битом/пустом products.json останавливаемся с ошибкой,
+// чтобы автозапуск в CI не закоммитил главную с пустым каталогом.
+if (!products.length) {
+    throw new Error('products.json: 0 опубликованных товаров — пре-рендер остановлен');
+}
+
 // Пути фото в статике — относительные ('./collections/...'): работают и на
 // корне домена (Cloudflare/Netlify/localhost), и в подпапке GitHub Pages.
 const relAsset = (p) => (p && p.startsWith('/') && !p.startsWith('//')) ? '.' + p : p;
@@ -112,8 +118,11 @@ let html = readFileSync(indexPath, 'utf8');
 const cardsHTML = products.map((p) => cardHTML(p, relAsset)).join('') + '\n                    ';
 html = replaceBetween(html, '<!-- prerender:cards:start -->', '<!-- prerender:cards:end -->', cardsHTML);
 
+// «<» экранируем юникод-эскейпом \u003c (валидный JSON): строка вида «</script>»
+// в описании товара из CMS иначе молча оборвала бы <script>-блок в head;
+// заодно защищает HTML-маркеры пре-рендера от коллизий со строками данных.
 const jsonLdHTML = '\n    <script type="application/ld+json">\n'
-    + JSON.stringify(jsonLd, null, 2)
+    + JSON.stringify(jsonLd, null, 2).replace(/</g, '\\u003c')
     + '\n    </script>\n    ';
 html = replaceBetween(html, '<!-- prerender:jsonld:start -->', '<!-- prerender:jsonld:end -->', jsonLdHTML);
 
@@ -121,7 +130,7 @@ writeFileSync(indexPath, html);
 
 // --- llms.txt ---
 const catalogLines = products.map((p) =>
-    `- ${p.name} — ${p.price} — ${p.shortDescription || truncate(p.fullDescription, 120)}`
+    `- ${p.name} — ${p.price || 'цена по запросу'} — ${p.shortDescription || truncate(p.fullDescription, 120)}`
 ).join('\n');
 
 const llms = `# Lara Lion — премиальный домашний текстиль из варёного хлопка (Ярославль)
