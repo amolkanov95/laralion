@@ -1,5 +1,6 @@
 # Генерация images/og-image.jpg (1200x630) из hero-фото для Open Graph.
 # Прежний og:image указывал на несуществующий hero-desktop.jpg (404).
+# Требует: pip install Pillow
 import os
 from PIL import Image
 
