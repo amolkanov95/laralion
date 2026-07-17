@@ -95,6 +95,102 @@
       ]
     }
     </script>
+
+    <!-- Статический JSON-LD каталога — генерируется scripts/prerender-catalog.mjs, руками не править -->
+    <!-- prerender:jsonld:start -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Product",
+        "name": "Вдохновение",
+        "description": "Варёный хлопок с рюшами и кружевом",
+        "brand": {
+          "@type": "Brand",
+          "name": "Lara Lion"
+        },
+        "image": "https://amolkanov95.github.io/laralion/collections/vdohnovenie-zelenyy-1.webp",
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "RUB",
+          "lowPrice": 14900,
+          "offerCount": 4,
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Product",
+        "name": "Прованс",
+        "description": "Клетка-виши с рюшами, 100% хлопок",
+        "brand": {
+          "@type": "Brand",
+          "name": "Lara Lion"
+        },
+        "image": "https://amolkanov95.github.io/laralion/collections/provans-bezhevyy-1.webp",
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "RUB",
+          "lowPrice": 15000,
+          "offerCount": 4,
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Product",
+        "name": "Шарм",
+        "description": "Бежево-белая полоска, варёный хлопок, двойные рюши",
+        "brand": {
+          "@type": "Brand",
+          "name": "Lara Lion"
+        },
+        "image": "https://amolkanov95.github.io/laralion/collections/sharm-1.webp",
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "RUB",
+          "lowPrice": 14600,
+          "offerCount": 4,
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "Product",
+        "name": "Классика",
+        "description": "Кофейно-коричневый, варёный хлопок в клетку",
+        "brand": {
+          "@type": "Brand",
+          "name": "Lara Lion"
+        },
+        "image": "https://amolkanov95.github.io/laralion/collections/klassika-1.webp",
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "RUB",
+          "lowPrice": 7400,
+          "offerCount": 4,
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    }
+  ]
+}
+    </script>
+    <!-- prerender:jsonld:end -->
 </head>
 <body>
 
@@ -341,7 +437,86 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 </button>
                 <div class="catalog-viewport">
-                    <div class="collections-grid"></div>
+                    <div class="collections-grid"><!-- prerender:cards:start -->
+                <article class="collection-card" data-product="vdohnovenie" data-category="bedding">
+                    <div class="collection-image-wrapper">
+                        <img src="./collections/vdohnovenie-zelenyy-1.webp" alt="Комплект постельного белья Вдохновение из варёного хлопка с рюшами и кружевом, эвкалиптовый зелёный" class="collection-image" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-name">Вдохновение</h3>
+                        <p class="collection-description">Эвкалиптовый зелёный, варёный хлопок, рюши и кружево</p>
+
+                        <div class="color-swatches">
+                            <button type="button" class="color-swatch active" aria-label="Цвет: Зелёный" data-color="Зелёный" data-image="./collections/vdohnovenie-zelenyy-1.webp" data-description="Эвкалиптовый зелёный, варёный хлопок, рюши и кружево" title="Зелёный" style="background-color: #7C8A6B"></button>
+                            <button type="button" class="color-swatch " aria-label="Цвет: Синий" data-color="Синий" data-image="./collections/vdohnovenie-siniy-1.webp" data-description="Пыльно-голубой, варёный хлопок, рюши и кружево" title="Синий" style="background-color: #8AA0BC"></button>
+                        </div>
+
+                        <p class="collection-price">от 14 900 ₽</p>
+                        <button type="button" class="collection-btn">
+                            <span>Смотреть</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </article>
+                <article class="collection-card" data-product="provans" data-category="bedding">
+                    <div class="collection-image-wrapper">
+                        <img src="./collections/provans-bezhevyy-1.webp" alt="Комплект постельного белья Прованс в клетку-виши с рюшами, бежевый, 100% хлопок" class="collection-image" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-name">Прованс</h3>
+                        <p class="collection-description">Бежевая клетка-виши с рюшами, 100% хлопок</p>
+
+                        <div class="color-swatches">
+                            <button type="button" class="color-swatch active" aria-label="Цвет: Бежевый" data-color="Бежевый" data-image="./collections/provans-bezhevyy-1.webp" data-description="Бежевая клетка-виши с рюшами, 100% хлопок" title="Бежевый" style="background: linear-gradient(135deg, #B7A07E 0 50%, #F3EDE2 50% 100%)"></button>
+                            <button type="button" class="color-swatch " aria-label="Цвет: Зелёный" data-color="Зелёный" data-image="./collections/provans-zelenyy-1.webp" data-description="Зелёная клетка-виши с рюшами, 100% хлопок" title="Зелёный" style="background: linear-gradient(135deg, #8C9479 0 50%, #F0EBDF 50% 100%)"></button>
+                        </div>
+
+                        <p class="collection-price">от 15 000 ₽</p>
+                        <button type="button" class="collection-btn">
+                            <span>Смотреть</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </article>
+                <article class="collection-card" data-product="sharm" data-category="bedding">
+                    <div class="collection-image-wrapper">
+                        <img src="./collections/sharm-1.webp" alt="Комплект постельного белья Шарм из варёного хлопка с двойными рюшами, бежево-белая полоска 0,2 мм" class="collection-image" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-name">Шарм</h3>
+                        <p class="collection-description">Бежево-белая полоска 0,2 мм, варёный хлопок, двойные рюши</p>
+
+                        <div class="color-swatches">
+                            <button type="button" class="color-swatch active" aria-label="Цвет: Натуральный" data-color="Натуральный" data-image="./collections/sharm-1.webp" data-description="Бежево-белая полоска 0,2 мм, варёный хлопок, двойные рюши" title="Натуральный" style="background-color: #C3AE91"></button>
+                        </div>
+
+                        <p class="collection-price">от 14 600 ₽</p>
+                        <button type="button" class="collection-btn">
+                            <span>Смотреть</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </article>
+                <article class="collection-card" data-product="klassika" data-category="bedding">
+                    <div class="collection-image-wrapper">
+                        <img src="./collections/klassika-1.webp" alt="Комплект постельного белья Классика из варёного хлопка в клетку, кофейно-коричневый" class="collection-image" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-name">Классика</h3>
+                        <p class="collection-description">Кофейно-коричневый, варёный хлопок в клетку</p>
+
+                        <div class="color-swatches">
+                            <button type="button" class="color-swatch active" aria-label="Цвет: Коричневый" data-color="Коричневый" data-image="./collections/klassika-1.webp" data-description="Кофейно-коричневый, варёный хлопок в клетку" title="Коричневый" style="background-color: #7E5B43"></button>
+                        </div>
+
+                        <p class="collection-price">от 7 400 ₽</p>
+                        <button type="button" class="collection-btn">
+                            <span>Смотреть</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </article>
+                    <!-- prerender:cards:end --></div>
                 </div>
                 <button type="button" class="catalog-arrow catalog-arrow--next" aria-label="Следующие товары" hidden>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"></polyline></svg>
