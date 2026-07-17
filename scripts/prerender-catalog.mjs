@@ -44,7 +44,7 @@ const absAsset = (p) => {
     return ORIGIN + (p.startsWith('/') ? p : '/' + p);
 };
 
-// --- JSON-LD: логика перенесена из js/seo-jsonld.js (файл будет удалён) ---
+// --- JSON-LD: логика перенесена из удалённого js/seo-jsonld.js ---
 const firstImage = (product) => {
     const colors = Array.isArray(product.colors) ? product.colors : [];
     if (colors.length) {

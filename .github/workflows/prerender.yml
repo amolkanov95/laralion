@@ -1,0 +1,46 @@
+# Автопересборка статического каталога (SEO) при изменении products.json —
+# в том числе после коммитов Decap CMS из /admin. Коммит бота меняет только
+# index.html и llms.txt, поэтому paths-фильтр не даёт зацикливания.
+name: Prerender catalog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'products.json'
+      - 'scripts/prerender-catalog.mjs'
+      - 'js/card-template.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prerender:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Smoke-тест общего шаблона карточки
+        # run: | — из-за «: » внутри строки команда не может быть plain-скаляром YAML
+        run: |
+          node -e "const {cardHTML} = require('./js/card-template.js'); const d = require('./products.json'); const html = cardHTML(d.products[0], (p) => p); if (!html.includes('collection-card')) { throw new Error('card-template: разметка без collection-card'); }"
+
+      - name: Пре-рендер каталога
+        run: node scripts/prerender-catalog.mjs
+
+      - name: Коммит, если есть изменения
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add index.html llms.txt
+            git commit -m "chore: пре-рендер каталога [bot]"
+            git push
+          else
+            echo "Изменений нет — статика актуальна."
+          fi
