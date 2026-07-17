@@ -63,9 +63,11 @@
     /* Интерактивные элементы — удобный тач-таргет ≥44px.
        Круглые иконочные кнопки исключены: им размер задаёт собственный
        width/height, а min-height вытянул бы их в овалы (кружки цвета,
-       точки слайдера, стрелки, крестики, кнопка «наверх»). */
+       точки слайдера, стрелки, крестики, кнопка «наверх»).
+       [hidden] исключён: display:inline-flex воскрешал бы скрытые кнопки
+       (вкладки пустых категорий каталога). */
     a,
-    button:not(.color-swatch):not(.slider-dot):not(.slider-arrow):not(.catalog-arrow):not(.modal-close):not(.lightbox-close):not(.lightbox-arrow):not(.to-top):not(.mobile-menu-close) {
+    button:not([hidden]):not(.color-swatch):not(.slider-dot):not(.slider-arrow):not(.catalog-arrow):not(.modal-close):not(.lightbox-close):not(.lightbox-arrow):not(.to-top):not(.mobile-menu-close) {
         min-height: 44px;
         display: inline-flex;
         align-items: center;
