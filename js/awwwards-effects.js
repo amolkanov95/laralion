@@ -104,7 +104,9 @@
                     if (r.bottom < -200 || r.top > vh + 200) return; // вне зоны — пропуск
                     const center = r.top + r.height / 2;
                     const offset = (center - vh / 2) * it.speed;
-                    const y = it.photo ? -offset * 0.6 : offset;
+                    /* Фото движется в ту же сторону, что hero (data-px),
+                       только мягче (0.6) — единое направление параллакса */
+                    const y = it.photo ? offset * 0.6 : offset;
                     it.el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
                 });
                 ticking = false;
