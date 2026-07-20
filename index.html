@@ -516,9 +516,13 @@
                 </button>
                 <div class="catalog-viewport">
                     <div class="collections-grid"><!-- prerender:cards:start -->
-                <article class="collection-card" data-product="vdohnovenie" data-category="bedding">
+                <article class="collection-card" data-product="vdohnovenie" data-category="bedding" tabindex="0" aria-label="Вдохновение — открыть карточку товара">
                     <div class="collection-image-wrapper">
                         <img src="./collections/vdohnovenie-zelenyy-1.webp" alt="Комплект постельного белья Вдохновение из варёного хлопка с рюшами и кружевом, эвкалиптовый зелёный" class="collection-image" loading="lazy">
+                        <div class="card-veil" aria-hidden="true">
+                            <span>Смотреть</span>
+                            <span class="card-veil-arrow">→</span>
+                        </div>
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">Вдохновение</h3>
@@ -529,16 +533,21 @@
                             <button type="button" class="color-swatch " aria-label="Цвет: Синий" data-color="Синий" data-image="./collections/vdohnovenie-siniy-1.webp" data-description="Пыльно-голубой, варёный хлопок, рюши и кружево" title="Синий" style="background-color: #8AA0BC"></button>
                         </div>
 
-                        <p class="collection-price">от 14 900 ₽</p>
-                        <button type="button" class="collection-btn">
-                            <span>Смотреть</span>
-                            <span>→</span>
-                        </button>
+                        <div class="price-row">
+                            <p class="collection-price">от 14 900 ₽</p>
+                            <button type="button" class="collection-circle" tabindex="-1" aria-label="Смотреть — Вдохновение">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+                        </div>
                     </div>
                 </article>
-                <article class="collection-card" data-product="provans" data-category="bedding">
+                <article class="collection-card" data-product="provans" data-category="bedding" tabindex="0" aria-label="Прованс — открыть карточку товара">
                     <div class="collection-image-wrapper">
                         <img src="./collections/provans-bezhevyy-1.webp" alt="Комплект постельного белья Прованс в клетку-виши с рюшами, бежевый, 100% хлопок" class="collection-image" loading="lazy">
+                        <div class="card-veil" aria-hidden="true">
+                            <span>Смотреть</span>
+                            <span class="card-veil-arrow">→</span>
+                        </div>
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">Прованс</h3>
@@ -549,16 +558,21 @@
                             <button type="button" class="color-swatch " aria-label="Цвет: Зелёный" data-color="Зелёный" data-image="./collections/provans-zelenyy-1.webp" data-description="Зелёная клетка-виши с рюшами, 100% хлопок" title="Зелёный" style="background: linear-gradient(135deg, #8C9479 0 50%, #F0EBDF 50% 100%)"></button>
                         </div>
 
-                        <p class="collection-price">от 15 000 ₽</p>
-                        <button type="button" class="collection-btn">
-                            <span>Смотреть</span>
-                            <span>→</span>
-                        </button>
+                        <div class="price-row">
+                            <p class="collection-price">от 15 000 ₽</p>
+                            <button type="button" class="collection-circle" tabindex="-1" aria-label="Смотреть — Прованс">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+                        </div>
                     </div>
                 </article>
-                <article class="collection-card" data-product="sharm" data-category="bedding">
+                <article class="collection-card" data-product="sharm" data-category="bedding" tabindex="0" aria-label="Шарм — открыть карточку товара">
                     <div class="collection-image-wrapper">
                         <img src="./collections/sharm-1.webp" alt="Комплект постельного белья Шарм из варёного хлопка с двойными рюшами, бежево-белая полоска 0,2 мм" class="collection-image" loading="lazy">
+                        <div class="card-veil" aria-hidden="true">
+                            <span>Смотреть</span>
+                            <span class="card-veil-arrow">→</span>
+                        </div>
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">Шарм</h3>
@@ -568,16 +582,21 @@
                             <button type="button" class="color-swatch active" aria-label="Цвет: Натуральный" data-color="Натуральный" data-image="./collections/sharm-1.webp" data-description="Бежево-белая полоска 0,2 мм, варёный хлопок, двойные рюши" title="Натуральный" style="background-color: #C3AE91"></button>
                         </div>
 
-                        <p class="collection-price">от 14 600 ₽</p>
-                        <button type="button" class="collection-btn">
-                            <span>Смотреть</span>
-                            <span>→</span>
-                        </button>
+                        <div class="price-row">
+                            <p class="collection-price">от 14 600 ₽</p>
+                            <button type="button" class="collection-circle" tabindex="-1" aria-label="Смотреть — Шарм">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+                        </div>
                     </div>
                 </article>
-                <article class="collection-card" data-product="klassika" data-category="bedding">
+                <article class="collection-card" data-product="klassika" data-category="bedding" tabindex="0" aria-label="Классика — открыть карточку товара">
                     <div class="collection-image-wrapper">
                         <img src="./collections/klassika-1.webp" alt="Комплект постельного белья Классика из варёного хлопка в клетку, кофейно-коричневый" class="collection-image" loading="lazy">
+                        <div class="card-veil" aria-hidden="true">
+                            <span>Смотреть</span>
+                            <span class="card-veil-arrow">→</span>
+                        </div>
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">Классика</h3>
@@ -587,11 +606,12 @@
                             <button type="button" class="color-swatch active" aria-label="Цвет: Коричневый" data-color="Коричневый" data-image="./collections/klassika-1.webp" data-description="Кофейно-коричневый, варёный хлопок в клетку" title="Коричневый" style="background-color: #7E5B43"></button>
                         </div>
 
-                        <p class="collection-price">от 7 400 ₽</p>
-                        <button type="button" class="collection-btn">
-                            <span>Смотреть</span>
-                            <span>→</span>
-                        </button>
+                        <div class="price-row">
+                            <p class="collection-price">от 7 400 ₽</p>
+                            <button type="button" class="collection-circle" tabindex="-1" aria-label="Смотреть — Классика">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+                        </div>
                     </div>
                 </article>
                     <!-- prerender:cards:end --></div>

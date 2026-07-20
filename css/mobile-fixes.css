@@ -47,8 +47,7 @@
 
     /* Кнопки на всю ширину для удобства */
     .btn,
-    .hero-cta,
-    .collection-btn {
+    .hero-cta {
         width: 100%;
         max-width: 100%;
         justify-content: center;
@@ -67,7 +66,7 @@
        [hidden] исключён: display:inline-flex воскрешал бы скрытые кнопки
        (вкладки пустых категорий каталога). */
     a,
-    button:not([hidden]):not(.color-swatch):not(.slider-dot):not(.slider-arrow):not(.catalog-arrow):not(.modal-close):not(.lightbox-close):not(.lightbox-arrow):not(.to-top):not(.mobile-menu-close) {
+    button:not([hidden]):not(.color-swatch):not(.slider-dot):not(.slider-arrow):not(.catalog-arrow):not(.collection-circle):not(.modal-close):not(.lightbox-close):not(.lightbox-arrow):not(.to-top):not(.mobile-menu-close) {
         min-height: 44px;
         display: inline-flex;
         align-items: center;

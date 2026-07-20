@@ -50,7 +50,6 @@
 
 /* Hover-эффекты для кнопок */
 .btn,
-.collection-btn,
 .marketplace-btn,
 .header-cta {
     position: relative;
@@ -58,7 +57,6 @@
 }
 
 .btn::before,
-.collection-btn::before,
 .marketplace-btn::before,
 .header-cta::before {
     content: '';
@@ -75,7 +73,6 @@
 }
 
 .btn:hover::before,
-.collection-btn:hover::before,
 .marketplace-btn:hover::before,
 .header-cta:hover::before {
     width: 300%;

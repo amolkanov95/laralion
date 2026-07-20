@@ -187,7 +187,8 @@
 @media (prefers-reduced-motion: reduce) {
     .collections-grid,
     .catalog-filter,
-    .catalog-filter::after {
+    .catalog-filter::after,
+    .card-veil {
         transition: none;
     }
 }
@@ -324,59 +325,100 @@
     background-color: #8FBC8F;
 }
 
+/* Нижний ряд: цена + круглая стрелка.
+   Прижат к низу карточки → низ на одной высоте во всех карточках
+   независимо от длины описания */
+.price-row {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+}
+
 /* Цена */
 .collection-price {
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--accent-gold);
-    margin-bottom: var(--spacing-sm);
-    /* Прижать цену+кнопку к низу карточки → блок «Смотреть» на одной высоте
-       во всех карточках независимо от длины описания */
-    margin-top: auto;
+    margin: 0;
 }
 
-/* Кнопка "Смотреть" */
-.collection-btn {
-    display: inline-flex;
+/* Круглая золотая стрелка (приём catalog-arrow) — тач-аффорданс
+   «карточку можно открыть». Декорация поверх клика по всей карточке:
+   её click просто всплывает в делегированный обработчик catalog-render.js.
+   На десктопе с курсором скрывается — там работает вуаль (медиа ниже). */
+.collection-circle {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    /* Не растягиваться на всю ширину в flex-колонке контента */
-    align-self: flex-start;
-    padding: 0.8rem 1.8rem;
-    background-color: transparent;
-    color: var(--text-color);
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border: 2px solid var(--accent-gold);
-    border-radius: 0;
+    justify-content: center;
+    padding: 0;
+    color: var(--accent-gold);
+    background-color: var(--card-bg);
+    border: 1px solid var(--accent-gold);
+    border-radius: 50%;
     cursor: pointer;
-    transition: all var(--transition-normal);
-    position: relative;
-    overflow: hidden;
 }
 
-.collection-btn::after {
-    content: '';
+.collection-circle svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+/* Вуаль «Смотреть» по низу фото — десктопный аффорданс.
+   По умолчанию (тач-устройства) выключена; включается в hover-медиа ниже. */
+.card-veil {
+    display: none;
     position: absolute;
+    left: 0;
+    right: 0;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background-color: var(--accent-gold);
-    transition: width var(--transition-normal);
-}
-
-.collection-btn:hover {
-    background-color: var(--accent-gold);
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.95rem 1rem;
+    background-color: rgba(252, 251, 249, 0.92);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     color: var(--text-color);
+    transform: translateY(101%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.collection-btn:hover::after {
-    width: 80%;
+.card-veil-arrow {
+    color: var(--accent-gold);
+}
+
+/* Десктоп с настоящим курсором: вуаль вместо стрелки.
+   Условие то же, что у hover-подъёма карточки: планшеты без мыши
+   (iPad и т.п. — hover: none) остаются со стрелкой при любой ширине. */
+@media (hover: hover) and (min-width: 769px) {
+    .collection-circle {
+        display: none;
+    }
+
+    .card-veil {
+        display: flex;
+    }
+
+    .collection-card:hover .card-veil,
+    .collection-card:focus-visible .card-veil {
+        transform: translateY(0);
+    }
+}
+
+/* Карточка — вход с клавиатуры (tabindex="0" в шаблоне, Enter открывает окно
+   — catalog-render.js). :focus-visible — обводка только при Tab-навигации. */
+.collection-card:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 3px;
 }
 
 /* Адаптивность */
@@ -495,11 +537,5 @@
 
     .collection-price {
         font-size: 1.2rem;
-    }
-
-    .collection-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 0.75rem 1.5rem;
     }
 }

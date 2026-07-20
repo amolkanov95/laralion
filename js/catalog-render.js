@@ -14,15 +14,25 @@
     const grid = document.querySelector('.collections-grid');
     if (!grid) return;
 
-    // Делегированный клик: открываем модалку по клику в ЛЮБУЮ область карточки
-    // (пользователи чаще тапают саму карточку, а не кнопку). Кружки цвета
-    // исключены — они только меняют цвет. Кнопка «Смотреть» остаётся видимым CTA
-    // и точкой входа для клавиатуры: её click всплывает сюда и тоже открывает окно.
-    // openModal — глобальная функция из modal.js; на момент клика она уже определена.
+    // Делегированный клик: открываем модалку по клику в ЛЮБУЮ область карточки.
+    // Кружки цвета исключены — они только меняют цвет. Вуаль «Смотреть» (десктоп)
+    // и круглая стрелка (тач) — декорации без своей логики: их клики просто
+    // всплывают сюда. openModal — глобальная функция из modal.js;
+    // на момент клика она уже определена.
     grid.addEventListener('click', (e) => {
         if (e.target.closest('.color-swatches')) return; // выбор цвета — не открытие
         const card = e.target.closest('.collection-card');
         if (!card || !grid.contains(card)) return;
+        if (typeof openModal === 'function') openModal(card.dataset.product);
+    });
+
+    // Клавиатура: карточка фокусируема (tabindex="0" в шаблоне), Enter открывает
+    // окно. Срабатывает только с фокусом на САМОЙ карточке (e.target === card):
+    // Enter на кружке цвета порождает его собственный click и обрабатывается выше.
+    grid.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        const card = e.target.closest('.collection-card');
+        if (e.target !== card || !grid.contains(card)) return;
         if (typeof openModal === 'function') openModal(card.dataset.product);
     });
 

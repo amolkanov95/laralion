@@ -50,8 +50,8 @@ const colorNameAt = (product, colorIndex) => {
     return color ? color.name : '';
 };
 
-// Индекс активного цвета карточки на странице (что выбрал пользователь до клика
-// «Смотреть»). Нет карточки/цветов — 0.
+// Индекс активного цвета карточки на странице (что выбрал пользователь
+// до открытия окна). Нет карточки/цветов — 0.
 const getActiveColorIndex = (slug) => {
     const card = document.querySelector(`.collection-card[data-product="${CSS.escape(slug)}"]`);
     if (!card) return 0;
@@ -122,7 +122,7 @@ function enableLightboxTrigger(productId) {
     });
 }
 
-// Элемент, на который вернуть фокус после закрытия окна (триггер «Смотреть»).
+// Элемент, на который вернуть фокус после закрытия окна (обычно карточка товара).
 let lastFocusedTrigger = null;
 
 // Селектор фокусируемых элементов внутри модалки (для перевода фокуса и trap по Tab).
@@ -172,7 +172,7 @@ function handleModalClick(e) {
 }
 
 // Открыть модальное окно. colorIndex опционален: если не передан — берётся
-// активный цвет карточки (пользователь мог переключить кружок до «Смотреть»).
+// активный цвет карточки (пользователь мог переключить кружок до открытия).
 function openModal(productId, colorIndex) {
     const product = getProduct(productId);
     if (!product) return;

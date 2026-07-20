@@ -59,10 +59,21 @@
                             <button type="button" class="color-swatch ${index === 0 ? 'active' : ''}" aria-label="Цвет: ${esc(color.name)}" data-color="${esc(color.name)}" data-image="${esc(assetURL(colorImage(color)))}" data-description="${esc(colorDesc(color))}" title="${esc(color.name)}" style="${swatchStyle(color)}"></button>`
         ).join('');
 
+        // Карточка открывается кликом/тапом в любую область (делегированный
+        // обработчик catalog-render.js) и клавишей Enter с фокуса на карточке
+        // (tabindex="0"). Аффордансы-декорации без собственной логики:
+        //   .card-veil — вуаль «Смотреть» по низу фото, видна только на десктопе
+        //     с курсором (hover/focus, см. collections.css);
+        //   .collection-circle — круглая золотая стрелка у цены, видна только на
+        //     тач-устройствах; tabindex="-1" — не дублирует Tab-стоп карточки.
         return `
-                <article class="collection-card" data-product="${esc(product.slug)}" data-category="${esc(product.category)}">
+                <article class="collection-card" data-product="${esc(product.slug)}" data-category="${esc(product.category)}" tabindex="0" aria-label="${esc(product.name)} — открыть карточку товара">
                     <div class="collection-image-wrapper">
                         <img src="${esc(initialImage)}" alt="${esc(initialAlt)}" class="collection-image" loading="lazy">
+                        <div class="card-veil" aria-hidden="true">
+                            <span>Смотреть</span>
+                            <span class="card-veil-arrow">→</span>
+                        </div>
                     </div>
                     <div class="collection-content">
                         <h3 class="collection-name">${esc(product.name)}</h3>
@@ -71,11 +82,12 @@
                         <div class="color-swatches">${swatchesHTML}
                         </div>
 
-                        <p class="collection-price">${esc(product.price)}</p>
-                        <button type="button" class="collection-btn">
-                            <span>Смотреть</span>
-                            <span>→</span>
-                        </button>
+                        <div class="price-row">
+                            <p class="collection-price">${esc(product.price)}</p>
+                            <button type="button" class="collection-circle" tabindex="-1" aria-label="Смотреть — ${esc(product.name)}">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+                        </div>
                     </div>
                 </article>`;
     };
