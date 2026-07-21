@@ -453,11 +453,19 @@
                     <span class="story-badge" id="storyBadge">Шаг 1 / 3</span>
                 </div>
 
-                <!-- Текстовые шаги -->
+                <!-- Вкладки-главы (только мобайл ≤768px): тап переключает кадр
+                     в .story-media и текстовую панель шага. На десктопе скрыты —
+                     там кадры сменяет прокрутка (scroll-animations.js). -->
+                <div class="story-tabs" role="tablist" aria-label="Шаги рассказа">
+                    <button type="button" class="story-tab is-active" role="tab" aria-selected="true" data-step-tab="0">01 · Материал</button>
+                    <button type="button" class="story-tab" role="tab" aria-selected="false" data-step-tab="1">02 · Пошив</button>
+                    <button type="button" class="story-tab" role="tab" aria-selected="false" data-step-tab="2">03 · Дом</button>
+                </div>
+
+                <!-- Текстовые шаги. На мобайле — панели вкладок (видна .is-current);
+                     фото шагам не нужны: кадры показывает .story-media -->
                 <div class="story-steps">
-                    <article class="story-step" data-step="0">
-                        <img class="story-step-img" src="./images/story/1.webp" alt="Макрофактура варёного хлопка крупным планом"
-                             width="1500" height="2000" loading="lazy">
+                    <article class="story-step is-current" data-step="0">
                         <div class="story-step-inner">
                             <p class="story-num">01 — Материал</p>
                             <h3>Варёный хлопок, который дышит</h3>
@@ -465,8 +473,6 @@
                         </div>
                     </article>
                     <article class="story-step" data-step="1">
-                        <img class="story-step-img" src="./images/story/2.webp" alt="Рюша и ровный шов на постельном белье крупным планом"
-                             width="1500" height="2000" loading="lazy">
                         <div class="story-step-inner">
                             <p class="story-num">02 — Пошив</p>
                             <h3>Индивидуальный пошив по вашим меркам</h3>
@@ -474,8 +480,6 @@
                         </div>
                     </article>
                     <article class="story-step" data-step="2">
-                        <img class="story-step-img" src="./images/story/3.webp" alt="Светлая спальня с постельным бельём Lara Lion из варёного хлопка"
-                             width="1500" height="2000" loading="lazy">
                         <div class="story-step-inner">
                             <p class="story-num">03 — В вашем доме</p>
                             <h3>Уют, который остаётся с вами</h3>

@@ -92,6 +92,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (badge) badge.textContent = `Шаг ${idx + 1} / ${frames.length}`;
     };
 
+    // Вкладки-главы (видны только на мобайле ≤768px, см. story.css):
+    // тап переключает кадр окна и текстовую панель шага. Обработчики
+    // навешиваются всегда — на десктопе вкладки скрыты и не мешают.
+    // Работает и при prefers-reduced-motion (до раннего return ниже).
+    const tabs = document.querySelectorAll('#story .story-tab');
+    tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+            const idx = +tab.dataset.stepTab;
+            setFrame(idx);
+            tabs.forEach((t) => {
+                const active = t === tab;
+                t.classList.toggle('is-active', active);
+                t.setAttribute('aria-selected', String(active));
+            });
+            steps.forEach((s) => s.classList.toggle('is-current', +s.dataset.step === idx));
+        });
+    });
+
     if (reduce) {
         steps.forEach((s) => s.classList.add('in'));
         if (frames.length) {

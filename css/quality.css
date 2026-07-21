@@ -217,25 +217,37 @@
         grid-column: auto;
     }
 
-    /* На мобильных все карточки — горизонтальные, как раньше */
+    /* На мобильных карточка = «этикетка» (компактная иконка + заголовок
+       в одну строку) + описание на всю ширину карточки. Так описание
+       получает нормальную длину строки (не зажато колонкой иконки),
+       а карточка ниже. Разметка не меняется: display:contents разворачивает
+       .quality-content, и заголовок с описанием сами становятся грид-элементами. */
+    .quality-card,
     .quality-card:not(.quality-card--wide) {
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 0.55rem 0.7rem;
         text-align: left;
+        padding: var(--spacing-sm);
     }
 
-    .quality-card {
-        padding: var(--spacing-sm);
-        gap: var(--spacing-sm);
+    .quality-content {
+        display: contents;
+    }
+
+    .quality-description {
+        grid-column: 1 / -1;
     }
 
     .quality-icon-wrap {
-        width: 56px;
-        height: 56px;
+        width: 44px;
+        height: 44px;
     }
 
     .quality-icon {
-        width: 36px;
-        height: 36px;
+        width: 28px;
+        height: 28px;
     }
 
     .quality-num {
@@ -244,6 +256,9 @@
     }
 
     .quality-title {
+        margin-bottom: 0;
+        /* Запас справа: длинный заголовок не заезжает под декоративный номер */
+        padding-right: 2.2rem;
         font-size: 1.1rem;
     }
 
@@ -253,23 +268,6 @@
 }
 
 @media (max-width: 480px) {
-    .quality-card,
-    .quality-card:not(.quality-card--wide) {
-        flex-direction: column;
-        text-align: center;
-        padding: var(--spacing-md);
-    }
-
-    .quality-icon-wrap {
-        width: 64px;
-        height: 64px;
-    }
-
-    .quality-icon {
-        width: 40px;
-        height: 40px;
-    }
-
     .quality-title {
         font-size: 1.05rem;
     }
