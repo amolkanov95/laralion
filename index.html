@@ -6,7 +6,7 @@
 
     <!-- Безопасность (Слой 1: работает на любом хостинге, включая GitHub Pages) -->
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <meta name="description" content="Премиальный домашний текстиль Lara Lion в Ярославле: индивидуальный пошив постельного белья из варёного хлопка, кухонного текстиля и тканей по вашим меркам.">
     <meta name="keywords" content="постельное бельё варёный хлопок, постельное бельё с рюшами, купить постельное бельё Ярославль, индивидуальный пошив постельного белья, кухонный текстиль, ателье постельного белья Ярославль, домашний текстиль">
     <meta name="author" content="Lara Lion">
@@ -43,12 +43,14 @@
     <!-- Preload критических ресурсов (адаптивно по ширине экрана) -->
     <link rel="preload" as="image" type="image/webp" href="./images/hero-desktop.webp" media="(min-width: 769px)">
     <link rel="preload" as="image" type="image/webp" href="./images/hero-mobile.webp" media="(max-width: 768px)">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" as="style">
+    <!-- Два начертания первого экрана: каллиграфия бренда и кириллица заголовков.
+         Стартуют сразу, не дожидаясь разбора CSS — иначе золотой текст
+         несколько секунд показывается запасным шрифтом. -->
+    <link rel="preload" as="font" type="font/woff2" href="./fonts/greatvibes-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="./fonts/ebgaramond-cyrillic.woff2" crossorigin>
 
-    <!-- Подключение шрифтов Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Шрифты — локальные копии Google Fonts (см. css/fonts.css) -->
+    <link rel="stylesheet" href="./css/fonts.css">
 
     <!-- Подключение CSS-модулей -->
     <link rel="stylesheet" href="./css/variables.css">
