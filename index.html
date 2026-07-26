@@ -42,7 +42,7 @@
 
     <!-- Preload критических ресурсов (адаптивно по ширине экрана) -->
     <link rel="preload" as="image" type="image/webp" href="./images/hero-desktop.webp" media="(min-width: 769px)">
-    <link rel="preload" as="image" href="./images/hero-mobile.jpg" media="(max-width: 768px)">
+    <link rel="preload" as="image" type="image/webp" href="./images/hero-mobile.webp" media="(max-width: 768px)">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=EB+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" as="style">
 
     <!-- Подключение шрифтов Google Fonts -->
@@ -299,7 +299,7 @@
     <section id="hero">
         <!-- Фоновое изображение (адаптивная подмена: десктоп / мобайл) -->
         <picture class="hero-bg" data-px="0.18">
-            <source media="(max-width: 768px)" srcset="./images/hero-mobile.jpg">
+            <source media="(max-width: 768px)" type="image/webp" srcset="./images/hero-mobile.webp">
             <img src="./images/hero-desktop.webp" alt="Спальня Lara Lion" loading="eager">
         </picture>
 

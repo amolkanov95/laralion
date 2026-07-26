@@ -39,7 +39,7 @@ def compress(rel_path, fmt, **save_kwargs):
 
 
 compress('images/hero-desktop.webp', 'WEBP', quality=80, method=6)
-compress('images/hero-mobile.jpg', 'JPEG', quality=82, optimize=True, progressive=True)
+compress('images/hero-mobile.webp', 'WEBP', quality=80, method=6)
 
 for fname in sorted(os.listdir(os.path.join(ROOT, 'collections'))):
     if fname.endswith('.webp'):
