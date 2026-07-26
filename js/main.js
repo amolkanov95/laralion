@@ -77,13 +77,3 @@ function initMobileMenu() {
     });
 }
 
-// Обработка кликов по кнопкам размеров в модальных окнах
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('size-btn')) {
-        const modal = e.target.closest('.modal-container');
-        const allSizeBtns = modal.querySelectorAll('.size-btn');
-
-        allSizeBtns.forEach(btn => btn.classList.remove('active'));
-        e.target.classList.add('active');
-    }
-});

@@ -81,12 +81,20 @@
     position: relative;
 }
 
+/* Кадр фото — система координат для подсказки увеличения и счётчика.
+   Скругление и обрезка живут здесь, а не на самих фото: на телефоне
+   .slider-images превращается в прокручиваемую ленту. */
+.slider-frame {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
 .slider-images {
     position: relative;
     width: 100%;
     height: 500px;
     overflow: hidden;
-    border-radius: 16px;
 }
 
 .slider-image {
@@ -98,72 +106,149 @@
     object-fit: cover;
     opacity: 0;
     transition: opacity var(--transition-normal);
-    border-radius: 16px;
 }
 
 .slider-image.active {
     opacity: 1;
 }
 
-/* Стрелки слайдера */
-.slider-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
+/* Миниатюры кадров — навигация по галерее (вместо стрелок поверх фото).
+   На телефоне скрыты: там фото листаются свайпом. */
+.slider-thumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.slider-thumb {
+    flex: 1 1 0;
+    aspect-ratio: 3 / 4;
     padding: 0;
     -webkit-appearance: none;
     appearance: none;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid var(--accent-gold);
-    border-radius: 50%;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    overflow: hidden;
     cursor: pointer;
+    opacity: 0.6;
+    transition: opacity var(--transition-fast), border-color var(--transition-fast);
+}
+
+.slider-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slider-thumb:hover {
+    opacity: 0.9;
+}
+
+.slider-thumb.active {
+    opacity: 1;
+    border-color: var(--accent-gold);
+}
+
+.slider-thumb:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+}
+
+/* Счётчик кадров — телефон (там миниатюр нет, позицию показывает он) */
+.slider-counter {
+    position: absolute;
+    left: 0.7rem;
+    bottom: 0.7rem;
+    z-index: 3;
+    display: none;
+    padding: 0.28rem 0.7rem;
+    background-color: rgba(43, 31, 23, 0.55);
+    border-radius: 999px;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+}
+
+/* Подсказка «фото раскрывается на весь экран».
+   Десктоп с курсором — вуаль по низу кадра (приём карточки каталога),
+   тач-устройства — постоянная лупа в углу. Обе не перехватывают клик:
+   он проходит на фото и открывает полноэкранный просмотр. */
+.slider-zoom-veil {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+    background-color: rgba(252, 251, 249, 0.93);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-color);
+    transform: translateY(101%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+}
+
+.slider-zoom-veil svg {
+    width: 16px;
+    height: 16px;
+    color: var(--accent-gold);
+}
+
+.slider-zoom-badge {
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.7rem;
+    z-index: 3;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    line-height: 1;
-    color: var(--text-color);
-    transition: all var(--transition-fast);
-    z-index: 5;
-}
-
-.slider-arrow:hover {
-    background-color: var(--accent-gold);
-}
-
-.slider-arrow-left {
-    left: 1rem;
-}
-
-.slider-arrow-right {
-    right: 1rem;
-}
-
-/* Точки-индикаторы слайдера */
-.slider-dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-.slider-dot {
-    width: 12px;
-    height: 12px;
-    padding: 0;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: var(--light-linen);
-    border: 2px solid var(--accent-gold);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
-    cursor: pointer;
-    transition: all var(--transition-fast);
+    color: var(--text-color);
+    box-shadow: 0 2px 10px rgba(43, 31, 23, 0.18);
+    pointer-events: none;
 }
 
-.slider-dot.active {
-    background-color: var(--accent-gold);
+.slider-zoom-badge svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Условие то же, что у вуали «Смотреть» в каталоге: планшеты без мыши
+   остаются с лупой при любой ширине */
+@media (hover: hover) and (min-width: 769px) {
+    .slider-zoom-veil {
+        display: flex;
+    }
+
+    .slider-zoom-badge {
+        display: none;
+    }
+
+    .slider-frame:hover .slider-zoom-veil {
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .slider-zoom-veil {
+        transition: none;
+    }
 }
 
 /* Правая колонка: Информация о товаре */
@@ -213,7 +298,28 @@
     margin-bottom: var(--spacing-md);
 }
 
-/* Выбор размеров */
+/* Раскрытие описания (телефон: текст обрезан четырьмя строками) */
+.modal-description-more {
+    align-self: flex-start;
+    margin-bottom: var(--spacing-md);
+    padding: 0;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    color: var(--accent-gold);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+/* Свёрнутый текст стоит ближе к своей кнопке */
+.modal-description:has(+ .modal-description-more:not([hidden])) {
+    margin-bottom: 0.4rem;
+}
+
+/* Размеры — справка о комплектах, а не выбор: кнопок здесь нет */
 .modal-sizes {
     margin-bottom: var(--spacing-md);
 }
@@ -225,28 +331,72 @@
     margin-bottom: var(--spacing-sm);
 }
 
-.size-buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
+/* Перечень названий — когда состав комплекта в CMS не заполнен */
+.size-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    list-style: none;
 }
 
-.size-btn {
-    padding: 0.8rem 1rem;
-    background-color: transparent;
+.size-list li {
+    padding: 0.5rem 0.85rem;
+    background-color: var(--light-linen);
+    border-radius: 999px;
+    font-size: 0.85rem;
     color: var(--text-color);
-    font-size: 0.9rem;
-    font-weight: 500;
-    border: 2px solid var(--accent-gold);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all var(--transition-fast);
 }
 
-.size-btn:hover,
-.size-btn.active {
-    background-color: var(--accent-gold);
-    color: var(--text-color);
+/* Размерная сетка: слева название, справа состав в сантиметрах */
+.size-specs {
+    font-size: 0.82rem;
+}
+
+.size-row {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(43, 31, 23, 0.09);
+}
+
+.size-row:last-child {
+    border-bottom: 0;
+}
+
+.size-row dt {
+    flex: 0 0 43%;
+    font-family: var(--font-heading);
+    font-size: 0.98rem;
+    font-weight: 600;
+}
+
+.size-row dd {
+    flex: 1 1 auto;
+    margin: 0;
+    line-height: 1.55;
+    opacity: 0.82;
+}
+
+/* Позиция состава («50×70 ×2») переносом не разрывается — группы строит specHTML */
+.size-nb {
+    white-space: nowrap;
+}
+
+/* Подпись столбца: что за числа идут в составе */
+.size-legend {
+    padding-bottom: 0.3rem;
+    border-bottom-color: rgba(186, 150, 98, 0.5);
+}
+
+.size-legend dt,
+.size-legend dd {
+    font-family: var(--font-body);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    opacity: 1;
 }
 
 /* Информация об упаковке */
@@ -309,170 +459,219 @@
     color: #999;
 }
 
-/* Адаптивность */
+/* Липкая панель покупки: цена + главная кнопка всегда перед глазами.
+   Только телефон — на десктопе кнопки и так видны рядом с фото. */
+.modal-buybar {
+    display: none;
+}
+
+/* ============================================
+   ТЕЛЕФОН: окно товара — лист во весь экран (сценарий маркетплейса).
+   Фото во всю ширину в родной пропорции 3:4, листается свайпом;
+   счётчик кадров, лупа-подсказка, липкая панель покупки внизу.
+============================================ */
 @media (max-width: 768px) {
+    .modal-overlay {
+        align-items: stretch;
+        justify-content: stretch;
+    }
+
     .modal-container {
-        width: 95%;
-        max-width: 95%;
-        max-height: 92vh;
-        margin: 1rem auto;
+        width: 100%;
+        max-width: none;
+        height: 100vh;
+        height: 100dvh;          /* с поправкой на панели браузера */
+        max-height: none;
+        margin: 0;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        /* Лист выезжает снизу вместо масштабирования по центру */
+        transform: translateY(100%);
+    }
+
+    .modal-overlay.active .modal-container {
+        transform: none;
     }
 
     .modal-content {
         grid-template-columns: 1fr;
-        gap: var(--spacing-md);
-        padding: var(--spacing-md);
-        padding-top: 3rem;
+        gap: 0;
+        padding: 0;
+        flex: 1 0 auto;
     }
 
+    /* Крестик — поверх фото, без золотой рамки */
     .modal-close {
-        top: 0.75rem;
-        right: 0.75rem;
+        top: 0.7rem;
+        right: 0.7rem;
         width: 36px;
         height: 36px;
+        background-color: rgba(255, 255, 255, 0.92);
+        border: none;
+        box-shadow: 0 2px 8px rgba(43, 31, 23, 0.22);
         font-size: 1.3rem;
     }
 
+    .modal-close:hover {
+        background-color: #fff;
+        transform: none;
+    }
+
+    /* Фото — во всю ширину, без скругления и полей */
+    .slider-frame {
+        border-radius: 0;
+    }
+
+    /* Лента кадров: нативный свайп со scroll-snap (приём каталога).
+       pan-y отдаёт вертикальный жест листу, иначе прокрутка «залипает». */
     .slider-images {
-        height: 300px;
+        display: flex;
+        height: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        overscroll-behavior-x: contain;
+        touch-action: pan-x pan-y;
     }
 
-    .slider-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
+    .slider-images::-webkit-scrollbar {
+        display: none;
     }
 
-    .slider-arrow-left {
-        left: 0.5rem;
+    .slider-image {
+        position: static;
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 3 / 4;     /* родная пропорция фото — кадр не обрезан */
+        opacity: 1;
     }
 
-    .slider-arrow-right {
-        right: 0.5rem;
+    .slider-thumbs {
+        display: none;           /* на телефоне листаем свайпом */
     }
 
+    .slider-counter {
+        display: block;
+    }
+
+    /* Информация — влево, как на маркетплейсе */
+    .modal-info {
+        padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-md);
+    }
+
+    /* margin-top гасит глобальное правило заголовков из mobile-fixes.css:
+       фото и так отделяет название от предыдущего блока */
     .modal-title {
-        font-size: 1.8rem;
-        text-align: center;
+        font-size: 1.6rem;
+        margin-top: 0;
     }
 
     .modal-price {
-        font-size: 1.5rem;
-        text-align: center;
+        font-size: 1.35rem;
     }
 
+    /* Длинное описание свёрнуто: размеры и покупка не уезжают в конец текста */
     .modal-description {
         font-size: 0.9rem;
-        text-align: center;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
-    .modal-colors .color-swatches {
-        justify-content: center;
-    }
-
-    .modal-color-description {
-        text-align: center;
-    }
-
-    .modal-sizes h4 {
-        font-size: 1.1rem;
-        text-align: center;
-    }
-
-    .size-buttons {
-        grid-template-columns: 1fr;
+    .modal-description.is-expanded {
+        display: block;
+        -webkit-line-clamp: unset;
+        overflow: visible;
     }
 
     .modal-gift-info {
         font-size: 0.85rem;
-        text-align: center;
-        justify-content: center;
     }
 
     .marketplace-btn {
         font-size: 0.95rem;
         padding: 0.9rem 1.3rem;
     }
+
+    /* Главная кнопка живёт в липкой панели — в списке она была бы дублем */
+    .marketplace-btn[data-primary] {
+        display: none;
+    }
+
+    .modal-buybar {
+        position: sticky;
+        bottom: 0;
+        z-index: 6;
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem var(--spacing-sm) calc(0.7rem + env(safe-area-inset-bottom));
+        background-color: rgba(255, 255, 255, 0.96);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        border-top: 1px solid rgba(43, 31, 23, 0.09);
+    }
+
+    .buybar-price {
+        font-family: var(--font-heading);
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--accent-gold);
+        white-space: nowrap;
+    }
+
+    .buybar-btn {
+        flex: 1 1 auto;
+        padding: 0.8rem 0.6rem;
+        background-color: var(--accent-gold);
+        color: #fff;
+    }
+
+    .buybar-btn:disabled {
+        background-color: transparent;
+    }
 }
 
 @media (max-width: 480px) {
-    .modal-container {
-        width: 98%;
-        max-height: 95vh;
-        border-radius: var(--radius-md);
-    }
-
-    .modal-content {
-        padding: var(--spacing-sm);
-        padding-top: 2.5rem;
-        gap: var(--spacing-sm);
-    }
-
     .modal-close {
-        top: 0.5rem;
-        right: 0.5rem;
-        width: 32px;
-        height: 32px;
-        min-height: 32px;
+        width: 34px;
+        height: 34px;
         font-size: 1.2rem;
     }
 
-    .slider-images {
-        height: 250px;
-    }
-
-    .slider-arrow {
-        width: 36px;
-        height: 36px;
-        font-size: 1.1rem;
-    }
-
-    .slider-arrow-left {
-        left: 0.3rem;
-    }
-
-    .slider-arrow-right {
-        right: 0.3rem;
-    }
-
-    .slider-dots {
-        gap: 0.4rem;
-        margin-top: 0.75rem;
-    }
-
-    .slider-dot {
-        width: 10px;
-        height: 10px;
-    }
-
     .modal-title {
-        font-size: 1.5rem;
+        font-size: 1.45rem;
         margin-bottom: var(--spacing-xs);
     }
 
     .modal-price {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
         margin-bottom: var(--spacing-sm);
     }
 
     .modal-description {
         font-size: 0.85rem;
         line-height: 1.6;
-        margin-bottom: var(--spacing-sm);
     }
 
     .modal-sizes {
         margin-bottom: var(--spacing-sm);
     }
 
-    .modal-sizes h4 {
-        font-size: 1rem;
+    .modal-sizes h3 {
+        font-size: 1.05rem;
         margin-bottom: var(--spacing-xs);
     }
 
-    .size-btn {
-        padding: 0.7rem 0.9rem;
-        font-size: 0.85rem;
+    .size-row dt {
+        font-size: 0.92rem;
     }
 
     .modal-gift-info {
@@ -488,5 +687,15 @@
     .marketplace-btn {
         font-size: 0.9rem;
         padding: 0.85rem 1.2rem;
+    }
+
+    /* Узкие экраны (от 320px): цена и кнопка должны уместиться в одну строку */
+    .buybar-price {
+        font-size: 1.05rem;
+    }
+
+    .buybar-btn {
+        padding: 0.8rem 0.5rem;
+        font-size: 0.85rem;
     }
 }

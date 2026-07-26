@@ -72,7 +72,7 @@ const colorImages = (product, colorIndex) => {
     return Array.isArray(product.images) ? product.images : [];
 };
 
-// HTML кадров слайдера и точек-индикаторов для заданного набора фото.
+// HTML кадров слайдера для заданного набора фото.
 // colorName — название показываемого цвета (для осмысленного SEO-alt).
 const sliderImagesHTML = (product, images, colorName) => {
     const alt = modalAltText(product, colorName);
@@ -81,9 +81,81 @@ const sliderImagesHTML = (product, images, colorName) => {
     ).join('');
 };
 
-const sliderDotsHTML = (images) => images.map((_, index) =>
-    `<button type="button" class="slider-dot ${index === 0 ? 'active' : ''}" aria-label="Фото ${index + 1}" data-action="showSlide" data-index="${index}"></button>`
+// Миниатюры кадров — навигация по галерее на десктопе (вместо стрелок поверх
+// фото и точек-индикаторов). alt пустой: миниатюра дублирует уже описанное
+// большое фото, для скринридера это шум — кадр называет aria-label кнопки.
+const sliderThumbsHTML = (images) => images.map((img, index) =>
+    `<button type="button" class="slider-thumb ${index === 0 ? 'active' : ''}" aria-label="Фото ${index + 1}" data-action="showSlide" data-index="${index}"><img src="${escModal(window.assetURL(img))}" alt="" loading="lazy"></button>`
 ).join('');
+
+// Иконки подсказки «фото открывается на весь экран»: рамка-разворот для вуали
+// (десктоп, при наведении) и лупа для тач-устройств, где наведения нет.
+const ICON_EXPAND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4v5M15 4h5v5M15 20h5v-5M9 20H4v-5"/></svg>';
+const ICON_ZOOM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6M11 8.4v5.2M8.4 11h5.2"/></svg>';
+
+// Размеры приходят из CMS списком объектов { name, spec }. Старый формат
+// (список строк) поддерживаем: товар, заполненный до появления состава
+// комплекта, покажет одни названия размеров.
+const normalizeSizes = (sizes) => (Array.isArray(sizes) ? sizes : [])
+    .map(size => (typeof size === 'string' ? { name: size } : (size || {})))
+    .filter(size => size.name);
+
+// Состав комплекта переносится по строкам только между позициями: пара
+// «размер ×количество» не разрывается, разделитель «·» не начинает строку,
+// союз «и» её не заканчивает. Для этого позиции склеиваем в неразрывные
+// группы — иначе на 390px строка рвётся между «50×70» и «×2».
+const specHTML = (text) => {
+    const chunks = String(text).split('·').map(chunk => chunk.trim()).filter(Boolean);
+    return chunks.map((chunk, chunkIndex) => {
+        const tail = chunkIndex < chunks.length - 1 ? ' ·' : '';
+        const parts = chunk.split(/\s+и\s+/);
+        return parts.map((part, partIndex) => {
+            const isLast = partIndex === parts.length - 1;
+            const text = partIndex ? `и ${part}` : part;
+            return `<span class="size-nb">${escModal(text)}${isLast ? tail : ''}</span>`;
+        }).join(' ');
+    }).join(' ');
+};
+
+// Блок размеров — справка, а не выбор (кнопок здесь нет). Если у размеров
+// заполнен состав, показываем таблицу «размер → сантиметры», иначе перечень.
+const sizesBlockHTML = (product) => {
+    const sizes = normalizeSizes(product.sizes);
+    if (!sizes.length) return '';
+
+    const hasSpecs = sizes.some(size => size.spec && String(size.spec).trim());
+    if (!hasSpecs) {
+        return `
+                        <div class="modal-sizes">
+                            <h3>Доступные размеры</h3>
+                            <ul class="size-list">${sizes.map(size => `
+                                <li>${escModal(size.name)}</li>`).join('')}
+                            </ul>
+                        </div>`;
+    }
+
+    // Подпись столбца поясняет порядок чисел в составе (задаётся в CMS)
+    const legend = product.sizesLegend && String(product.sizesLegend).trim()
+        ? `
+                                <div class="size-row size-legend"><dt>Размер</dt><dd>${specHTML(product.sizesLegend)}</dd></div>`
+        : '';
+
+    return `
+                        <div class="modal-sizes">
+                            <h3>Размеры и состав комплекта</h3>
+                            <dl class="size-specs">${legend}${sizes.map(size => `
+                                <div class="size-row"><dt>${escModal(size.name)}</dt><dd>${specHTML(size.spec || '')}</dd></div>`).join('')}
+                            </dl>
+                        </div>`;
+};
+
+// Маркетплейсы в фиксированном порядке. Первая заполненная ссылка считается
+// главной: она уходит в липкую панель покупки на телефоне.
+const MARKETPLACES = [
+    { key: 'ozon', label: 'Купить на Ozon →', soon: 'Ozon — Скоро в продаже' },
+    { key: 'avito', label: 'Заказать на Avito →', soon: 'Avito — Скоро в продаже' },
+    { key: 'vk', label: 'Обсудить в VK →', soon: 'VK — Скоро в продаже' }
+];
 
 // Текущий индекс слайда и текущий выбранный цвет для каждого товара
 let currentSlideIndex = {};
@@ -162,8 +234,8 @@ function handleModalClick(e) {
             showSlide(productId, Number(el.dataset.index));
         } else if (action === 'selectModalColor') {
             selectModalColor(productId, Number(el.dataset.index));
-        } else if (action === 'changeSlide') {
-            changeSlide(productId, Number(el.dataset.dir));
+        } else if (action === 'expandDesc') {
+            expandDescription(overlay, el);
         }
         return;
     }
@@ -194,6 +266,9 @@ function openModal(productId, colorIndex) {
     // Клик/тап по фото открывает полноэкранный просмотр
     enableLightboxTrigger(productId);
 
+    // Телефон: свайп по ленте кадров
+    enableTrackSync(productId);
+
     // Показать модальное окно с анимацией
     const overlay = document.getElementById(`modal-${productId}`);
     overlay.addEventListener('click', handleModalClick);
@@ -202,6 +277,9 @@ function openModal(productId, colorIndex) {
         // Перевести фокус в окно (на кнопку закрытия)
         const closeBtn = overlay.querySelector('.modal-close');
         if (closeBtn) closeBtn.focus();
+        // Обрезку описания проверяем только теперь: до показа окна
+        // (display: none) высоты нулевые и обрезку не измерить
+        initDescriptionClamp(productId);
     }, 10);
 
     // Удерживать фокус внутри окна
@@ -236,18 +314,33 @@ function createModalHTML(productId, product, startColor = 0) {
     // Поля могут отсутствовать, если товар заполнен в CMS частично:
     // Decap опускает пустые опциональные поля (например, links без ссылок).
     // Подставляем безопасные значения, чтобы окно открывалось в любом случае.
-    const sizes = Array.isArray(product.sizes) ? product.sizes : [];
     const links = product.links || {};
     const colors = Array.isArray(product.colors) ? product.colors : [];
 
     // Слайдер строится из галереи стартового цвета (или общих фото для товара без цветов).
     const images = colorImages(product, startColor);
     const imagesHTML = sliderImagesHTML(product, images, colorNameAt(product, startColor));
-    const dotsHTML = sliderDotsHTML(images);
 
-    const sizesHTML = sizes.map(size =>
-        `<button type="button" class="size-btn">${escModal(size)}</button>`
-    ).join('');
+    // Миниатюры и счётчик нужны только когда кадров больше одного
+    const thumbsHTML = images.length > 1
+        ? `
+                        <div class="slider-thumbs">${sliderThumbsHTML(images)}
+                        </div>`
+        : '';
+    const counterHTML = images.length > 1
+        ? `<span class="slider-counter" aria-hidden="true">1 / ${images.length}</span>`
+        : '';
+
+    // Подсказка «фото раскрывается на весь экран»: вуаль при наведении на
+    // десктопе, лупа на тач-устройствах (переключает CSS). pointer-events: none —
+    // клик проходит на фото и открывает полноэкранный просмотр.
+    const zoomHintHTML = images.length
+        ? `
+                            <span class="slider-zoom-veil" aria-hidden="true">${ICON_EXPAND}Увеличить</span>
+                            <span class="slider-zoom-badge" aria-hidden="true">${ICON_ZOOM}</span>`
+        : '';
+
+    const sizesHTML = sizesBlockHTML(product);
 
     // Блок выбора цвета внутри окна (только если у товара есть цвета).
     // Клик по кружку перематывает слайдер на фото цвета и меняет строку описания.
@@ -262,17 +355,19 @@ function createModalHTML(productId, product, startColor = 0) {
                             <p class="modal-color-description">${escModal(colorShortDesc(product, colors[startColor]))}</p>
                         </div>` : '';
 
-    const ozonBtn = links.ozon
-        ? `<a href="${escModal(links.ozon)}" target="_blank" rel="noopener" class="marketplace-btn">Купить на Ozon →</a>`
-        : `<button type="button" class="marketplace-btn disabled" disabled>Ozon — Скоро в продаже</button>`;
+    // Кнопки маркетплейсов. У главной (первой доступной) — метка data-primary:
+    // на телефоне она скрыта из списка, потому что дублируется в липкой панели.
+    const primary = MARKETPLACES.find(market => links[market.key]) || null;
+    const marketplaceHTML = MARKETPLACES.map(market => links[market.key]
+        ? `<a href="${escModal(links[market.key])}" target="_blank" rel="noopener" class="marketplace-btn"${primary && market.key === primary.key ? ' data-primary' : ''}>${market.label}</a>`
+        : `<button type="button" class="marketplace-btn disabled" disabled>${market.soon}</button>`
+    ).join(`
+                            `);
 
-    const avitoBtn = links.avito
-        ? `<a href="${escModal(links.avito)}" target="_blank" rel="noopener" class="marketplace-btn">Заказать на Avito →</a>`
-        : `<button type="button" class="marketplace-btn disabled" disabled>Avito — Скоро в продаже</button>`;
-
-    const vkBtn = links.vk
-        ? `<a href="${escModal(links.vk)}" target="_blank" rel="noopener" class="marketplace-btn">Обсудить в VK →</a>`
-        : `<button type="button" class="marketplace-btn disabled" disabled>VK — Скоро в продаже</button>`;
+    // Липкая панель покупки — видна только на телефоне (CSS)
+    const buybarActionHTML = primary
+        ? `<a href="${escModal(links[primary.key])}" target="_blank" rel="noopener" class="marketplace-btn buybar-btn">${primary.label}</a>`
+        : `<button type="button" class="marketplace-btn disabled buybar-btn" disabled>Скоро в продаже</button>`;
 
     const pid = escModal(productId);
     return `
@@ -283,14 +378,12 @@ function createModalHTML(productId, product, startColor = 0) {
                 <div class="modal-content">
                     <!-- Левая колонка: Слайдер -->
                     <div class="modal-slider">
-                        <div class="slider-images">
-                            ${imagesHTML}
-                            <button type="button" class="slider-arrow slider-arrow-left" aria-label="Предыдущее фото" data-action="changeSlide" data-dir="-1">‹</button>
-                            <button type="button" class="slider-arrow slider-arrow-right" aria-label="Следующее фото" data-action="changeSlide" data-dir="1">›</button>
-                        </div>
-                        <div class="slider-dots">
-                            ${dotsHTML}
-                        </div>
+                        <div class="slider-frame">
+                            <div class="slider-images">
+                                ${imagesHTML}
+                            </div>${zoomHintHTML}
+                            ${counterHTML}
+                        </div>${thumbsHTML}
                     </div>
 
                     <!-- Правая колонка: Информация -->
@@ -299,14 +392,8 @@ function createModalHTML(productId, product, startColor = 0) {
                         <p class="modal-price">${escModal(product.price)}</p>
 ${colorsBlockHTML}
                         <p class="modal-description">${escModal(product.fullDescription)}</p>
-
-                        <!-- Выбор размеров -->
-                        <div class="modal-sizes">
-                            <h3>Выберите размер:</h3>
-                            <div class="size-buttons">
-                                ${sizesHTML}
-                            </div>
-                        </div>
+                        <button type="button" class="modal-description-more" data-action="expandDesc" hidden>Читать полностью</button>
+${sizesHTML}
 
                         <!-- Информация об упаковке -->
                         <div class="modal-gift-info">
@@ -315,50 +402,88 @@ ${colorsBlockHTML}
 
                         <!-- Кнопки маркетплейсов -->
                         <div class="modal-marketplace-buttons">
-                            ${ozonBtn}
-                            ${avitoBtn}
-                            ${vkBtn}
+                            ${marketplaceHTML}
                         </div>
                     </div>
+                </div>
+
+                <!-- Липкая панель покупки (телефон) -->
+                <div class="modal-buybar">
+                    <span class="buybar-price">${escModal(product.price)}</span>
+                    ${buybarActionHTML}
                 </div>
             </div>
         </div>
     `;
 }
 
-// Показать слайд
-function showSlide(productId, index) {
+// Показать кадр: активное фото, активная миниатюра, счётчик.
+// fromScroll — вызов пришёл от свайпа ленты, подводить её не нужно.
+function showSlide(productId, index, fromScroll) {
     const modal = document.getElementById(`modal-${productId}`);
     if (!modal) return;
     const images = modal.querySelectorAll('.slider-image');
-    const dots = modal.querySelectorAll('.slider-dot');
-    if (!images.length) return; // у товара нет фото — слайдера нет
+    const thumbs = modal.querySelectorAll('.slider-thumb');
+    const counter = modal.querySelector('.slider-counter');
+    if (!images.length) return;              // у товара нет фото — слайдера нет
+    if (index < 0 || index >= images.length) return; // кадр из прошлой галереи
 
     // Убрать активный класс со всех
     images.forEach(img => img.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
+    thumbs.forEach(thumb => thumb.classList.remove('active'));
 
     // Добавить активный класс к текущему
     images[index].classList.add('active');
-    dots[index].classList.add('active');
+    if (thumbs[index]) thumbs[index].classList.add('active');
+    if (counter) counter.textContent = `${index + 1} / ${images.length}`;
 
     currentSlideIndex[productId] = index;
+
+    if (!fromScroll) scrollTrackTo(modal, index);
 }
 
-// Переключить слайд
-function changeSlide(productId, direction) {
-    const product = getProduct(productId);
-    if (!product) return;
-    // Листаем в пределах галереи текущего выбранного цвета
-    const totalSlides = colorImages(product, currentColorIndex[productId] || 0).length;
-    if (totalSlides === 0) return; // нечего листать
-    let newIndex = currentSlideIndex[productId] + direction;
+// Телефон: подвести ленту кадров к нужному фото. На десктопе кадры наложены
+// друг на друга (перекрёстное затухание) — прокручивать нечего.
+function scrollTrackTo(modal, index) {
+    const track = modal.querySelector('.slider-images');
+    if (!track) return;
+    if (track.scrollWidth <= track.clientWidth + 1) return;
+    const target = index * track.clientWidth;
+    if (Math.abs(track.scrollLeft - target) < 2) return;
+    track.scrollTo({ left: target, behavior: 'smooth' });
+}
 
-    // Зацикливание слайдера
-    if (newIndex < 0) newIndex = totalSlides - 1;
-    if (newIndex >= totalSlides) newIndex = 0;
+// Телефон: фото листаются свайпом (лента scroll-snap). Активный кадр считаем
+// по позиции прокрутки — счётчик и полноэкранный просмотр остаются в согласии.
+function enableTrackSync(productId) {
+    const modal = document.getElementById(`modal-${productId}`);
+    if (!modal) return;
+    const track = modal.querySelector('.slider-images');
+    if (!track) return;
+    track.addEventListener('scroll', () => {
+        if (track.scrollWidth <= track.clientWidth + 1) return;
+        const index = Math.round(track.scrollLeft / track.clientWidth);
+        if (index !== currentSlideIndex[productId]) showSlide(productId, index, true);
+    }, { passive: true });
+}
 
-    showSlide(productId, newIndex);
+// Телефон: описание обрезано четырьмя строками. Кнопку «Читать полностью»
+// показываем только если текст действительно не поместился.
+function initDescriptionClamp(productId) {
+    const modal = document.getElementById(`modal-${productId}`);
+    if (!modal) return;
+    const desc = modal.querySelector('.modal-description');
+    const more = modal.querySelector('.modal-description-more');
+    if (!desc || !more) return;
+    if (desc.scrollHeight - desc.clientHeight > 2) more.hidden = false;
+}
+
+// Раскрыть описание целиком (кнопка после этого не нужна)
+function expandDescription(modal, button) {
+    const desc = modal.querySelector('.modal-description');
+    if (!desc) return;
+    desc.classList.add('is-expanded');
+    button.hidden = true;
 }
 
 // Выбор цвета внутри окна товара: перестраивает слайдер на галерею выбранного
@@ -386,22 +511,13 @@ function selectModalColor(productId, index) {
 
     // Перестроить слайдер под галерею выбранного цвета
     const images = colorImages(product, index);
-    const sliderImagesEl = modal.querySelector('.slider-images');
-    const dotsEl = modal.querySelector('.slider-dots');
-    if (sliderImagesEl) {
-        // Удалить старые кадры, оставив стрелки навигации
-        sliderImagesEl.querySelectorAll('.slider-image').forEach(n => n.remove());
-        const arrowLeft = sliderImagesEl.querySelector('.slider-arrow-left');
-        const alt = modalAltText(product, color.name);
-        images.forEach((img, i) => {
-            const el = document.createElement('img');
-            el.src = window.assetURL(img);
-            el.alt = alt;
-            el.className = 'slider-image is-zoomable' + (i === 0 ? ' active' : '');
-            sliderImagesEl.insertBefore(el, arrowLeft);
-        });
+    const trackEl = modal.querySelector('.slider-images');
+    const thumbsEl = modal.querySelector('.slider-thumbs');
+    if (trackEl) {
+        trackEl.innerHTML = sliderImagesHTML(product, images, color.name);
+        trackEl.scrollLeft = 0; // лента на телефоне — к первому кадру
     }
-    if (dotsEl) dotsEl.innerHTML = sliderDotsHTML(images);
+    if (thumbsEl) thumbsEl.innerHTML = sliderThumbsHTML(images);
 
     // Слайдер на первый кадр новой галереи
     currentSlideIndex[productId] = 0;
@@ -415,13 +531,16 @@ function closeModalOnOverlay(event, productId) {
     }
 }
 
-// Закрыть модальное окно при нажатии Escape
+// Закрыть модальное окно при нажатии Escape.
+// Полноэкранный просмотр (lightbox.js) — верхний слой: Escape достаётся ему,
+// карточка остаётся открытой. Оба обработчика висят на document, поэтому две
+// проверки покрывают любой порядок их выполнения: метка — если просмотрщик уже
+// отработал и снял свой класс, класс .active — если он ещё не отработал.
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const activeModal = document.querySelector('.modal-overlay.active');
-        if (activeModal) {
-            const productId = activeModal.id.replace('modal-', '');
-            closeModal(productId);
-        }
+    if (e.key !== 'Escape') return;
+    if (e.lightboxHandled || document.querySelector('.lightbox-overlay.active')) return;
+    const activeModal = document.querySelector('.modal-overlay.active');
+    if (activeModal) {
+        closeModal(activeModal.id.replace('modal-', ''));
     }
 });

@@ -406,7 +406,12 @@
     // Клавиатура (десктоп / тач-ноутбуки): Esc — закрыть, ←/→ — листать
     document.addEventListener('keydown', (e) => {
         if (!overlay || !overlay.classList.contains('active')) return;
-        if (e.key === 'Escape') close();
+        if (e.key === 'Escape') {
+            // Метка для modal.js: Escape израсходован просмотрщиком,
+            // карточка товара под ним остаётся открытой
+            e.lightboxHandled = true;
+            close();
+        }
         else if (e.key === 'ArrowLeft') goTo(index - 1, -1);
         else if (e.key === 'ArrowRight') goTo(index + 1, 1);
     });

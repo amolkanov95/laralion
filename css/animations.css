@@ -164,24 +164,6 @@
     transition: opacity 0.5s ease;
 }
 
-/* Плавное изменение размера точек слайдера */
-.slider-dot {
-    transition: all 0.2s ease;
-}
-
-.slider-dot:hover {
-    transform: scale(1.2);
-}
-
-/* Плавное появление стрелок слайдера */
-.slider-arrow {
-    transition: all 0.2s ease;
-}
-
-.slider-arrow:hover {
-    transform: translateY(-50%) scale(1.1);
-}
-
 /* Плавное изменение цвета кружков выбора цвета */
 .color-swatch {
     transition: all 0.2s ease;

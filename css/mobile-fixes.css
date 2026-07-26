@@ -62,29 +62,14 @@
     /* Интерактивные элементы — удобный тач-таргет ≥44px.
        Круглые иконочные кнопки исключены: им размер задаёт собственный
        width/height, а min-height вытянул бы их в овалы (кружки цвета,
-       точки слайдера, стрелки, крестики, кнопка «наверх»).
+       стрелки, крестики, кнопка «наверх»).
        [hidden] исключён: display:inline-flex воскрешал бы скрытые кнопки
        (вкладки пустых категорий каталога). */
     a,
-    button:not([hidden]):not(.color-swatch):not(.slider-dot):not(.slider-arrow):not(.catalog-arrow):not(.collection-circle):not(.modal-close):not(.lightbox-close):not(.lightbox-arrow):not(.to-top):not(.mobile-menu-close) {
+    button:not([hidden]):not(.color-swatch):not(.catalog-arrow):not(.collection-circle):not(.modal-close):not(.lightbox-close):not(.lightbox-arrow):not(.to-top):not(.mobile-menu-close) {
         min-height: 44px;
         display: inline-flex;
         align-items: center;
-    }
-}
-
-/* Исправление для модального окна на мобильных */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        max-width: 95%;
-        margin: 2rem auto;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-
-    .modal-gallery {
-        grid-template-columns: 1fr;
     }
 }
 
