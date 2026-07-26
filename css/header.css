@@ -61,10 +61,10 @@ header {
     background-size: 300% 100%;
     background-position: 0% 0;
     background-repeat: no-repeat;
-    /* Маска силуэтом самого логотипа (по альфа-каналу PNG) —
+    /* Маска силуэтом самого логотипа (по альфа-каналу WebP) —
        блик строго в форме флажка, на прозрачные поля не выходит */
-    -webkit-mask-image: url(../images/logo.png);
-            mask-image: url(../images/logo.png);
+    -webkit-mask-image: url(../images/logo.webp);
+            mask-image: url(../images/logo.webp);
     -webkit-mask-size: 100% 100%;
             mask-size: 100% 100%;
     -webkit-mask-repeat: no-repeat;
